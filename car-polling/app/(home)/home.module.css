@@ -1,0 +1,51 @@
+.home {
+  background-color: darkslategrey;
+  width: 100vw;
+  height: 100vh;
+  background-color: darkslategrey;
+  width: 100vw;
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.inner_container {
+  height: 50vh;
+  width: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin-top: 10vh;
+}
+.homeheading {
+  color: white;
+  margin-left: 5%;
+  margin-top: 8%;
+  font-size: 40px;
+}
+.homeheading_second {
+  color: white;
+  margin-top: 2%;
+  margin-left: 5%;
+  font-size: 80px;
+}
+.meanCom {
+  display: flex;
+  flex-direction: column;
+}
+.inputField {
+  height: 8vh;
+  width: 200px;
+  margin-left: 20px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: none;
+  text-align: center;
+}
+
+.searchButton {
+  height: 8vh;
+  width: 200px;
+  margin-left: 20px;
+  border-radius: 10px;
+  font-size: 15px;
+}
