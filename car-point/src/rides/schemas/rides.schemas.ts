@@ -1,5 +1,4 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsObject } from 'class-validator';
 import mongoose, { ObjectId } from 'mongoose';
 
 //validation function for time
@@ -10,7 +9,7 @@ const validateTimeFormat = (value: string) => {
 
 @Schema({ timestamps: true })
 export class Rides {
-  @Prop({ type: mongoose.Schema.Types.ObjectId })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'vehicle' })
   vehicle_id: string;
 
   @Prop({ type: String, required: [true, 'pick_up is required'] })
@@ -48,7 +47,7 @@ export class Rides {
   @Prop({ type: String })
   notemore: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user_id: ObjectId;
 }
 

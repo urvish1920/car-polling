@@ -1,27 +1,26 @@
-import { IsNumber, IsString } from "class-validator";
+import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { ObjectId } from 'mongoose';
 
 export class CreateRequestDto {
-  @IsString({ message: 'name is required' })
+  @IsString({ message: 'from is required' })
   from: string;
 
-  @IsString({ message: 'Number plate is required' })
+  @IsString({ message: 'to is required' })
   to: string;
 
-  @IsString({ message: 'car model is required' })
-  user_id: string;
+  user_id: ObjectId;
 
-  @IsNumber({}, { message: 'seaters is required' })
-  Ride_Id: string;
-
-  @IsString({ message: 'color of is required' })
-  color: string;
+  Ride_Id: ObjectId;
 
   @IsString()
+  @IsOptional()
   status_Request: string;
 
   @IsString()
+  @IsOptional()
   payment: string;
 
   @IsString()
+  @IsOptional()
   my_status: string;
 }

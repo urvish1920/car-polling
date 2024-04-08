@@ -9,7 +9,7 @@ import icon from "../../assert/icon.png";
 import car from "../../assert/car.png";
 import styles from "./findRideDetails.module.css";
 import FormattedDate from "@/app/component/Formate";
-import { Ride, fetchFindRides } from "@/app/redux/slice/findRideDetailsReducer";
+import { fetchFindRides } from "@/app/redux/slice/findRideDetailsReducer";
 import { AppDispatch } from "@/app/redux/store";
 
 export default function FullDetailRide({
@@ -149,7 +149,7 @@ export default function FullDetailRide({
                     marginLeft: "40%",
                     marginTop: "10px",
                   }}
-                  onClick={() => router.push("")}
+                  onClick={() => router.push(`/findRide/${id}/findRideSummary`)}
                 >
                   Continue
                 </button>

@@ -3,7 +3,6 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
-  Req,
 } from '@nestjs/common';
 import { CreateRideDto } from './dto/create-ride.dto';
 import { Rides } from './schemas/rides.schemas';
@@ -11,6 +10,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Types } from 'mongoose';
 import { ValidationError } from 'class-validator';
 import { UpdateRideDto } from './dto/update-ride.dto';
+
 
 @Injectable()
 export class RidesService {
@@ -22,7 +22,6 @@ export class RidesService {
   async create(createRideDto: CreateRideDto, req): Promise<Rides> {
     try {
       const userId = req.user._id;
-      console.log(userId);
       createRideDto.user_id = userId;
       const res = await this.RideModel.create(createRideDto);
       return await res.save();
@@ -42,14 +41,29 @@ export class RidesService {
     from: string,
     to: string,
     date: Date,
-    passenger: string,
+    passenger: number,
   ): Promise<Rides[]> {
     console.log(from, to, date, passenger);
+
+    const searchDate = new Date(date);
+    const searchDateStart = new Date(searchDate);
+    searchDateStart.setUTCHours(0, 0, 0, 0);
+
+    console.log(searchDateStart);
+
+    const seatchDateEnd = new Date(searchDate);
+    seatchDateEnd.setUTCHours(23, 29, 29, 999);
+
+    console.log(seatchDateEnd);
 
     const rides = await this.RideModel.aggregate([
       {
         $match: {
-          $and: [{ pick_up: from }, { drop_off: to }],
+          $and: [
+            { pick_up: from },
+            { drop_off: to },
+            { planride_date: { $gte: searchDateStart, $lte: seatchDateEnd } },
+          ],
         },
       },
       {
@@ -63,13 +77,55 @@ export class RidesService {
       {
         $unwind: '$user',
       },
+      {
+        $lookup: {
+          from: 'vehicles',
+          localField: 'vehicle_id',
+          foreignField: '_id',
+          as: 'vehicle',
+        },
+      },
+      {
+        $unwind: '$vehicle',
+      },
+      {
+        $addFields: {
+          availableSeats: {
+            $subtract: ['$vehicle.seaters', { $size: '$occupation' }],
+          },
+        },
+      },
+      {
+        $match: {
+          availableSeats: { $gte: passenger },
+        },
+      },
     ]).exec();
-    console.log(rides);
     return rides;
+  }
+
+  async planRidefind(req): Promise<Rides[]> {
+    try {
+      const userId = req.user._id;
+      const currentTime = new Date();
+      currentTime.setHours(0, 0, 0, 0);
+      console.log(userId);
+      const planRide = await this.RideModel.find({
+        user_id: userId,
+        planride_date: { $gte: currentTime },
+      });
+      return planRide;
+    } catch (error) {
+      console.error('Error finding ride:', error);
+      throw error;
+    }
   }
 
   async findOne(id: string): Promise<Rides> {
     try {
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new NotFoundException('Invalid ride ID');
+      }
       const ride = await this.RideModel.aggregate([
         {
           $match: {

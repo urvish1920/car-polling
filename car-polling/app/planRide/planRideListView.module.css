@@ -1,0 +1,144 @@
+.text {
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 60%;
+  margin-top: 30px;
+}
+
+.customselect {
+  width: 200px;
+  height: 50px;
+  margin: 15px;
+  background-color: #d1d1d1;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 15px;
+}
+.otcenter {
+  display: flex;
+  justify-content: center;
+}
+.outerContainer {
+  width: 50%;
+  height: 150px;
+  display: grid;
+  grid-template-columns: 80% 20%;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2vh;
+}
+.col20 {
+  padding: 5vh 5vh;
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  color: darkslategrey;
+  justify-content: space-between;
+}
+
+.col80 .row:nth-child(1) {
+  display: flex;
+}
+.col80 .row:nth-child(2) {
+  display: flex;
+}
+.date {
+  margin-left: 50%;
+  font-weight: 600;
+  color: darkslategrey;
+}
+.inneruptime {
+  margin-top: 18px;
+  margin-left: 15px;
+  font-weight: 600;
+  color: darkslategrey;
+}
+.innertotalhours {
+  margin-top: 8px;
+  margin-left: 25px;
+  font-weight: 400;
+  font-size: 14px;
+  color: darkslategrey;
+}
+.innerdowntime {
+  margin-top: 10px;
+  margin-left: 15px;
+  font-weight: 600;
+  color: darkslategrey;
+}
+
+.divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.box {
+  height: 5px;
+  width: 5px;
+  background-color: white;
+  border-radius: 15px;
+  border-style: solid;
+  border-color: darkslategrey;
+  border-width: 2px;
+  margin-top: 22px;
+  margin-left: 20px;
+  margin-right: 10px;
+}
+.box2 {
+  height: 5px;
+  width: 5px;
+  background-color: white;
+  border-radius: 15px;
+  border-style: solid;
+  border-color: darkslategrey;
+  border-width: 2px;
+  margin-left: 20px;
+  margin-right: 10px;
+}
+
+.line {
+  height: 50px;
+  background-color: darkslategrey;
+  width: 3px;
+  margin-left: 10px;
+}
+.passengerCircle {
+  height: 10px;
+  width: 10px;
+  background-color: lightgray;
+  border-radius: 15px;
+  border-style: solid;
+  border-color: lightgray;
+  border-width: 1px;
+  margin-left: 4px;
+  margin-top: 5px;
+}
+
+.innerupplace {
+  margin-top: 15px;
+  font-weight: 600;
+  color: darkslategrey;
+}
+.innerdownplace {
+  font-weight: 600;
+  color: darkslategrey;
+}
+.passengerrow {
+  display: flex;
+  font-weight: 600;
+  color: darkslategrey;
+}
+.colored {
+  background-color: darkslategray;
+}
+
+.loccol {
+  display: grid;
+  grid-template-rows: 75% 25%;
+}
+.fullAddress {
+  font-weight: 400;
+  font-size: 12px;
+  margin-top: 5px;
+}

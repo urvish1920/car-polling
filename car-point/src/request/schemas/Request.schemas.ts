@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { ObjectId } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class Request_user {
@@ -8,22 +9,24 @@ export class Request_user {
   @Prop({ type: String, required: [true, 'to is required'] })
   to: string;
 
-  @Prop({ type: String, required: [true, 'userId is required'] })
-  user_id: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  user_id: ObjectId;
 
-  @Prop({ type: String, required: [true, 'RideId is required'] })
-  Ride_Id: string;
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Rides',
+  })
+  Ride_Id: ObjectId;
 
-  @Prop({ type: String, default: 'pending' })
+  @Prop({ default: 'pending' })
   status_Request: string;
 
   @Prop({
-    required: [true, 'payment of car required'],
     default: 'Not completed',
   })
   payment: string;
 
-  @Prop({ type: String, default: 'pending' })
+  @Prop({ default: 'pending' })
   my_status: string;
 }
 

@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { RequestService } from './request.service';
 import { CreateRequestDto } from './dto/create-request.dto';
 import { UpdateRequestDto } from './dto/update-request.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 
 @Controller('request')
 export class RequestController {
@@ -19,8 +21,14 @@ export class RequestController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  create(@Body() createRequestDto: CreateRequestDto) {
-    return this.requestService.create(createRequestDto);
+  create(@Body() createRequestDto: CreateRequestDto, @Req() req: Request) {
+    return this.requestService.create(createRequestDto, req);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/notifationUser/:id')
+  async notifation(@Param('id') id: string) {
+    return this.requestService.notifationUser(id);
   }
 
   @UseGuards(AuthGuard('jwt'))

@@ -6,7 +6,6 @@ import Image from "next/image";
 import profileImage from "../assert/avater.png";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { styled } from "@mui/material";
 
 export interface findState {
   _id: string;
@@ -62,15 +61,7 @@ export default function findRide() {
         setIsPending(false);
       }
     };
-
-    const fetchTimeout = setTimeout(() => {
-      setIsPending(false);
-      console.log("Server is not responding. Please try again later.");
-    }, 5000);
-
     fetchRides();
-
-    return () => clearTimeout(fetchTimeout);
   }, []);
 
   const calculateTotalTime = (

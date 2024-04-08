@@ -1,0 +1,161 @@
+.heading {
+  font-size: 30px;
+  margin-top: 5%;
+  text-align: center;
+  color: darkslategrey;
+}
+
+.otcenter {
+  display: flex;
+  justify-content: center;
+}
+.outercontainer {
+  width: 50%;
+  height: 500px;
+  display: grid;
+  grid-template-rows: 20% 40% 50%;
+}
+
+.request {
+  margin-left: 30px;
+  margin-top: 20px;
+}
+
+.bookingRequest {
+  margin-top: 5px;
+  color: rgb(19, 119, 153);
+}
+.replay {
+  font-size: 12px;
+  margin-top: 2px;
+  font-weight: 200;
+  background: none;
+  border: none;
+  margin-left: 0px;
+}
+.notification {
+  margin-top: 5px;
+  margin-right: 10px;
+}
+.linebetween {
+  border: none;
+  border-top: 1px solid lightgray;
+  width: 100%;
+}
+
+.date {
+  margin-top: 30px;
+  margin-left: 20px;
+  font-weight: 600;
+  color: darkslategrey;
+}
+.col {
+  display: flex;
+  flex-direction: row;
+}
+.inneruptime {
+  margin-top: 18px;
+  margin-left: 15px;
+  font-weight: 600;
+  color: darkslategrey;
+}
+.innerdowntime {
+  margin-top: 50px;
+  margin-left: 15px;
+  font-weight: 600;
+  color: darkslategrey;
+}
+
+.divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.box {
+  height: 5px;
+  width: 5px;
+  background-color: white;
+  border-radius: 15px;
+  border-style: solid;
+  border-color: darkslategrey;
+  border-width: 2px;
+  margin-top: 22px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+.box2 {
+  height: 5px;
+  width: 5px;
+  background-color: white;
+  border-radius: 15px;
+  border-style: solid;
+  border-color: darkslategrey;
+  border-width: 2px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.line {
+  height: 60px;
+  background-color: darkslategrey;
+  width: 3px;
+}
+
+.innerupplace {
+  margin-top: 15px;
+  margin-left: 5px;
+  font-weight: 600;
+  color: darkslategrey;
+}
+.innerdownplace {
+  margin-top: 50px;
+  margin-left: 5px;
+  font-weight: 600;
+  color: darkslategrey;
+}
+
+.passanger {
+  display: flex;
+  justify-content: space-between;
+}
+
+.co_travellers {
+  margin-top: 10px;
+  margin-left: 20px;
+  font-weight: 600;
+  color: darkslategrey;
+}
+
+.space_between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.username {
+  margin-right: 30px;
+  font-weight: 600;
+  font-size: 20px;
+  color: darkslategrey;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+.img {
+  margin-top: 15px;
+  margin-right: 30px;
+}
+.avater {
+  border-radius: 50%;
+  border: solid 0.5px black;
+}
+.passangerName {
+  margin-top: 20px;
+  margin-left: 30px;
+  font-weight: 600;
+  color: darkslategrey;
+}
+.profile {
+  margin-top: 20px;
+  margin-right: 30px;
+  font-weight: 600;
+  color: darkslategrey;
+}

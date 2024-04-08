@@ -4,10 +4,12 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import findRideReducer from "@/app/redux/slice/findRideDetailsReducer";
 import searchReducer from "@/app/redux/slice/storeSearchData";
+import planRideReducer from "@/app/redux/slice/planRideDetailsReducer";
 
 const rootReducer = combineReducers({
   findRide: findRideReducer,
   search: searchReducer,
+  PlanRide: planRideReducer,
 });
 
 const persistConfig = {

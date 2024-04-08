@@ -3,7 +3,7 @@ import mongoose, { ObjectId } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class vehicle {
-  @Prop({ type: mongoose.Schema.Types.ObjectId })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user_id: ObjectId;
 
   @Prop({ type: String, required: [true, 'name of vehicle is required'] })

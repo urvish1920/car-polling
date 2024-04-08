@@ -34,7 +34,13 @@ export class RidesController {
     @Query('date') date: Date,
     @Query('passanger') passanger: string,
   ): Promise<Rides[]> {
-    return this.ridesService.findAll(from, to, date, passanger);
+    return this.ridesService.findAll(from, to, date, +passanger);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/planRide')
+  async planRidefind(@Req() req: Request) {
+    return this.ridesService.planRidefind(req);
   }
 
   @Get(':id')

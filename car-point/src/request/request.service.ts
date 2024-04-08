@@ -18,8 +18,11 @@ export class RequestService {
     private Request_user: mongoose.Model<Request_user>,
   ) {}
 
-  async create(createRequestDto: CreateRequestDto): Promise<Request_user> {
+  async create(createRequestDto: CreateRequestDto, req): Promise<Request_user> {
     try {
+      const userId = req.user._id;
+      createRequestDto.user_id = userId;
+      console.log(createRequestDto);
       const res = await this.Request_user.create(createRequestDto);
       return await res.save();
     } catch (error) {
@@ -31,6 +34,39 @@ export class RequestService {
           error.toString(),
         );
       }
+    }
+  }
+
+  async notifationUser(id: string): Promise<Request_user[]> {
+    try {
+      if (!id) {
+        throw new NotFoundException(`Ride with id ${id} not found`);
+      }
+      const objectId = new mongoose.Types.ObjectId(id);
+      const pendingRequests = await this.Request_user.aggregate([
+        {
+          $match: {
+            $and: [{ Ride_Id: objectId }, { status_Request: 'pending' }],
+          },
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'user_id',
+            foreignField: '_id',
+            as: 'user',
+          },
+        },
+        {
+          $unwind: '$user',
+        },
+      ]);
+
+      console.log(pendingRequests);
+      return pendingRequests;
+    } catch (error) {
+      console.error('Error finding ride:', error);
+      throw error;
     }
   }
 
