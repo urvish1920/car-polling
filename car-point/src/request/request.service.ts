@@ -22,7 +22,6 @@ export class RequestService {
     try {
       const userId = req.user._id;
       createRequestDto.user_id = userId;
-      console.log(createRequestDto);
       const res = await this.Request_user.create(createRequestDto);
       return await res.save();
     } catch (error) {
@@ -42,7 +41,9 @@ export class RequestService {
       if (!id) {
         throw new NotFoundException(`Ride with id ${id} not found`);
       }
+      console.log(id);
       const objectId = new mongoose.Types.ObjectId(id);
+      console.log(objectId);
       const pendingRequests = await this.Request_user.aggregate([
         {
           $match: {
@@ -95,16 +96,20 @@ export class RequestService {
     id: string,
     updateRequestDto: UpdateRequestDto,
   ): Promise<Request_user> {
-    const updatedRequestUser = await this.Request_user.findByIdAndUpdate(
-      id,
-      updateRequestDto,
-      { new: true, runValidators: true },
-    );
-    if (!updatedRequestUser) {
-      throw new NotFoundException(`user Request with id ${id} not found`);
+    try {
+      const updatedRequestUser = await this.Request_user.findByIdAndUpdate(
+        id,
+        updateRequestDto,
+        { new: true, runValidators: true },
+      );
+      if (!updatedRequestUser) {
+        throw new NotFoundException(`user Request with id ${id} not found`);
+      }
+      console.log(`user request with id ${id} has been successfully updated`);
+      return updatedRequestUser;
+    } catch (error) {
+      console.log(error);
     }
-    console.log(`user request with id ${id} has been successfully updated`);
-    return updatedRequestUser;
   }
 
   async remove(id: string) {

@@ -33,10 +33,12 @@ const initialState: PlanRideState = {
 };
 
 export const fetchPlanRides = createAsyncThunk(
-  "findRide/fetchFindRides",
+  "planRide",
   async (id: string, thunkAPI) => {
     try {
-      const response = await fetch(`http://localhost:8000/rides/${id}`);
+      const response = await fetch(`http://localhost:8000/rides/${id}`, {
+        credentials: "include",
+      });
       if (!response.ok) {
         throw new Error("Failed to fetch ride details");
       }

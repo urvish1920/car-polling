@@ -2,7 +2,6 @@ import { IsString, IsNumber, IsDate } from 'class-validator';
 import { ObjectId } from 'mongoose';
 
 export class CreateRideDto {
-
   vehicle_id: ObjectId;
   user_id: ObjectId;
 
@@ -29,4 +28,6 @@ export class CreateRideDto {
   ride_status: string;
 
   notemore: string;
+
+  leftSites: number;
 }

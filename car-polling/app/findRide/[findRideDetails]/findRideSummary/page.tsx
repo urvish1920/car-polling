@@ -24,6 +24,7 @@ export default function SummaryFindRide() {
         body: JSON.stringify({
           from: finduser.from,
           to: finduser.to,
+          passenger: finduser.passenger,
           Ride_Id: ride._id,
         }),
       });

@@ -7,22 +7,32 @@ import {
 import { CreateRideDto } from './dto/create-ride.dto';
 import { Rides } from './schemas/rides.schemas';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Types } from 'mongoose';
+import mongoose from 'mongoose';
 import { ValidationError } from 'class-validator';
 import { UpdateRideDto } from './dto/update-ride.dto';
-
+import { vehicle } from 'src/vehicle/schemas/vehicle.schemas';
 
 @Injectable()
 export class RidesService {
   constructor(
     @InjectModel(Rides.name)
     private RideModel: mongoose.Model<Rides>,
+    @InjectModel(vehicle.name)
+    private VehicleModel: mongoose.Model<vehicle>,
   ) {}
-
   async create(createRideDto: CreateRideDto, req): Promise<Rides> {
     try {
       const userId = req.user._id;
       createRideDto.user_id = userId;
+      const vehicle = await this.VehicleModel.findById(
+        createRideDto.vehicle_id,
+      ).exec();
+
+      if (!vehicle) {
+        throw new BadRequestException('Vehicle not found');
+      }
+      createRideDto.leftSites = vehicle.seaters;
+      console.log(createRideDto.leftSites);
       const res = await this.RideModel.create(createRideDto);
       return await res.save();
     } catch (error) {
@@ -63,6 +73,7 @@ export class RidesService {
             { pick_up: from },
             { drop_off: to },
             { planride_date: { $gte: searchDateStart, $lte: seatchDateEnd } },
+            { leftSites: { $gte: passenger } },
           ],
         },
       },
@@ -76,29 +87,6 @@ export class RidesService {
       },
       {
         $unwind: '$user',
-      },
-      {
-        $lookup: {
-          from: 'vehicles',
-          localField: 'vehicle_id',
-          foreignField: '_id',
-          as: 'vehicle',
-        },
-      },
-      {
-        $unwind: '$vehicle',
-      },
-      {
-        $addFields: {
-          availableSeats: {
-            $subtract: ['$vehicle.seaters', { $size: '$occupation' }],
-          },
-        },
-      },
-      {
-        $match: {
-          availableSeats: { $gte: passenger },
-        },
       },
     ]).exec();
     return rides;

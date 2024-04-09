@@ -8,6 +8,9 @@ export class CreateRequestDto {
   @IsString({ message: 'to is required' })
   to: string;
 
+  @IsString()
+  passenger: string;
+
   user_id: ObjectId;
 
   Ride_Id: ObjectId;

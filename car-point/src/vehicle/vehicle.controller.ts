@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { VehicleService } from './vehicle.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 
 @Controller('vehicle')
 export class VehicleController {
@@ -25,8 +27,8 @@ export class VehicleController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
-  findAll() {
-    return this.vehicleService.findAll();
+  findAll(@Req() req: Request) {
+    return this.vehicleService.findAll(req);
   }
   @UseGuards(AuthGuard('jwt'))
   @Get(':id')

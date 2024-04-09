@@ -7,8 +7,9 @@ import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import profileImage from "../../assert/avater.png";
-import { AppDispatch } from "@/app/redux/store";
+import { AppDispatch, RootState } from "@/app/redux/store";
 import { fetchPlanRides } from "@/app/redux/slice/planRideDetailsReducer";
+import { fetchRequestUser } from "@/app/redux/slice/approvalUserReducer";
 
 export default function planRideDetails({
   params,
@@ -18,8 +19,10 @@ export default function planRideDetails({
   const id = params.planRideDetails;
   const dispatch: AppDispatch = useDispatch();
   const ride = useSelector((state: any) => state.PlanRide.rides);
-  console.log(ride);
+  const request = useSelector((state: RootState) => state.RequestUser.request);
+  console.log(request);
   const [isPending, setIsPending] = useState(true);
+
   const router = useRouter();
   useEffect(() => {
     dispatch(fetchPlanRides(id))
@@ -32,28 +35,14 @@ export default function planRideDetails({
   }, [dispatch, id]);
 
   useEffect(() => {
-    const fetchNotification = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:8000/request/notifationUser/${id}`,
-          {
-            credentials: "include",
-          }
-        );
-        if (!response.ok) {
-          throw new Error(`Server responded with status ${response.status}`);
-        } else {
-          const data = await response.json();
-          console.log(data);
-          setIsPending(false);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
+    dispatch(fetchRequestUser(id))
+      .then(() => {
         setIsPending(false);
-      }
-    };
-    fetchNotification();
-  }, []);
+      })
+      .catch((err: Error & { Digest?: string; message: string }) => {
+        console.log(err.message);
+      });
+  }, [dispatch, id]);
 
   return (
     <div>
@@ -72,12 +61,21 @@ export default function planRideDetails({
                   <div className={styles.bookingRequest}>
                     New Booking Request
                   </div>
-                  <button
-                    className={styles.replay}
-                    onClick={() => router.push(`[slug]/approvalRequest`)}
-                  >
-                    Replay to keval
-                  </button>
+                  {request.length === 0 ? (
+                    <div>No booking request yet</div>
+                  ) : (
+                    request.map((item, index) => (
+                      <button
+                        key={index}
+                        className={styles.replay}
+                        onClick={() =>
+                          router.push(`[planRideDetails]/${item._id}`)
+                        }
+                      >
+                        Replay to {item.user.user_name}{" "}
+                      </button>
+                    ))
+                  )}
                 </div>
               </div>
             </div>

@@ -9,6 +9,9 @@ export class Request_user {
   @Prop({ type: String, required: [true, 'to is required'] })
   to: string;
 
+  @Prop({ type: Number, required: [true, 'passanger is required'] })
+  passenger: number;
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user_id: ObjectId;
 

@@ -5,6 +5,15 @@
   margin-top: 30px;
 }
 
+.not_Found {
+  font-size: 30px;
+  font-weight: 600;
+  color: rgb(142, 137, 137);
+  display: flex;
+  justify-content: center;
+  margin-top: 20%;
+}
+
 .customselect {
   width: 200px;
   height: 50px;

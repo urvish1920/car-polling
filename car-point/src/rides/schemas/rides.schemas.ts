@@ -36,7 +36,7 @@ export class Rides {
   end_time: string;
 
   @Prop({ type: Number, required: [true, 'Price is required'] })
-  price: Number;
+  price: number;
 
   @Prop({ type: Array, default: [] })
   occupation: [];
@@ -49,6 +49,9 @@ export class Rides {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user_id: ObjectId;
+
+  @Prop({ type: Number, required: [true, 'leftsites is required'] })
+  leftSites: number;
 }
 
 export const Ride_schema = SchemaFactory.createForClass(Rides);

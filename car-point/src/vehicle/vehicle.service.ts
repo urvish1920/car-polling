@@ -10,6 +10,7 @@ import { vehicle } from './schemas/vehicle.schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { ValidationError } from 'class-validator';
+import { log } from 'console';
 
 @Injectable()
 export class VehicleService {
@@ -34,9 +35,16 @@ export class VehicleService {
     }
   }
 
-  async findAll(): Promise<vehicle[]> {
-    const vehicle = await this.VehicleModel.find().exec();
-    return vehicle;
+  async findAll(req): Promise<vehicle[]> {
+    try {
+      const userId = req.user._id;
+      console.log(userId);
+      const vehicles = await this.VehicleModel.find({ user_id: userId }).exec();
+
+      return vehicles;
+    } catch (error) {
+      throw new Error(`Error finding vehicles: ${error.message}`);
+    }
   }
 
   async findOne(id: string) {
@@ -56,16 +64,22 @@ export class VehicleService {
   }
 
   async update(id: string, updateVehicleDto: UpdateVehicleDto) {
-    const updatedvehicle = await this.VehicleModel.findByIdAndUpdate(
-      id,
-      updateVehicleDto,
-      { new: true, runValidators: true },
-    );
-    if (!updatedvehicle) {
-      throw new NotFoundException(`vehicle with id ${id} not found`);
+    console.log(id, updateVehicleDto);
+
+    try {
+      const updatedvehicle = await this.VehicleModel.findByIdAndUpdate(
+        id,
+        updateVehicleDto,
+        { new: true, runValidators: true },
+      );
+      if (!updatedvehicle) {
+        throw new NotFoundException(`vehicle with id ${id} not found`);
+      }
+      console.log(`vehicle with id ${id} has been successfully updated`);
+      return updatedvehicle;
+    } catch (error) {
+      console.log(error);
     }
-    console.log(`vehicle with id ${id} has been successfully updated`);
-    return updatedvehicle;
   }
 
   async remove(id: string) {

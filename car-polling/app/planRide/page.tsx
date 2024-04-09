@@ -55,8 +55,6 @@ export default function PlanRide() {
 
     fetchRides();
 
-    console.log(allRide);
-
     return () => clearTimeout(fetchTimeout);
   }, []);
 
@@ -74,49 +72,63 @@ export default function PlanRide() {
           <option value="option2">Passenger</option>
         </select>
       </div>
-      {allRide.map((item, index) => {
-        return (
-          <div className={Styles.otcenter} key={index}>
-            <div
-              className={Styles.outerContainer}
-              onClick={() => {
-                router.push(`/planRide/${item._id}`);
-              }}
-            >
-              <div className={Styles.col80}>
-                <div className={Styles.row}>
-                  <div className={Styles.date}>
-                    {<FormattedDate date={new Date(item.planride_date)} />}
-                  </div>
-                </div>
-                <div className={Styles.row}>
-                  <div className={Styles.timecol}>
-                    <div className={Styles.inneruptime}>{item.start_time}</div>
-                    <div className={Styles.innertotalhours}>5h</div>
-                    <div className={Styles.innerdowntime}>{item.end_time}</div>
-                  </div>
-                  <div className={Styles.divider}>
-                    <div className={Styles.box} />
-                    <div className={Styles.line} />
-                    <div className={Styles.box2} />
-                  </div>
-                  <div className={Styles.loccol}>
-                    <div>
-                      <div className={Styles.innerupplace}>{item.pick_up}</div>
-                      <div className={Styles.fullAddress}>fullAddress</div>
+      {isPending ? (
+        <div>Loading...</div>
+      ) : allRide.length === 0 ? (
+        <div className={Styles.not_Found}>No plan ride</div>
+      ) : (
+        allRide.map((item, index) => {
+          return (
+            <div className={Styles.otcenter} key={index}>
+              <div
+                className={Styles.outerContainer}
+                onClick={() => {
+                  router.push(`/planRide/${item._id}`);
+                }}
+              >
+                <div className={Styles.col80}>
+                  <div className={Styles.row}>
+                    <div className={Styles.date}>
+                      {<FormattedDate date={new Date(item.planride_date)} />}
                     </div>
-                    <div className={Styles.innerdownplace}>{item.drop_off}</div>
-                    <div className={Styles.fullAddress}>full Address</div>
+                  </div>
+                  <div className={Styles.row}>
+                    <div className={Styles.timecol}>
+                      <div className={Styles.inneruptime}>
+                        {item.start_time}
+                      </div>
+                      <div className={Styles.innertotalhours}>5h</div>
+                      <div className={Styles.innerdowntime}>
+                        {item.end_time}
+                      </div>
+                    </div>
+                    <div className={Styles.divider}>
+                      <div className={Styles.box} />
+                      <div className={Styles.line} />
+                      <div className={Styles.box2} />
+                    </div>
+                    <div className={Styles.loccol}>
+                      <div>
+                        <div className={Styles.innerupplace}>
+                          {item.pick_up}
+                        </div>
+                        <div className={Styles.fullAddress}>fullAddress</div>
+                      </div>
+                      <div className={Styles.innerdownplace}>
+                        {item.drop_off}
+                      </div>
+                      <div className={Styles.fullAddress}>full Address</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className={Styles.col20}>
-                <div className={Styles.otprice}>{item.price}&#8377;</div>
+                <div className={Styles.col20}>
+                  <div className={Styles.otprice}>{item.price}&#8377;</div>
+                </div>
               </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })
+      )}
     </div>
   );
 }
