@@ -20,26 +20,83 @@ export default function ApprovalRequest({
   const [buttondisable, setButtondisable] = useState(false);
 
   const handleApproval = async (approvalStatus: string) => {
-    try {
-      const response = await fetch(`http://localhost:8000/request/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          status_Request: approvalStatus,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error(`Server responded with status ${response.status}`);
+    if (approvalStatus === "decline") {
+      try {
+        const response = await fetch(`http://localhost:8000/request/${id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            status_Request: approvalStatus,
+          }),
+        });
+        if (!response.ok) {
+          throw new Error(`Server responded with status ${response.status}`);
+        }
+        if (response.ok) {
+          alert(`user was ${approvalStatus}`);
+          setButtondisable(true);
+        }
+      } catch (error: any) {
+        console.error("Signup failed:", error.message);
       }
-      if (response.ok) {
-        alert(`user was ${approvalStatus}`);
+    } else {
+      if (ride.leftSites > filteredRequests[0].passenger) {
+        try {
+          const response = await fetch(`http://localhost:8000/request/${id}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({
+              status_Request: approvalStatus,
+            }),
+          });
+          if (!response.ok) {
+            throw new Error(`Server responded with status ${response.status}`);
+          }
+          if (response.ok) {
+            alert(`user was ${approvalStatus}`);
+            setButtondisable(true);
+          }
+        } catch (error: any) {
+          console.error("Signup failed:", error.message);
+        }
+        const newleftsites = ride.leftSites - filteredRequests[0].passenger;
+        const newOccupation = [...ride.occupation, filteredRequests[0].user_id];
+        try {
+          const response = await fetch(
+            `http://localhost:8000/rides/${ride._id}`,
+            {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
+              body: JSON.stringify({
+                leftSites: newleftsites,
+                occupation: newOccupation,
+              }),
+            }
+          );
+          if (!response.ok) {
+            throw new Error(`Server responded with status ${response.status}`);
+          }
+          if (response.ok) {
+            alert(`user add in car`);
+          }
+        } catch (error: any) {
+          console.error("Signup failed:", error.message);
+        }
+      } else {
+        alert(
+          `In your car sites is full passanger is ${filteredRequests[0].passenger} left sites is ${ride.leftSites}`
+        );
         setButtondisable(true);
       }
-    } catch (error: any) {
-      console.error("Signup failed:", error.message);
     }
   };
 
@@ -84,6 +141,12 @@ export default function ApprovalRequest({
             <div className={styles.space_between}>
               <div className={styles.price_text}>1 seat</div>
               <div className={styles.price}>{ride.price}</div>
+            </div>
+            <div className={styles.space_between}>
+              <div className={styles.leftsites}>
+                left sites: {ride.leftSites} no of passanger:
+                {filteredRequests[0].passenger}
+              </div>
             </div>
           </div>
           <div className={styles.third_container}>

@@ -9,6 +9,7 @@ export interface Ride {
   start_time: string;
   end_time: string;
   price: number;
+  leftSites: number;
   user: {
     user_name: string;
   };

@@ -2,6 +2,7 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { SignupAuthDto } from './dto/signup-auth.dto';
@@ -53,6 +54,25 @@ export class AuthService {
       return { token };
     } else {
       throw new UnauthorizedException('Invalid email or password');
+    }
+  }
+
+  async findOne(req) {
+    try {
+      const id = req.user._id;
+      console.log(id);
+      const user = await this.userModel.findById(id);
+      if (!user) {
+        throw new NotFoundException(`vehicle with id ${id} not found`);
+      }
+      console.log(user + 'hyyy');
+      return user;
+    } catch (error) {
+      if (error.name === 'CastError') {
+        throw new NotFoundException('Invalid vehicle ID');
+      } else {
+        throw error;
+      }
     }
   }
 }

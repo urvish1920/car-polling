@@ -63,6 +63,13 @@
   color: darkslategrey;
 }
 
+.leftsites{
+  margin-top: 20px;
+  margin-left: 20px;
+  font-weight: light;
+  color: grey;
+  font-weight: 400;
+}
 .approveButton {
   width: 30vh;
   height: 5vh;

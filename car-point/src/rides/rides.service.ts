@@ -97,7 +97,6 @@ export class RidesService {
       const userId = req.user._id;
       const currentTime = new Date();
       currentTime.setHours(0, 0, 0, 0);
-      console.log(userId);
       const planRide = await this.RideModel.find({
         user_id: userId,
         planride_date: { $gte: currentTime },

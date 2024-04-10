@@ -10,6 +10,7 @@ export interface RequestData {
   to: string;
   my_status: string;
   payment: string;
+  passenger: number;
   status_Request: string;
   user_id: string;
   user: {

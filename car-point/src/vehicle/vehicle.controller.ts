@@ -30,6 +30,7 @@ export class VehicleController {
   findAll(@Req() req: Request) {
     return this.vehicleService.findAll(req);
   }
+  
   @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   findOne(@Param('id') id: string) {

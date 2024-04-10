@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
-
+import  {Multer}  from 'multer';
 export class SignupAuthDto {
   @IsNotEmpty()
   @IsString()
@@ -7,10 +7,12 @@ export class SignupAuthDto {
 
   @IsNotEmpty()
   @IsEmail({}, { message: 'please enter correct email' })
-  readonly email: string;
+  email: string;
 
   @IsNotEmpty()
   @IsString()
   @MinLength(6)
   readonly password: string;
+
+  image: Express.Multer.File;
 }

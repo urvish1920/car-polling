@@ -1,8 +1,33 @@
-import { Controller, Post, Body, Res } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Res,
+  UseGuards,
+  Get,
+  Req,
+  Patch,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignupAuthDto } from './dto/signup-auth.dto';
 import { SignInDto } from './dto/signin-auth.dto';
 import { Response } from 'express';
+import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
+import { Multer, diskStorage } from 'multer';
+import { extname } from 'path';
+import { FileInterceptor } from '@nestjs/platform-express';
+
+const storage = diskStorage({
+  destination: './uploads',
+  filename: (req, file, cb) => {
+    const uniquename = Date.now() + extname(file.originalname);
+    cb(null, uniquename);
+  },
+});
+
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -26,5 +51,23 @@ export class AuthController {
         domain: 'localhost',
       })
       .send({ status: 'ok', access_token });
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/getuser')
+  findOne(@Req() req: Request) {
+    return this.authService.findOne(req);
+  }
+
+  @Post('/upload')
+  @UseInterceptors(FileInterceptor('file', { storage }))
+  uploadedFile(@UploadedFile() file: Express.Multer.File) {
+    console.log(file);
+    return { filename: file.filename };
+  }
+
+  @Patch('/updateUser')
+  updateUser(@Body() signupdto:SignupAuthDto){
+    return 
   }
 }

@@ -1,0 +1,45 @@
+.heading {
+  font-size: 30px;
+  margin-top: 5%;
+  text-align: center;
+  color: darkslategrey;
+}
+.otcenter {
+  display: flex;
+  justify-content: center;
+}
+.outercontainer {
+  width: 40%;
+  height: 500px;
+  display: grid;
+  grid-template-rows: 15% 15% 15%;
+}
+
+.linebetween {
+  border: none;
+  border-top: 1px solid lightgray;
+  width: 100%;
+}
+
+.labeltext {
+  margin-top: 25px;
+  margin-left: 10%;
+  font-weight: 600;
+  color: darkslategrey;
+}
+
+.space_between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.updatebutton {
+  height: 30px;
+  width: 80px;
+  margin-top: 20px;
+  margin-right: 20px;
+  background-color: darkslategrey;
+  color: white;
+  border: none;
+  border-radius: 2px;
+}

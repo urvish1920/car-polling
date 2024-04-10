@@ -10,6 +10,7 @@ import profileImage from "../../assert/avater.png";
 import { AppDispatch, RootState } from "@/app/redux/store";
 import { fetchPlanRides } from "@/app/redux/slice/planRideDetailsReducer";
 import { fetchRequestUser } from "@/app/redux/slice/approvalUserReducer";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 export default function planRideDetails({
   params,
@@ -17,8 +18,10 @@ export default function planRideDetails({
   params: { planRideDetails: string };
 }) {
   const id = params.planRideDetails;
+  console.log(id);
   const dispatch: AppDispatch = useDispatch();
   const ride = useSelector((state: any) => state.PlanRide.rides);
+  console.log(ride);
   const request = useSelector((state: RootState) => state.RequestUser.request);
   console.log(request);
   const [isPending, setIsPending] = useState(true);
@@ -43,6 +46,29 @@ export default function planRideDetails({
         console.log(err.message);
       });
   }, [dispatch, id]);
+
+  const handleStatus = async (status: string) => {
+    try {
+      const response = await fetch(`http://localhost:8000/rides/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          ride_status: status,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(`Server responded with status ${response.status}`);
+      }
+      if (response.ok) {
+        alert(`Ride was ${status}`);
+      }
+    } catch (error: any) {
+      console.error("Signup failed:", error.message);
+    }
+  };
 
   return (
     <div>
@@ -79,7 +105,7 @@ export default function planRideDetails({
                 </div>
               </div>
             </div>
-            <div className={styles.middlecontainer}>
+            <div className={styles.secondcontainer}>
               <div className={styles.linebetween} />
               <div className={styles.date}>
                 {<FormattedDate date={new Date(ride.planride_date)} />}
@@ -100,19 +126,51 @@ export default function planRideDetails({
                 </div>
               </div>
             </div>
+            <div className={styles.thirdComponent}>
+              <div className={styles.linebetween} />
+              <div className={styles.ride_status}>Ride status</div>
+              <div className={styles.space_between}>
+                <div className={styles.labeltext}>your Ride is Started ?</div>
+                <button
+                  className={styles.updatebutton}
+                  onClick={() => handleStatus("started")}
+                >
+                  started
+                </button>
+              </div>
+              <div className={styles.space_between}>
+                <div className={styles.labeltext}>your Ride is completed ?</div>
+                <button
+                  className={styles.updatebutton}
+                  onClick={() => handleStatus("completed")}
+                >
+                  completed
+                </button>
+              </div>
+            </div>
             <div className={styles.lastComponent}>
               <div className={styles.linebetween} />
               <div className={styles.co_travellers}>co-travellers</div>
-              <div className={styles.space_between}>
-                <div className={styles.username}>yash</div>
-                <div className={styles.img}>
-                  <Image
-                    src={profileImage}
-                    className={styles.avater}
-                    width={40}
-                    height={34}
-                    alt="Picture of the author"
-                  />
+              <div className={styles.co_travellersBorder}>
+                <div className={styles.space_between}>
+                  <div className={styles.passangerName}>yash</div>
+                  <div className={styles.img}>
+                    <Image
+                      src={profileImage}
+                      className={styles.avater}
+                      width={40}
+                      height={34}
+                      alt="Picture of the author"
+                    />
+                    <div className={styles.arrow}>
+                      <ChevronRightIcon
+                        style={{ fontSize: "2rem" }}
+                        onClick={() => {
+                          router.push(`/${1234}`);
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
