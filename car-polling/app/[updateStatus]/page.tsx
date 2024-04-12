@@ -24,7 +24,7 @@ export default function ApprovalRequest({
         throw new Error(`Server responded with status ${response.status}`);
       }
       if (response.ok) {
-        alert(`user was ${status}`);
+        alert(`user ${status}`);
       }
     } catch (error: any) {
       console.error("Signup failed:", error.message);

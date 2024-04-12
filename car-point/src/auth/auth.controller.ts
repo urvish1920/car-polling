@@ -9,6 +9,7 @@ import {
   Patch,
   UseInterceptors,
   UploadedFile,
+  Param,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignupAuthDto } from './dto/signup-auth.dto';
@@ -19,6 +20,7 @@ import { Request } from 'express';
 import { Multer, diskStorage } from 'multer';
 import { extname } from 'path';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { UpdateSignupDto } from './dto/updatesignup-auth.dto';
 
 const storage = diskStorage({
   destination: './uploads',
@@ -66,8 +68,9 @@ export class AuthController {
     return { filename: file.filename };
   }
 
-  @Patch('/updateUser')
-  updateUser(@Body() signupdto:SignupAuthDto){
-    return 
+  @UseGuards(AuthGuard('jwt'))
+  @Patch('/updateUser/:id')
+  update(@Param('id') id: string, @Body() UpdateSignupDto: UpdateSignupDto) {
+    return this.authService.updateUser(id, UpdateSignupDto);
   }
 }

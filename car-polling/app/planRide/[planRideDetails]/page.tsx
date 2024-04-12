@@ -21,9 +21,7 @@ export default function planRideDetails({
   console.log(id);
   const dispatch: AppDispatch = useDispatch();
   const ride = useSelector((state: any) => state.PlanRide.rides);
-  console.log(ride);
   const request = useSelector((state: RootState) => state.RequestUser.request);
-  console.log(request);
   const [isPending, setIsPending] = useState(true);
 
   const router = useRouter();
@@ -151,28 +149,32 @@ export default function planRideDetails({
             <div className={styles.lastComponent}>
               <div className={styles.linebetween} />
               <div className={styles.co_travellers}>co-travellers</div>
-              <div className={styles.co_travellersBorder}>
-                <div className={styles.space_between}>
-                  <div className={styles.passangerName}>yash</div>
-                  <div className={styles.img}>
-                    <Image
-                      src={profileImage}
-                      className={styles.avater}
-                      width={40}
-                      height={34}
-                      alt="Picture of the author"
-                    />
-                    <div className={styles.arrow}>
-                      <ChevronRightIcon
-                        style={{ fontSize: "2rem" }}
-                        onClick={() => {
-                          router.push(`/${1234}`);
-                        }}
+              {ride.occupation.map((occupant: any, index: number) => (
+                <div className={styles.co_travellersBorder}>
+                  <div className={styles.space_between} key={index}>
+                    <div className={styles.passangerName}>
+                      {occupant.user.user_name}
+                    </div>
+                    <div className={styles.img}>
+                      <Image
+                        src={occupant.profileImage || profileImage}
+                        className={styles.avater}
+                        width={40}
+                        height={34}
+                        alt={`Picture of ${occupant.user_name}`}
                       />
+                      <div className={styles.arrow}>
+                        <ChevronRightIcon
+                          style={{ fontSize: "2rem" }}
+                          onClick={() => {
+                            router.push(`/${occupant._id}`);
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>

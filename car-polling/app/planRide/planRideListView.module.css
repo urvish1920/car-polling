@@ -57,6 +57,20 @@
   font-weight: 600;
   color: darkslategrey;
 }
+
+.statuscon {
+  display: flex;
+  flex-direction: row;
+}
+
+.statusText {
+  font-weight: 600;
+  color: darkslategrey;
+  margin-left: 45%;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
 .inneruptime {
   margin-top: 18px;
   margin-left: 15px;

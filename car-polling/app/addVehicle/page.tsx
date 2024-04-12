@@ -1,10 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Styles from "./addVehicle.module.css";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import profileImage from "../assert/avater.png";
-import { styled } from "@mui/material";
 
 export interface vehicle {
   _id: string;

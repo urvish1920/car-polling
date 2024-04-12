@@ -19,6 +19,8 @@ export default function ApprovalRequest({
   const filteredRequests = request.filter((req: any) => req._id === id);
   const [buttondisable, setButtondisable] = useState(false);
 
+  console.log(filteredRequests[0]);
+
   const handleApproval = async (approvalStatus: string) => {
     if (approvalStatus === "decline") {
       try {
@@ -43,7 +45,7 @@ export default function ApprovalRequest({
         console.error("Signup failed:", error.message);
       }
     } else {
-      if (ride.leftSites > filteredRequests[0].passenger) {
+      if (ride.leftSites >= filteredRequests[0].passenger) {
         try {
           const response = await fetch(`http://localhost:8000/request/${id}`, {
             method: "PATCH",
@@ -66,7 +68,8 @@ export default function ApprovalRequest({
           console.error("Signup failed:", error.message);
         }
         const newleftsites = ride.leftSites - filteredRequests[0].passenger;
-        const newOccupation = [...ride.occupation, filteredRequests[0].user_id];
+        const newOccupation = [...ride.occupation, filteredRequests[0]];
+        console.log(newOccupation)
         try {
           const response = await fetch(
             `http://localhost:8000/rides/${ride._id}`,

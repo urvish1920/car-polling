@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import Styles from "./planRideListView.module.css";
 import { useRouter } from "next/navigation";
 import FormattedDate from "@/app/component/Formate";
+import Image from "next/image";
+import car from "../assert/logo.png";
 
 export interface planRide {
   _id: string;
@@ -13,6 +15,7 @@ export interface planRide {
   start_time: string;
   end_time: string;
   price: number;
+  ride_status: string;
   user: {
     user_name: string;
   };
@@ -118,6 +121,23 @@ export default function PlanRide() {
                         {item.drop_off}
                       </div>
                       <div className={Styles.fullAddress}>full Address</div>
+                    </div>
+                  </div>
+                  <div className={Styles.statuscon}>
+                    <div className={Styles.statusText}>
+                      {" "}
+                      Ride was {item.ride_status}!{" "}
+                    </div>
+                    <div>
+                      {item.ride_status === "started" && (
+                        <Image
+                          src={car}
+                          className={Styles.avater}
+                          width={50}
+                          height={34}
+                          alt={`Picture of car`}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>

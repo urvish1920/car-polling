@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./redux/provider";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,10 +18,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <Script
+          src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyDPrIVGNbhIVuvl0pnlgy5mVm-3gIS4iCE&libraries=places&callback=initMap`}
+          strategy="beforeInteractive"
+        />
+      </head>
       <body className={inter.className}>
-        <Providers>
-        {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

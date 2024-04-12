@@ -32,7 +32,7 @@ export class RidesService {
         throw new BadRequestException('Vehicle not found');
       }
       createRideDto.leftSites = vehicle.seaters;
-      console.log(createRideDto.leftSites);
+      console.log(createRideDto);
       const res = await this.RideModel.create(createRideDto);
       return await res.save();
     } catch (error) {

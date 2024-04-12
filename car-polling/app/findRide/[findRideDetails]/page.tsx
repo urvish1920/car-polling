@@ -66,7 +66,7 @@ export default function FullDetailRide({
               </div>
               <div className={styles.secondComponent}>
                 <div className={styles.linebetween} />
-                <div className={styles.passanger}>
+                <div className={styles.space_between_text}>
                   <div className={styles.priceText}>
                     Total Price for 1 Passenger
                   </div>
@@ -75,12 +75,12 @@ export default function FullDetailRide({
               </div>
               <div className={styles.thirdComponent}>
                 <div className={styles.linebetween} />
-                <div className={styles.passanger}>
+                <div className={styles.space_between_text}>
                   <div className={styles.username}>{ride.user.user_name}</div>
-                  <div className={styles.img}>
+                  <div className={styles.owner_img}>
                     <Image
                       src={profileImage}
-                      className={styles.avater}
+                      className={styles.owner_avater}
                       width={40}
                       height={34}
                       alt="Picture of the author"
@@ -105,7 +105,7 @@ export default function FullDetailRide({
               </div>
               <div className={styles.forthComponent}>
                 <div className={styles.linebetween} />
-                <div className={styles.passanger}>
+                <div className={styles.space_between_text}>
                   <div className={styles.number_Plate}>
                     {ride.vehicle.No_Plate}
                   </div>
@@ -121,20 +121,31 @@ export default function FullDetailRide({
                 <div className={styles.linebetween} />
                 <div className={styles.cotravellarText}>co-travellers</div>
               </div>
-              <div className={styles.fifthComponent}>
-                <div className={styles.passanger}>
-                  <div className={styles.username}>yash</div>
-                  <div className={styles.coimg}>
-                    <Image
-                      src={profileImage}
-                      className={styles.avater}
-                      width={40}
-                      height={34}
-                      alt="Picture of the author"
-                    />
-                  </div>
+              {ride.occupation.length === 0 ? (
+                <div className={styles.no_passanger}>
+                  There are no passengers yet.
                 </div>
-              </div>
+              ) : (
+                ride.occupation.map((occupant: any, index: number) => (
+                  <div className={styles.co_travellersBorder}>
+                    <div className={styles.space_between} key={index}>
+                      <div className={styles.passangerName}>
+                        {occupant.user.user_name}
+                      </div>
+                      <div className={styles.img}>
+                        <Image
+                          src={occupant.profileImage || profileImage}
+                          className={styles.avater}
+                          width={40}
+                          height={34}
+                          alt={`Picture of ${occupant.user.user_name}`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+
               <div className={styles.lastComponent}>
                 <div className={styles.linebetween} />
                 <button

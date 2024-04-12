@@ -10,7 +10,7 @@ const validateTimeFormat = (value: string) => {
 @Schema({ timestamps: true })
 export class Rides {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'vehicle' })
-  vehicle_id: string;
+  vehicle_id: ObjectId;
 
   @Prop({ type: String, required: [true, 'pick_up is required'] })
   pick_up: string;
@@ -18,8 +18,8 @@ export class Rides {
   @Prop({ type: String, required: [true, 'drop_off is required'] })
   drop_off: string;
 
-  // @Prop({ type: Date })
-  // planride_date: Date;
+  @Prop({ type: Date })
+  planride_date: Date;
 
   @Prop({
     required: [true, 'start_time is required'],
@@ -41,11 +41,8 @@ export class Rides {
   @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }], default: [] })
   occupation: Types.ObjectId[];
 
-  @Prop({ type: String, default: 'pending' })
+  @Prop({ type: String, default: 'not started' })
   ride_status: string;
-
-  @Prop({ type: String })
-  notemore: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user_id: ObjectId;

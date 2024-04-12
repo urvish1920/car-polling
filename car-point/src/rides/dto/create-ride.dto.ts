@@ -2,7 +2,9 @@ import { IsString, IsNumber, IsDate } from 'class-validator';
 import { ObjectId } from 'mongoose';
 
 export class CreateRideDto {
-  vehicle_id: ObjectId;
+  @IsString({ message: 'vehicle id is string' })
+  vehicle_id: string;
+
   user_id: ObjectId;
 
   @IsString({ message: 'pick_up is string' })
@@ -11,8 +13,8 @@ export class CreateRideDto {
   @IsString({ message: 'drop_off is string' })
   drop_off: string;
 
-  // @IsDate({ message: 'drop_off is date' })
-  // planride_date: Date;
+  @IsString({ message: 'planride_date is date' })
+  planride_date: Date;
 
   @IsString({ message: 'start_time is string' })
   start_time: string;
@@ -26,8 +28,6 @@ export class CreateRideDto {
   occupation: [] = [];
 
   ride_status: string;
-
-  notemore: string;
 
   leftSites: number;
 }
