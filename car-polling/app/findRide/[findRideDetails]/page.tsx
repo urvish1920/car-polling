@@ -11,6 +11,7 @@ import styles from "./findRideDetails.module.css";
 import FormattedDate from "@/app/component/Formate";
 import { fetchFindRides } from "@/app/redux/slice/findRideDetailsReducer";
 import { AppDispatch } from "@/app/redux/store";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function FullDetailRide({
   params,
@@ -36,7 +37,9 @@ export default function FullDetailRide({
   return (
     <div>
       {isPending ? (
-        "loading..."
+        <div className={styles.loading}>
+          <CircularProgress color="inherit" />
+        </div>
       ) : (
         <div>
           <h1 className={styles.heading}>
@@ -59,8 +62,14 @@ export default function FullDetailRide({
                     <div className={styles.box2} />
                   </div>
                   <div className={styles.loccol}>
-                    <div className={styles.innerupplace}>{ride.pick_up}</div>
-                    <div className={styles.innerdownplace}>{ride.drop_off}</div>
+                    <div className={styles.innerupplace}>
+                      {ride.pick_up.fullAddress}
+                      <div className={styles.city}>{ride.pick_up.city}</div>
+                    </div>
+                    <div className={styles.innerdownplace}>
+                      {ride.drop_off.fullAddress}
+                      <div className={styles.city}>{ride.drop_off.city}</div>
+                    </div>
                   </div>
                 </div>
               </div>

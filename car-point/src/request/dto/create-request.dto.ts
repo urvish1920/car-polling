@@ -1,12 +1,27 @@
+import { Type } from 'class-transformer';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { ObjectId } from 'mongoose';
 
-export class CreateRequestDto {
-  @IsString({ message: 'from is required' })
-  from: string;
+export class LocationDto {
+  @IsString()
+  city: string;
 
-  @IsString({ message: 'to is required' })
-  to: string;
+  @IsString()
+  fullAddress: string;
+
+  @IsNumber()
+  lat: number;
+
+  @IsNumber()
+  lng: number;
+}
+
+export class CreateRequestDto {
+  @Type(() => LocationDto)
+  from: LocationDto;
+
+  @Type(() => LocationDto)
+  to: LocationDto;
 
   @IsString()
   passenger: string;

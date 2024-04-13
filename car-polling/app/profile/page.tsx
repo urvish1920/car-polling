@@ -1,11 +1,16 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import "./myprofile.css";
-import { headers } from "next/headers";
+
+interface User {
+  _id: string;
+  email: string;
+  image: string;
+}
 
 const Profile = () => {
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<User>({
+    _id: "",
     email: "",
     image: "",
   });
@@ -15,7 +20,7 @@ const Profile = () => {
     newpassword: "",
     confirmnewpassword: "",
   });
-  const [newEmail, setNewEmail] = useState(user.email);
+  const [newEmail, setNewEmail] = useState<string>(user.email);
 
   useEffect(() => {
     async function getUser() {
@@ -23,7 +28,7 @@ const Profile = () => {
         const res = await fetch("http://localhost:8000/auth/getUser", {
           credentials: "include",
         });
-        const data = await res.json();
+        const data: User = await res.json();
         setUser(data);
         setNewEmail(data.email);
       } catch (error) {
@@ -32,8 +37,8 @@ const Profile = () => {
     }
     getUser();
   }, []);
-  console.log(user);
-  const handleSubmit = async (e) => {
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const formdata = new FormData();
     try {
@@ -50,10 +55,10 @@ const Profile = () => {
       const data = await response.json();
       console.log(data);
       user.image = data.filename;
-      console.log(user);
     } catch (error) {
       console.log(error);
     }
+    console.log(user);
 
     try {
       const response = await fetch(
@@ -62,6 +67,9 @@ const Profile = () => {
           method: "PATCH",
           credentials: "include",
           body: JSON.stringify(user),
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
       const data = await response.json();
@@ -71,16 +79,16 @@ const Profile = () => {
     }
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     try {
-      const file = e.target.files?.[0];
+      const file = e.target.files?.[0] || null;
       setImage(file);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newEmailValue = e.target.value;
     setNewEmail(newEmailValue);
   };
@@ -99,8 +107,12 @@ const Profile = () => {
                 name=""
               />
               <div className="w-full h-full p-2 items-center">
-                {!image ? (
-                  <img className="rounded-full" src={user.image} alt="" />
+                {image ? (
+                  <img
+                    className="rounded-full"
+                    src={`http://localhost:8000/uploads/${user.image}`}
+                    alt=""
+                  />
                 ) : (
                   <>
                     {image && (

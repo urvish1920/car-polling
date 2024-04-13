@@ -1,16 +1,27 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Styles from "./planRideListView.module.css";
+import styles from "./planRideListView.module.css";
 import { useRouter } from "next/navigation";
 import FormattedDate from "@/app/component/Formate";
 import Image from "next/image";
 import car from "../assert/logo.png";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export interface planRide {
   _id: string;
   vehicle_id: string;
-  pick_up: string;
-  drop_off: string;
+  pick_up: {
+    city: string;
+    fullAddress: string;
+    lat: number;
+    lng: number;
+  };
+  drop_off: {
+    city: string;
+    fullAddress: string;
+    lat: number;
+    lng: number;
+  };
   planride_date: Date;
   start_time: string;
   end_time: string;
@@ -62,11 +73,11 @@ export default function PlanRide() {
   }, []);
 
   return (
-    <div className={Styles.planRide}>
-      <div className={Styles.text}>
+    <div className={styles.planRide}>
+      <div className={styles.text}>
         Sort By:
         <select
-          className={Styles.customselect}
+          className={styles.customselect}
           value={sortBy}
           onChange={handleSortChange}
         >
@@ -76,55 +87,62 @@ export default function PlanRide() {
         </select>
       </div>
       {isPending ? (
-        <div>Loading...</div>
+        <div className={styles.loading}>
+          <CircularProgress color="inherit" />
+        </div>
       ) : allRide.length === 0 ? (
-        <div className={Styles.not_Found}>No plan ride</div>
+        <div className={styles.not_Found}>No plan ride</div>
       ) : (
         allRide.map((item, index) => {
+          console.log(item);
           return (
-            <div className={Styles.otcenter} key={index}>
+            <div className={styles.otcenter} key={index}>
               <div
-                className={Styles.outerContainer}
+                className={styles.outerContainer}
                 onClick={() => {
                   router.push(`/planRide/${item._id}`);
                 }}
               >
-                <div className={Styles.col80}>
-                  <div className={Styles.row}>
-                    <div className={Styles.date}>
+                <div className={styles.col80}>
+                  <div className={styles.row}>
+                    <div className={styles.date}>
                       {<FormattedDate date={new Date(item.planride_date)} />}
                     </div>
                   </div>
-                  <div className={Styles.row}>
-                    <div className={Styles.timecol}>
-                      <div className={Styles.inneruptime}>
+                  <div className={styles.row}>
+                    <div className={styles.timecol}>
+                      <div className={styles.inneruptime}>
                         {item.start_time}
                       </div>
-                      <div className={Styles.innertotalhours}>5h</div>
-                      <div className={Styles.innerdowntime}>
+                      <div className={styles.innertotalhours}>5h</div>
+                      <div className={styles.innerdowntime}>
                         {item.end_time}
                       </div>
                     </div>
-                    <div className={Styles.divider}>
-                      <div className={Styles.box} />
-                      <div className={Styles.line} />
-                      <div className={Styles.box2} />
+                    <div className={styles.divider}>
+                      <div className={styles.box} />
+                      <div className={styles.line} />
+                      <div className={styles.box2} />
                     </div>
-                    <div className={Styles.loccol}>
+                    <div className={styles.loccol}>
                       <div>
-                        <div className={Styles.innerupplace}>
-                          {item.pick_up}
+                        <div className={styles.innerupplace}>
+                          {item.pick_up.city}
                         </div>
-                        <div className={Styles.fullAddress}>fullAddress</div>
+                        <div className={styles.fullAddress}>
+                          {item.pick_up.fullAddress}
+                        </div>
                       </div>
-                      <div className={Styles.innerdownplace}>
-                        {item.drop_off}
+                      <div className={styles.innerdownplace}>
+                        {item.drop_off.city}
                       </div>
-                      <div className={Styles.fullAddress}>full Address</div>
+                      <div className={styles.fullAddress}>
+                        {item.drop_off.fullAddress}
+                      </div>
                     </div>
                   </div>
-                  <div className={Styles.statuscon}>
-                    <div className={Styles.statusText}>
+                  <div className={styles.statuscon}>
+                    <div className={styles.statusText}>
                       {" "}
                       Ride was {item.ride_status}!{" "}
                     </div>
@@ -132,7 +150,7 @@ export default function PlanRide() {
                       {item.ride_status === "started" && (
                         <Image
                           src={car}
-                          className={Styles.avater}
+                          className={styles.avater}
                           width={50}
                           height={34}
                           alt={`Picture of car`}
@@ -141,8 +159,8 @@ export default function PlanRide() {
                     </div>
                   </div>
                 </div>
-                <div className={Styles.col20}>
-                  <div className={Styles.otprice}>{item.price}&#8377;</div>
+                <div className={styles.col20}>
+                  <div className={styles.otprice}>{item.price}&#8377;</div>
                 </div>
               </div>
             </div>

@@ -12,11 +12,27 @@ export class Rides {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'vehicle' })
   vehicle_id: ObjectId;
 
-  @Prop({ type: String, required: [true, 'pick_up is required'] })
-  pick_up: string;
+  @Prop({
+    type: {
+      city: { type: String },
+      fullAddress: { type: String },
+      lat: { type: Number },
+      lng: { type: Number },
+    },
+    required: [true, 'drop_off is required'],
+  })
+  pick_up: { city: string; fullAddress: string; lat: number; lng: number };
 
-  @Prop({ type: String, required: [true, 'drop_off is required'] })
-  drop_off: string;
+  @Prop({
+    type: {
+      city: { type: String },
+      fullAddress: { type: String },
+      lat: { type: Number },
+      lng: { type: Number },
+    },
+    required: [true, 'drop_off is required'],
+  })
+  drop_off: { city: string; fullAddress: string; lat: number; lng: number };
 
   @Prop({ type: Date })
   planride_date: Date;

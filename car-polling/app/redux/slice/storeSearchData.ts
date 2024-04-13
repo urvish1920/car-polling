@@ -2,15 +2,35 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 interface SearchState {
-  from: string;
-  to: string;
+  from: {
+    city: string;
+    fullAddress: string;
+    lat: number;
+    lng: number;
+  };
+  to: {
+    city: string;
+    fullAddress: string;
+    lat: number;
+    lng: number;
+  };
   date: Date;
   passenger: string;
 }
 
 const initialState: SearchState = {
-  from: "",
-  to: "",
+  from: {
+    city: "",
+    fullAddress: "",
+    lat: 0,
+    lng: 0,
+  },
+  to: {
+    city: "",
+    fullAddress: "",
+    lat: 0,
+    lng: 0,
+  },
   date: new Date(),
   passenger: "",
 };

@@ -4,9 +4,9 @@ import styles from "./publishNewCar.module.css";
 import { useRouter } from "next/navigation";
 import { Autocomplete } from "@react-google-maps/api";
 
-export interface PublishState {
-  pick_up?: string;
-  drop_off?: string;
+interface PublishState {
+  pick_up?: object;
+  drop_off?: object;
   planride_date: Date;
   start_time: string;
   end_time: string;
@@ -14,7 +14,7 @@ export interface PublishState {
   vehicle_id: string;
 }
 
-export interface vehicle {
+interface vehicle {
   _id: string;
   user_id: string;
   name: string;
@@ -26,8 +26,18 @@ export interface vehicle {
 const Form: React.FC = () => {
   const router = useRouter();
   const [publish, setPublish] = useState<PublishState>({
-    pick_up: "",
-    drop_off: "",
+    pick_up: {
+      city: "",
+      fullAddress: "",
+      lat: 0,
+      lng: 0,
+    },
+    drop_off: {
+      city: "",
+      fullAddress: "",
+      lat: 0,
+      lng: 0,
+    },
     planride_date: new Date(),
     start_time: "",
     end_time: "",
@@ -119,14 +129,69 @@ const Form: React.FC = () => {
   }, []);
 
   const handlePickupPlaceChanged = (place: google.maps.places.PlaceResult) => {
-    setPublish({ ...publish, pick_up: place.formatted_address });
+    const cityComponent = place.address_components?.find((component) =>
+      component.types.includes("locality")
+    );
+    let city = "";
+    if (cityComponent) {
+      city = cityComponent.long_name;
+    } else {
+      const adminAreaComponent = place.address_components?.find((component) =>
+        component.types.includes("administrative_area_level_1")
+      );
+      if (adminAreaComponent) {
+        city = adminAreaComponent.long_name;
+      }
+    }
+
+    const fullAddress = place.formatted_address || "";
+    const lat = place.geometry?.location?.lat() || 0;
+    const lng = place.geometry?.location?.lng() || 0;
+
+    setPublish({
+      ...publish,
+      pick_up: {
+        city,
+        fullAddress,
+        lat,
+        lng,
+      },
+    });
   };
 
   const handledropoffPlaceChanged = (place: google.maps.places.PlaceResult) => {
-    setPublish({ ...publish, drop_off: place.formatted_address });
+    const cityComponent = place.address_components?.find((component) =>
+      component.types.includes("locality")
+    );
+    let city = "";
+    if (cityComponent) {
+      city = cityComponent.long_name;
+    } else {
+      const adminAreaComponent = place.address_components?.find((component) =>
+        component.types.includes("administrative_area_level_1")
+      );
+      if (adminAreaComponent) {
+        city = adminAreaComponent.long_name;
+      }
+    }
+
+    const fullAddress = place.formatted_address || "";
+    const lat = place.geometry?.location?.lat() || 0;
+    const lng = place.geometry?.location?.lng() || 0;
+
+    setPublish({
+      ...publish,
+      drop_off: {
+        city,
+        fullAddress,
+        lat,
+        lng,
+      },
+    });
   };
 
-  const autocompleteRef = useRef<google.maps.places.Autocomplete>();
+  const pickUpcompleteRef = useRef<google.maps.places.Autocomplete>();
+  const dropoffcompleteRef = useRef<google.maps.places.Autocomplete>();
 
   return (
     <>
@@ -137,10 +202,10 @@ const Form: React.FC = () => {
             <Autocomplete
               onLoad={(autocomplete) => {
                 console.log("Autocomplete loaded:", autocomplete);
-                autocompleteRef.current = autocomplete;
+                pickUpcompleteRef.current = autocomplete;
               }}
               onPlaceChanged={() => {
-                const place = autocompleteRef.current?.getPlace();
+                const place = pickUpcompleteRef.current?.getPlace();
                 if (place) {
                   handlePickupPlaceChanged(place);
                 } else {
@@ -153,10 +218,6 @@ const Form: React.FC = () => {
                 id="pick_up"
                 name="pick_up"
                 type="text"
-                value={publish.pick_up}
-                onChange={(e) => {
-                  setPublish({ ...publish, pick_up: e.target.value });
-                }}
                 placeholder="Enter pickup Location"
               />
             </Autocomplete>
@@ -168,10 +229,10 @@ const Form: React.FC = () => {
             <Autocomplete
               onLoad={(autocomplete) => {
                 console.log("Autocomplete loaded:", autocomplete);
-                autocompleteRef.current = autocomplete;
+                dropoffcompleteRef.current = autocomplete;
               }}
               onPlaceChanged={() => {
-                const place = autocompleteRef.current?.getPlace();
+                const place = dropoffcompleteRef.current?.getPlace();
                 if (place) {
                   handledropoffPlaceChanged(place);
                 } else {
@@ -184,10 +245,6 @@ const Form: React.FC = () => {
                 id="drop_off"
                 name="drop_off"
                 type="text"
-                value={publish.drop_off}
-                onChange={(e) =>
-                  setPublish({ ...publish, drop_off: e.target.value })
-                }
                 placeholder="Enter Drop off Location"
               />
             </Autocomplete>

@@ -66,7 +66,6 @@ export class AuthService {
       if (!user) {
         throw new NotFoundException(`vehicle with id ${id} not found`);
       }
-      console.log(user + 'hyyy');
       return user;
     } catch (error) {
       if (error.name === 'CastError') {
@@ -77,41 +76,14 @@ export class AuthService {
     }
   }
 
-  // async updateUser(id, userrsignup) {
-  //   try {
-  //     console.log('>>>>ProfileUserata', userrsignup);
-  //     const { image } = userrsignup;
-  //     let user = await this.userModel.findById(id);
-  //     if (!user) {
-  //       throw new NotFoundException();
-  //     }
-  //     let updateUser = await this.userModel.findByIdAndUpdate(
-  //       id,
-  //       {
-  //         ...userrsignup,
-  //         image,
-  //       },
-  //       {
-  //         new: true,
-  //       },
-  //     );
-  //     await updateUser.save();
-  //     return { message: 'User Update Successfully', updateUser };
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
-  async updateUser(
-    id: string,
-    updateSignupDto: UpdateSignupDto,
-  ): Promise<User> {
+  async updateUser(id: string, usersignupdto: UpdateSignupDto): Promise<User> {
     try {
-      console.log(updateSignupDto);
-      const updatedRide = await this.userModel.findByIdAndUpdate(id, {
-        new: true,
-        runValidators: true,
-      });
+      console.log(usersignupdto);
+      const updatedRide = await this.userModel.findByIdAndUpdate(
+        id,
+        usersignupdto,
+        { new: true },
+      );
       if (!updatedRide) {
         throw new NotFoundException(`Ride with id ${id} not found`);
       }

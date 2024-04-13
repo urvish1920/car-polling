@@ -1,5 +1,20 @@
-import { IsString, IsNumber, IsDate } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsString, IsNumber } from 'class-validator';
 import { ObjectId } from 'mongoose';
+
+export class LocationDto {
+  @IsString()
+  city: string;
+
+  @IsString()
+  fullAddress: string;
+
+  @IsNumber()
+  lat: number;
+
+  @IsNumber()
+  lng: number;
+}
 
 export class CreateRideDto {
   @IsString({ message: 'vehicle id is string' })
@@ -7,11 +22,11 @@ export class CreateRideDto {
 
   user_id: ObjectId;
 
-  @IsString({ message: 'pick_up is string' })
-  pick_up: string;
+  @Type(() => LocationDto)
+  pick_up: LocationDto;
 
-  @IsString({ message: 'drop_off is string' })
-  drop_off: string;
+  @Type(() => LocationDto)
+  drop_off: LocationDto;
 
   @IsString({ message: 'planride_date is date' })
   planride_date: Date;

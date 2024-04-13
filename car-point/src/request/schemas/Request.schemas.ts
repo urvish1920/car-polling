@@ -3,11 +3,27 @@ import mongoose, { ObjectId } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class Request_user {
-  @Prop({ type: String, required: [true, 'from is required'] })
-  from: string;
+  @Prop({
+    type: {
+      city: { type: String },
+      fullAddress: { type: String },
+      lat: { type: Number },
+      lng: { type: Number },
+    },
+    required: [true, 'drop_off is required'],
+  })
+  from: { city: string; fullAddress: string; lat: number; lng: number };
 
-  @Prop({ type: String, required: [true, 'to is required'] })
-  to: string;
+  @Prop({
+    type: {
+      city: { type: String },
+      fullAddress: { type: String },
+      lat: { type: Number },
+      lng: { type: Number },
+    },
+    required: [true, 'drop_off is required'],
+  })
+  to: { city: string; fullAddress: string; lat: number; lng: number };
 
   @Prop({ type: Number, required: [true, 'passanger is required'] })
   passenger: number;

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Styles from "./signin.module.css";
+import styles from "./signin.module.css";
 import Link from "next/link";
 
 interface User {
@@ -48,13 +48,13 @@ export default function signIn() {
   }, [user]);
 
   return (
-    <div className={Styles.mainconatiner}>
-      <div className={Styles.loginInnerContainer}>
-        <div className={Styles.insideContainLogin}>
+    <div className={styles.mainconatiner}>
+      <div className={styles.loginInnerContainer}>
+        <div className={styles.insideContainLogin}>
           <h1>{loading ? "Processing" : "SignIn"}</h1>
           <label>email</label>
           <input
-            className={Styles.inputField}
+            className={styles.inputField}
             id="email"
             type="text"
             value={user.email}
@@ -63,7 +63,7 @@ export default function signIn() {
           />
           <label>password</label>
           <input
-            className={Styles.inputField}
+            className={styles.inputField}
             id="password"
             type="password"
             value={user.password}
@@ -74,7 +74,7 @@ export default function signIn() {
           <button className="input" onClick={onLogin} disabled={buttonDisabled}>
             {loading ? "Processing ..." : "Signin"}
           </button>
-          <Link href="/signup" className={Styles.signupLink}>
+          <Link href="/signup" className={styles.signupLink}>
             signup page
           </Link>
         </div>

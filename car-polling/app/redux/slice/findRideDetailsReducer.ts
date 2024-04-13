@@ -4,8 +4,18 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 export interface Ride {
   _id: string;
   vehicle_id: string;
-  pick_up: string;
-  drop_off: string;
+  pick_up: {
+    city: string;
+    fullAddress: string;
+    lat: number;
+    lng: number;
+  };
+  drop_off: {
+    city: string;
+    fullAddress: string;
+    lat: number;
+    lng: number;
+  };
   planride_date: Date;
   start_time: string;
   end_time: string;

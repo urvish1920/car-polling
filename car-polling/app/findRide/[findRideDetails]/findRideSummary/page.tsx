@@ -2,12 +2,10 @@
 import styles from "./findRideSummary.module.css";
 import FormattedDate from "@/app/component/Formate";
 import { RootState } from "@/app/redux/store";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
 export default function SummaryFindRide() {
-  const router = useRouter();
   const ride = useSelector((state: any) => state.findRide.rides);
   const finduser = useSelector((state: RootState) => state.search);
 
@@ -60,8 +58,14 @@ export default function SummaryFindRide() {
                 <div className={styles.box2} />
               </div>
               <div className={styles.loccol}>
-                <div className={styles.innerupplace}>{ride.pick_up}</div>
-                <div className={styles.innerdownplace}>{ride.drop_off}</div>
+                <div className={styles.innerupplace}>
+                  {ride.pick_up.fullAddress}
+                  <div className={styles.city}>{ride.pick_up.city}</div>
+                </div>
+                <div className={styles.innerdownplace}>
+                  {ride.drop_off.fullAddress}
+                  <div className={styles.city}>{ride.drop_off.city}</div>
+                </div>
               </div>
             </div>
           </div>

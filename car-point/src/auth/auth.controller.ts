@@ -69,8 +69,11 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  // @UseInterceptors(FileInterceptor('file', { storage }))
   @Patch('/updateUser/:id')
-  update(@Param('id') id: string, @Body() UpdateSignupDto: UpdateSignupDto) {
-    return this.authService.updateUser(id, UpdateSignupDto);
+  update(@Param('id') id: string, @Body() usersignupdto: UpdateSignupDto) {
+    // console.log('----------------', id, 'body', file);
+
+    return this.authService.updateUser(id,usersignupdto);
   }
 }

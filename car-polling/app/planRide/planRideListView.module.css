@@ -4,7 +4,11 @@
   margin-left: 60%;
   margin-top: 30px;
 }
-
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .not_Found {
   font-size: 30px;
   font-weight: 600;
@@ -163,5 +167,4 @@
 .fullAddress {
   font-weight: 400;
   font-size: 12px;
-  margin-top: 5px;
 }

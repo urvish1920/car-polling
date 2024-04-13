@@ -11,6 +11,7 @@ import { AppDispatch, RootState } from "@/app/redux/store";
 import { fetchPlanRides } from "@/app/redux/slice/planRideDetailsReducer";
 import { fetchRequestUser } from "@/app/redux/slice/approvalUserReducer";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function planRideDetails({
   params,
@@ -72,7 +73,9 @@ export default function planRideDetails({
     <div>
       <h1 className={styles.heading}>Ride plan</h1>
       {isPending ? (
-        "loading..."
+        <div className={styles.loading}>
+          <CircularProgress color="inherit" />
+        </div>
       ) : (
         <div className={styles.otcenter}>
           <div className={styles.outercontainer}>
@@ -80,6 +83,11 @@ export default function planRideDetails({
               <div className={styles.col}>
                 <div className={styles.notification}>
                   <NotificationsNoneRoundedIcon />
+                  {request.length > 0 && (
+                    <div className={styles.notificationCount}>
+                      {request.length}
+                    </div>
+                  )}
                 </div>
                 <div>
                   <div className={styles.bookingRequest}>
@@ -88,6 +96,7 @@ export default function planRideDetails({
                   {request.length === 0 ? (
                     <div>No booking request yet</div>
                   ) : (
+                    Array.isArray(request) &&
                     request.map((item, index) => (
                       <button
                         key={index}
@@ -119,8 +128,20 @@ export default function planRideDetails({
                   <div className={styles.box2} />
                 </div>
                 <div className={styles.loccol}>
-                  <div className={styles.innerupplace}>{ride.pick_up}</div>
-                  <div className={styles.innerdownplace}>{ride.drop_off}</div>
+                  <div>
+                    <div className={styles.innerupplace}>
+                      {ride.pick_up.city}
+                      <div className={styles.fullAddress}>
+                        {ride.pick_up.fullAddress}
+                      </div>
+                    </div>
+                  </div>
+                  <div className={styles.innerdownplace}>
+                    {ride.drop_off.city}
+                    <div className={styles.fullAddress}>
+                      {ride.drop_off.fullAddress}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

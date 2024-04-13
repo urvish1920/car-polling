@@ -20,24 +20,28 @@ export class RidesService {
     @InjectModel(vehicle.name)
     private VehicleModel: mongoose.Model<vehicle>,
   ) {}
+
   async create(createRideDto: CreateRideDto, req): Promise<Rides> {
     try {
-      const userId = req.user._id;
+      const userId = req.user?._id;
+      if (!userId) {
+        throw new BadRequestException('Invalid user ID');
+      }
       createRideDto.user_id = userId;
       const vehicle = await this.VehicleModel.findById(
         createRideDto.vehicle_id,
-      ).exec();
-
+      );
       if (!vehicle) {
-        throw new BadRequestException('Vehicle not found');
+        throw new NotFoundException('Vehicle not found');
       }
       createRideDto.leftSites = vehicle.seaters;
-      console.log(createRideDto);
       const res = await this.RideModel.create(createRideDto);
       return await res.save();
     } catch (error) {
       if (error instanceof ValidationError) {
         throw new BadRequestException('Validation failed', error.toString());
+      } else if (error instanceof mongoose.Error.CastError) {
+        throw new BadRequestException('Invalid input data or parameters');
       } else {
         throw new InternalServerErrorException(
           'Failed to create ride',
@@ -52,59 +56,75 @@ export class RidesService {
     to: string,
     date: Date,
     passenger: number,
-  ): Promise<Rides[]> {
-    console.log(from, to, date, passenger);
+  ): Promise<any> {
+    try {
+      const fromPlace = JSON.parse(from);
+      console.log(fromPlace.city + 'hyyy');
+      const toPlace = JSON.parse(to);
+      console.log(toPlace.city + 'hyyy');
+      const searchDate = new Date(date);
+      const searchDateStart = new Date(searchDate);
+      searchDateStart.setUTCHours(0, 0, 0, 0);
+      const searchDateEnd = new Date(searchDate);
+      searchDateEnd.setUTCHours(23, 59, 59, 999);
 
-    const searchDate = new Date(date);
-    const searchDateStart = new Date(searchDate);
-    searchDateStart.setUTCHours(0, 0, 0, 0);
-
-    console.log(searchDateStart);
-
-    const seatchDateEnd = new Date(searchDate);
-    seatchDateEnd.setUTCHours(23, 29, 29, 999);
-
-    console.log(seatchDateEnd);
-
-    const rides = await this.RideModel.aggregate([
-      {
-        $match: {
-          $and: [
-            { pick_up: from },
-            { drop_off: to },
-            { planride_date: { $gte: searchDateStart, $lte: seatchDateEnd } },
-            { leftSites: { $gte: passenger } },
-          ],
+      const rides = await this.RideModel.aggregate([
+        {
+          $match: {
+            $and: [
+              { 'pick_up.city': fromPlace.city },
+              { 'drop_off.city': toPlace.city },
+              { planride_date: { $gte: searchDateStart, $lte: searchDateEnd } },
+              { leftSites: { $gte: passenger } },
+            ],
+          },
         },
-      },
-      {
-        $lookup: {
-          from: 'users',
-          localField: 'user_id',
-          foreignField: '_id',
-          as: 'user',
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'user_id',
+            foreignField: '_id',
+            as: 'user',
+          },
         },
-      },
-      {
-        $unwind: '$user',
-      },
-    ]).exec();
-    return rides;
+        {
+          $unwind: '$user',
+        },
+      ]).exec();
+
+      if (rides.length === 0) {
+        return { message: 'Rides not found' };
+      }
+      return { rides };
+    } catch (error) {
+      if (error instanceof mongoose.Error.CastError) {
+        return { message: 'Invalid parameters' };
+      } else {
+        return { message: 'Failed to find rides', error: error.toString() };
+      }
+    }
   }
 
   async planRidefind(req): Promise<Rides[]> {
     try {
-      const userId = req.user._id;
+      const userId = req.user?._id;
+      if (!userId) {
+        throw new BadRequestException('Invalid user ID');
+      }
+
       const currentTime = new Date();
       currentTime.setHours(0, 0, 0, 0);
+
       const planRide = await this.RideModel.find({
         user_id: userId,
         planride_date: { $gte: currentTime },
       });
       return planRide;
     } catch (error) {
-      console.error('Error finding ride:', error);
-      throw error;
+      throw new InternalServerErrorException(
+        'Failed to find planned rides',
+        error.toString(),
+      );
     }
   }
 
@@ -146,34 +166,56 @@ export class RidesService {
       if (ride.length === 0) {
         throw new NotFoundException(`Ride with id ${id} not found`);
       }
-
       return ride[0];
     } catch (error) {
-      if (error.name === 'CastError') {
+      if (error instanceof mongoose.Error.CastError) {
         throw new NotFoundException('Invalid ride ID');
       } else {
-        throw error;
+        throw new InternalServerErrorException(
+          'Failed to find ride',
+          error.toString(),
+        );
       }
     }
   }
 
   async update(id: string, updateRideDto: UpdateRideDto): Promise<Rides> {
-    const updatedRide = await this.RideModel.findByIdAndUpdate(
-      id,
-      updateRideDto,
-      { new: true, runValidators: true },
-    );
-    if (!updatedRide) {
-      throw new NotFoundException(`Ride with id ${id} not found`);
+    try {
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new NotFoundException('Invalid ride ID');
+      }
+
+      const updatedRide = await this.RideModel.findByIdAndUpdate(
+        id,
+        updateRideDto,
+        { new: true, runValidators: true },
+      );
+      if (!updatedRide) {
+        throw new NotFoundException(`Ride with id ${id} not found`);
+      }
+      console.log(`Ride with id ${id} has been successfully updated`);
+      return updatedRide;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed to update ride',
+        error.toString(),
+      );
     }
-    console.log(`Ride with id ${id} has been successfully updated`);
-    return updatedRide;
   }
 
   async remove(id: string) {
-    const deletedRide = await this.RideModel.findByIdAndDelete(id);
-    if (deletedRide) {
-      return `Ride with id ${id} has been successfully deleted`;
+    try {
+      const deletedRide = await this.RideModel.findByIdAndDelete(id);
+      if (deletedRide) {
+        return `Ride with id ${id} has been successfully deleted`;
+      } else {
+        throw new NotFoundException(`Ride with id ${id} not found`);
+      }
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed to delete ride',
+        error.toString(),
+      );
     }
   }
 }

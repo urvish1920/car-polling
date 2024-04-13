@@ -11,10 +11,14 @@
 }
 .inner_container {
   height: 50vh;
-  width: 100vh;
+  width: 150vh;
   display: flex;
   flex-direction: column;
   margin-top: 10vh;
+}
+
+.placeInputField {
+  display: flex;
 }
 .homeheading {
   color: white;
@@ -34,7 +38,7 @@
 }
 .inputField {
   height: 8vh;
-  width: 200px;
+  width: 300px;
   margin-left: 20px;
   margin-top: 10px;
   border-radius: 10px;
