@@ -18,57 +18,40 @@ export class RequestService {
     private Request_user: mongoose.Model<Request_user>,
   ) {}
 
-  async create(createRequestDto: CreateRequestDto, req): Promise<Request_user> {
-    try {
-      const userId = req.user._id;
-      createRequestDto.user_id = userId;
-      const res = await this.Request_user.create(createRequestDto);
-      return await res.save();
-    } catch (error) {
-      if (error instanceof ValidationError) {
-        throw new BadRequestException('Validation failed', error.toString());
-      } else {
-        throw new InternalServerErrorException(
-          'Failed to create request',
-          error.toString(),
-        );
-      }
-    }
+  async create(
+    createRequestDto: CreateRequestDto,
+    userId,
+  ): Promise<Request_user> {
+    createRequestDto.user_id = userId;
+    const res = await this.Request_user.create(createRequestDto);
+    return await res.save();
   }
 
   async notifationUser(id: string): Promise<Request_user[]> {
-    try {
-      if (!id) {
-        throw new NotFoundException(`Ride with id ${id} not found`);
-      }
-      console.log(id);
-      const objectId = new mongoose.Types.ObjectId(id);
-      console.log(objectId);
-      const pendingRequests = await this.Request_user.aggregate([
-        {
-          $match: {
-            $and: [{ Ride_Id: objectId }, { status_Request: 'pending' }],
-          },
-        },
-        {
-          $lookup: {
-            from: 'users',
-            localField: 'user_id',
-            foreignField: '_id',
-            as: 'user',
-          },
-        },
-        {
-          $unwind: '$user',
-        },
-      ]);
-
-      console.log(pendingRequests);
-      return pendingRequests;
-    } catch (error) {
-      console.error('Error finding ride:', error);
-      throw error;
+    if (!id) {
+      throw new NotFoundException(`Ride with id ${id} not found`);
     }
+    const objectId = new mongoose.Types.ObjectId(id);
+    const pendingRequests = await this.Request_user.aggregate([
+      {
+        $match: {
+          $and: [{ Ride_Id: objectId }, { status_Request: 'pending' }],
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'user_id',
+          foreignField: '_id',
+          as: 'user',
+        },
+      },
+      {
+        $unwind: '$user',
+      },
+    ]);
+    console.log(pendingRequests);
+    return pendingRequests;
   }
 
   async findAll(): Promise<Request_user[]> {
@@ -77,39 +60,26 @@ export class RequestService {
   }
 
   async findOne(id: string): Promise<Request_user> {
-    try {
-      const userRequest = await this.Request_user.findById(id);
-      if (!userRequest) {
-        throw new NotFoundException(`user request with id ${id} not found`);
-      }
-      return userRequest;
-    } catch (error) {
-      if (error.name === 'CastError') {
-        throw new NotFoundException('Invalid user Request ID');
-      } else {
-        throw error;
-      }
+    const userRequest = await this.Request_user.findById(id);
+    if (!userRequest) {
+      throw new NotFoundException(`user request with id ${id} not found`);
     }
+    return userRequest;
   }
 
   async update(
     id: string,
     updateRequestDto: UpdateRequestDto,
   ): Promise<Request_user> {
-    try {
-      const updatedRequestUser = await this.Request_user.findByIdAndUpdate(
-        id,
-        updateRequestDto,
-        { new: true, runValidators: true },
-      );
-      if (!updatedRequestUser) {
-        throw new NotFoundException(`user Request with id ${id} not found`);
-      }
-      console.log(`user request with id ${id} has been successfully updated`);
-      return updatedRequestUser;
-    } catch (error) {
-      console.log(error);
+    const updatedRequestUser = await this.Request_user.findByIdAndUpdate(
+      id,
+      updateRequestDto,
+      { new: true, runValidators: true },
+    );
+    if (!updatedRequestUser) {
+      throw new NotFoundException(`user Request with id ${id} not found`);
     }
+    return updatedRequestUser;
   }
 
   async remove(id: string) {

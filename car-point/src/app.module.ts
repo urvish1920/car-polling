@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { VehicleModule } from './vehicle/vehicle.module';
 import { AuthModule } from './auth/auth.module';
 import { RequestModule } from './request/request.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { RequestModule } from './request/request.module';
     VehicleModule,
     AuthModule,
     RequestModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

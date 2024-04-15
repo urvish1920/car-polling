@@ -8,6 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 15%;
 }
 .not_Found {
   font-size: 30px;

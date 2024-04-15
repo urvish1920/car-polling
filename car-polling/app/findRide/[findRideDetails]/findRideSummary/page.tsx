@@ -30,7 +30,7 @@ export default function SummaryFindRide() {
         throw new Error(`Server responded with status ${response.status}`);
       }
       if (response.ok) {
-        alert("request sended");
+        alert("send request to user");
         window.location.href = "/";
       }
     } catch (error: any) {

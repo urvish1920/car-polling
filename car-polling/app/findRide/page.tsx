@@ -151,27 +151,27 @@ export default function findRide() {
                     <div className={styles.loccol}>
                       <div className={styles.innerupplace}>
                         {item.pick_up.city}
-                        <div className={styles.fullAddress}>
-                          {item.pick_up.fullAddress}
+                        <div className={styles.distance}>
                           {
                             <DistanceCalculator
-                              origin={to.fullAddress}
-                              destination={item.drop_off.fullAddress}
+                              origin={from.fullAddress}
+                              destination={item.pick_up.fullAddress}
                             />
-                          }
+                          }{" "}
+                          from your departure
                         </div>
                       </div>
 
                       <div className={styles.innerdownplace}>
                         {item.drop_off.city}
-                        <div className={styles.fullAddress}>
-                          {item.drop_off.fullAddress}
+                        <div className={styles.distance_arrival}>
                           {
                             <DistanceCalculator
                               origin={to.fullAddress}
                               destination={item.drop_off.fullAddress}
                             />
-                          }
+                          }{" "}
+                          from your arrival
                         </div>
                       </div>
                     </div>

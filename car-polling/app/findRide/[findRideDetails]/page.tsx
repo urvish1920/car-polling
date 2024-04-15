@@ -10,8 +10,9 @@ import car from "../../assert/car.png";
 import styles from "./findRideDetails.module.css";
 import FormattedDate from "@/app/component/Formate";
 import { fetchFindRides } from "@/app/redux/slice/findRideDetailsReducer";
-import { AppDispatch } from "@/app/redux/store";
+import { AppDispatch, RootState } from "@/app/redux/store";
 import CircularProgress from "@mui/material/CircularProgress";
+import DistanceCalculator from "@/app/component/DistanceCalulator";
 
 export default function FullDetailRide({
   params,
@@ -21,7 +22,7 @@ export default function FullDetailRide({
   const id = params.findRideDetails;
   const dispatch: AppDispatch = useDispatch();
   const ride = useSelector((state: any) => state.findRide.rides);
-  console.log(ride);
+  const data = useSelector((state: RootState) => state.search);
   const [isPending, setIsPending] = useState(true);
   const router = useRouter();
   useEffect(() => {
@@ -64,11 +65,27 @@ export default function FullDetailRide({
                   <div className={styles.loccol}>
                     <div className={styles.innerupplace}>
                       {ride.pick_up.fullAddress}
-                      <div className={styles.city}>{ride.pick_up.city}</div>
+                      <div className={styles.distance}>
+                        {
+                          <DistanceCalculator
+                            origin={data.from.fullAddress}
+                            destination={ride.pick_up.fullAddress}
+                          />
+                        }{" "}
+                        from your departure
+                      </div>
                     </div>
                     <div className={styles.innerdownplace}>
                       {ride.drop_off.fullAddress}
-                      <div className={styles.city}>{ride.drop_off.city}</div>
+                      <div className={styles.distance_arrival}>
+                        {
+                          <DistanceCalculator
+                            origin={data.to.fullAddress}
+                            destination={ride.drop_off.fullAddress}
+                          />
+                        }{" "}
+                        from your departure
+                      </div>
                     </div>
                   </div>
                 </div>

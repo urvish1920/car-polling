@@ -23,6 +23,7 @@ export default function planRideDetails({
   const dispatch: AppDispatch = useDispatch();
   const ride = useSelector((state: any) => state.PlanRide.rides);
   const request = useSelector((state: RootState) => state.RequestUser.request);
+  console.log(request);
   const [isPending, setIsPending] = useState(true);
 
   const router = useRouter();

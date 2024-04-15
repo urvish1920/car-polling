@@ -25,6 +25,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 15%;
 }
 .otcenter {
   display: flex;
@@ -149,9 +150,17 @@
   display: grid;
   grid-template-rows: 75% 25%;
 }
-.fullAddress {
-  font-weight: 400;
-  font-size: 10px;
+.distance {
+  font-weight: 500;
+  color: greenyellow;
+  font-size: 13px;
+  margin-top: 3px;
+}
+
+.distance_arrival {
+  font-weight: 500;
+  color: rgb(223, 223, 1);
+  font-size: 13px;
   margin-top: 3px;
 }
 

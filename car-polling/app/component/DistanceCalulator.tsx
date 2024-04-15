@@ -23,7 +23,6 @@ const DistanceCalculator: React.FC<DistanceCalculatorProps> = ({
         }
 
         const data = await response.json();
-        console.log(data.data);
         setDistance(data.data);
       } catch (error) {
         console.error("Error fetching distance:", error);

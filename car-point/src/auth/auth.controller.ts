@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   UploadedFile,
   Param,
+  HttpStatus,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignupAuthDto } from './dto/signup-auth.dto';
@@ -17,7 +18,7 @@ import { SignInDto } from './dto/signin-auth.dto';
 import { Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
-import { Multer, diskStorage } from 'multer';
+import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateSignupDto } from './dto/updatesignup-auth.dto';
@@ -35,8 +36,17 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('/signup')
-  Signup(@Body() signupAuthDto: SignupAuthDto): Promise<string> {
-    return this.authService.signup(signupAuthDto);
+  async Signup(@Body() signupAuthDto: SignupAuthDto, @Res() res: Response) {
+    try {
+      this.authService.signup(signupAuthDto);
+      return res
+        .status(HttpStatus.OK)
+        .json({ message: 'delete data successfuly' });
+    } catch (error) {
+      return res
+        .status(error.status || HttpStatus.BAD_REQUEST)
+        .json({ message: error.message });
+    }
   }
 
   @Post('/signIn')
@@ -57,8 +67,15 @@ export class AuthController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('/getuser')
-  findOne(@Req() req: Request) {
-    return this.authService.findOne(req);
+  async findOne(@Req() req: Request, @Res() res: Response) {
+    try {
+      const user = await this.authService.findOne(req);
+      return res.status(HttpStatus.OK).json(user);
+    } catch (error) {
+      return res
+        .status(error.status || HttpStatus.BAD_REQUEST)
+        .json({ message: error.message });
+    }
   }
 
   @Post('/upload')
@@ -74,6 +91,6 @@ export class AuthController {
   update(@Param('id') id: string, @Body() usersignupdto: UpdateSignupDto) {
     // console.log('----------------', id, 'body', file);
 
-    return this.authService.updateUser(id,usersignupdto);
+    return this.authService.updateUser(id, usersignupdto);
   }
 }
