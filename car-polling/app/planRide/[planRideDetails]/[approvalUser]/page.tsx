@@ -69,7 +69,7 @@ export default function ApprovalRequest({
         }
         const newleftsites = ride.leftSites - filteredRequests[0].passenger;
         const newOccupation = [...ride.occupation, filteredRequests[0]];
-        console.log(newOccupation)
+        console.log(newOccupation);
         try {
           const response = await fetch(
             `http://localhost:8000/rides/${ride._id}`,
@@ -156,14 +156,14 @@ export default function ApprovalRequest({
             <div className={styles.linebetween} />
             <button
               className={styles.approveButton}
-              onClick={() => handleApproval("approve")}
+              onClick={() => handleApproval("Approve")}
               disabled={buttondisable}
             >
               Approve
             </button>
             <button
               className={styles.approveButton}
-              onClick={() => handleApproval("decline")}
+              onClick={() => handleApproval("Decline")}
               disabled={buttondisable}
             >
               Decline

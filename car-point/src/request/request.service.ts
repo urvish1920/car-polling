@@ -1,15 +1,9 @@
-import {
-  BadRequestException,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRequestDto } from './dto/create-request.dto';
 import { UpdateRequestDto } from './dto/update-request.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { Request_user } from './schemas/Request.schemas';
-import { ValidationError } from 'class-validator';
 
 @Injectable()
 export class RequestService {
@@ -35,7 +29,10 @@ export class RequestService {
     const pendingRequests = await this.Request_user.aggregate([
       {
         $match: {
-          $and: [{ Ride_Id: objectId }, { status_Request: 'pending' }],
+          $and: [
+            { Ride_Id: objectId },
+            { status_Request: 'Awaiting Approval' },
+          ],
         },
       },
       {
@@ -54,17 +51,81 @@ export class RequestService {
     return pendingRequests;
   }
 
-  async findAll(): Promise<Request_user[]> {
-    const Request_user = await this.Request_user.find().exec();
+  async findAll(userId): Promise<Request_user[]> {
+    const Request_user = await this.Request_user.aggregate([
+      {
+        $match: {
+          user_id: userId,
+        },
+      },
+      {
+        $lookup: {
+          from: 'rides',
+          localField: 'Ride_Id',
+          foreignField: '_id',
+          as: 'ride',
+        },
+      },
+      {
+        $unwind: '$ride',
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'ride.user_id',
+          foreignField: '_id',
+          as: 'user',
+        },
+      },
+      {
+        $unwind: '$user',
+      },
+    ]).exec();
     return Request_user;
   }
 
-  async findOne(id: string): Promise<Request_user> {
-    const userRequest = await this.Request_user.findById(id);
-    if (!userRequest) {
-      throw new NotFoundException(`user request with id ${id} not found`);
-    }
-    return userRequest;
+  async findOne(id: string): Promise<Request_user[]> {
+    const user = await this.Request_user.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(id),
+        },
+      },
+      {
+        $lookup: {
+          from: 'rides',
+          localField: 'Ride_Id',
+          foreignField: '_id',
+          as: 'ride',
+        },
+      },
+      {
+        $unwind: '$ride',
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'ride.user_id',
+          foreignField: '_id',
+          as: 'user',
+        },
+      },
+      {
+        $unwind: '$user',
+      },
+      {
+        $lookup: {
+          from: 'vehicles',
+          localField: 'ride.vehicle_id',
+          foreignField: '_id',
+          as: 'vehicle',
+        },
+      },
+      {
+        $unwind: '$vehicle',
+      },
+    ]).exec();
+    return user;
   }
 
   async update(

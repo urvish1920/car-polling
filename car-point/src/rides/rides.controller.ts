@@ -14,7 +14,6 @@ import {
 } from '@nestjs/common';
 import { RidesService } from './rides.service';
 import { CreateRideDto } from './dto/create-ride.dto';
-import { Rides } from './schemas/rides.schemas';
 import { UpdateRideDto } from './dto/update-ride.dto';
 import { Request, Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
@@ -46,7 +45,6 @@ export class RidesController {
     @Query('to') to: string,
     @Query('date') date: Date,
     @Query('passanger') passanger: string,
-    @Req() req: Request,
     @Res() res: Response,
   ) {
     try {
@@ -106,11 +104,14 @@ export class RidesController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Delete(':id')
-  async remove(@Param('id') id: string, @Res() res: Response) {
+  @Post('/delete')
+  async remove(@Req() req: Request, @Res() res: Response) {
     try {
-      await this.ridesService.remove(id);
-      return res.status(HttpStatus.OK).json({ message: 'ride Deleted' });
+      const { ride_id, request_id } = req.body;
+      await this.ridesService.remove(ride_id, request_id);
+      return res
+        .status(HttpStatus.OK)
+        .json({ message: 'cancel ride successfully' });
     } catch (error) {
       return res
         .status(error.status || HttpStatus.BAD_REQUEST)

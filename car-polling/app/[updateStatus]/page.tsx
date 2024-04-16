@@ -6,19 +6,22 @@ export default function ApprovalRequest({
   params: { updateStatus: string };
 }) {
   const id = params.updateStatus;
-  console.log(id);
 
   const handleStatus = async (status: string) => {
     try {
+      let requestBody: { my_status: string; status_Request?: string } = {
+        my_status: status,
+      };
+      if (status === "Exchange Ratings") {
+        requestBody = { ...requestBody, status_Request: status };
+      }
       const response = await fetch(`http://localhost:8000/request/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({
-          my_status: status,
-        }),
+        body: JSON.stringify(requestBody),
       });
       if (!response.ok) {
         throw new Error(`Server responded with status ${response.status}`);
@@ -69,7 +72,7 @@ export default function ApprovalRequest({
                 </div>
                 <button
                   className={styles.updatebutton}
-                  onClick={() => handleStatus("exchange payment")}
+                  onClick={() => handleStatus("Exchange Ratings")}
                 >
                   payment
                 </button>

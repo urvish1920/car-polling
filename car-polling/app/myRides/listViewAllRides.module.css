@@ -1,0 +1,175 @@
+.text {
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 60%;
+  margin-top: 30px;
+}
+.not_Found {
+  font-size: 30px;
+  font-weight: 600;
+  color: rgb(142, 137, 137);
+  display: flex;
+  justify-content: center;
+  margin-top: 20%;
+}
+.customselect {
+  width: 200px;
+  height: 50px;
+  margin: 15px;
+  background-color: #d1d1d1;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 15px;
+}
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15%;
+}
+.otcenter {
+  display: flex;
+  justify-content: center;
+}
+.outerContainer {
+  width: 50%;
+  height: 190px;
+  display: grid;
+  grid-template-columns: 80% 20%;
+  grid-template-rows: 70% 20%;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2vh;
+}
+.col20 {
+  padding: 5vh 5vh;
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  color: darkslategrey;
+  justify-content: space-between;
+}
+
+.col80 .row:nth-child(1) {
+  display: flex;
+}
+
+.col80 .row:nth-child(2) {
+  display: flex;
+}
+.status_user {
+  margin-top: 5px;
+  margin-left: 30px;
+  font-weight: 600;
+  color: darkslategrey;
+}
+
+.inneruptime {
+  margin-top: 5px;
+  margin-left: 15px;
+  font-weight: 600;
+  color: darkslategrey;
+}
+
+.innerdowntime {
+  margin-top: 40px;
+  margin-left: 15px;
+  font-weight: 600;
+  color: darkslategrey;
+}
+
+.divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.box {
+  height: 5px;
+  width: 5px;
+  background-color: white;
+  border-radius: 15px;
+  border-style: solid;
+  border-color: darkslategrey;
+  border-width: 2px;
+  margin-top: 10px;
+  margin-left: 20px;
+  margin-right: 10px;
+}
+.box2 {
+  height: 5px;
+  width: 5px;
+  background-color: white;
+  border-radius: 15px;
+  border-style: solid;
+  border-color: darkslategrey;
+  border-width: 2px;
+  margin-left: 20px;
+  margin-right: 10px;
+}
+
+.line {
+  height: 50px;
+  background-color: darkslategrey;
+  width: 3px;
+  margin-left: 10px;
+}
+
+.innerupplace {
+  margin-top: 5px;
+  font-weight: 600;
+  color: darkslategrey;
+}
+.innerdownplace {
+  font-weight: 600;
+  color: darkslategrey;
+}
+.passengerrow {
+  display: flex;
+  font-weight: 600;
+  color: darkslategrey;
+}
+.colored {
+  background-color: darkslategray;
+}
+
+.loccol {
+  display: grid;
+  grid-template-rows: 75% 25%;
+}
+.distance {
+  font-weight: 500;
+  color: darkslategrey;
+  font-size: 13px;
+  margin-top: 3px;
+}
+
+.distance_arrival {
+  font-weight: 500;
+  color: darkslategrey;
+  font-size: 13px;
+  margin-top: 3px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+
+.img {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.name {
+  margin-top: 26px;
+  margin-left: 20px;
+  font-weight: 600;
+  color: darkslategrey;
+}
+
+.avater {
+  border-radius: 50%;
+  border: solid 0.5px black;
+}

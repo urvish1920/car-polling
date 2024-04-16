@@ -56,9 +56,10 @@ export class RequestController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
-  async findAll(@Res() res: Response) {
+  async findAll(@Req() req: Request, @Res() res: Response) {
     try {
-      const ridesFind = await this.requestService.findAll();
+      const userId = req['user']['_id'];
+      const ridesFind = await this.requestService.findAll(userId);
       return res.status(HttpStatus.OK).json(ridesFind);
     } catch (error) {
       return res

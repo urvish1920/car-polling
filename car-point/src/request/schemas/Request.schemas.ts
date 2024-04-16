@@ -37,7 +37,7 @@ export class Request_user {
   })
   Ride_Id: ObjectId;
 
-  @Prop({ default: 'pending' })
+  @Prop({ default: 'Awaiting Approval' })
   status_Request: string;
 
   @Prop({

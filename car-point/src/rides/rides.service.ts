@@ -1,7 +1,6 @@
 import {
   BadRequestException,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { CreateRideDto } from './dto/create-ride.dto';
@@ -11,6 +10,7 @@ import mongoose from 'mongoose';
 import { Request } from 'express';
 import { UpdateRideDto } from './dto/update-ride.dto';
 import { vehicle } from 'src/vehicle/schemas/vehicle.schemas';
+import { Request_user } from 'src/request/schemas/Request.schemas';
 
 @Injectable()
 export class RidesService {
@@ -19,6 +19,8 @@ export class RidesService {
     private RideModel: mongoose.Model<Rides>,
     @InjectModel(vehicle.name)
     private VehicleModel: mongoose.Model<vehicle>,
+    @InjectModel(Request_user.name)
+    private Request_user: mongoose.Model<Request_user>,
   ) {}
 
   async create(createRideDto: CreateRideDto, req): Promise<Rides> {
@@ -152,12 +154,22 @@ export class RidesService {
     return updatedRide;
   }
 
-  async remove(id: string) {
-    const deletedRide = await this.RideModel.findByIdAndDelete(id);
-    if (deletedRide) {
-      return `Ride with id ${id} has been successfully deleted`;
-    } else {
-      throw new NotFoundException(`Ride with id ${id} not found`);
-    }
+  async remove(ride_id: string, request_id: string) {
+    const res = await this.Request_user.findByIdAndUpdate(
+      { _id: request_id },
+      {
+        status_Request: 'cancel',
+        my_status: 'cancel',
+      },
+    );
+
+    await this.RideModel.updateOne(
+      { _id: new mongoose.Types.ObjectId(ride_id) },
+      {
+        $pull: { occupation: { _id: request_id } },
+        $inc: { leftSites: Number(res.passenger) },
+      },
+      { new: true, runValidators: true },
+    );
   }
 }
