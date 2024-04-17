@@ -1,190 +1,212 @@
 "use client";
-import { useEffect, useState, ChangeEvent, FormEvent } from "react";
-import "./myprofile.css";
+import styles from "./userprofile.module.css";
+import Image from "next/image";
+import profileImage from "../assert/avater.png";
+import { Button } from "@mui/material";
+import ControlPointIcon from "@mui/icons-material/ControlPoint";
+import { useEffect, useState } from "react";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import AddCarPopup from "../component/(profileComponent)/AddCarPopup";
+import UpdateCarPopup from "../component/(profileComponent)/updateCar";
 
 interface User {
   _id: string;
+  user_name: string;
   email: string;
   image: string;
 }
 
+interface vehicle {
+  _id: string;
+  user_id: string;
+  name: string;
+  No_Plate: string;
+  model: string;
+  color: string;
+  seaters: number;
+}
+
 const Profile = () => {
-  const [user, setUser] = useState<User>({
-    _id: "",
-    email: "",
-    image: "",
-  });
-  const [image, setImage] = useState<File | null>(null);
-  const [passwordData, setPasswordData] = useState({
-    oldpassword: "",
-    newpassword: "",
-    confirmnewpassword: "",
-  });
-  const [newEmail, setNewEmail] = useState<string>(user.email);
+  const [user, setUser] = useState<User>();
+  const [vehicle, setVehicles] = useState<vehicle[]>([]);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isUpdateCarPopupOpen, setIsUpdateCarPopupOpen] = useState(false);
+  const [selectedVehicle, setSelectedVehicle] = useState<vehicle | null>(null);
+
+  console.log(vehicle);
 
   useEffect(() => {
-    async function getUser() {
+    const getUser = async () => {
       try {
-        const res = await fetch("http://localhost:8000/auth/getUser", {
+        const response = await fetch(`http://localhost:8000/auth/getUser`, {
           credentials: "include",
         });
-        const data: User = await res.json();
-        setUser(data);
-        setNewEmail(data.email);
+        if (!response.ok) {
+          throw new Error(`Server responded with status ${response.status}`);
+        } else {
+          const data = await response.json();
+          if (data.message) {
+            alert(data.message);
+          } else {
+            setUser(data);
+          }
+        }
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching data:", error);
       }
-    }
+    };
     getUser();
+
+    const getVehiles = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/vehicle`, {
+          credentials: "include",
+        });
+        if (!response.ok) {
+          throw new Error(`Server responded with status ${response.status}`);
+        } else {
+          const data = await response.json();
+          setVehicles(data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    getVehiles();
   }, []);
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    const formdata = new FormData();
+  const handleAddCar = async (carData: any) => {
+    console.log(carData);
     try {
-      if (image) {
-        const filename = Date.now() + image.name;
-        formdata.append("name", filename);
-        formdata.append("file", image);
-      }
-      const response = await fetch("http://localhost:8000/auth/upload", {
+      const response = await fetch("http://localhost:8000/vehicle", {
         method: "POST",
         credentials: "include",
-        body: formdata,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(carData),
       });
-      const data = await response.json();
-      console.log(data);
-      user.image = data.filename;
-    } catch (error) {
-      console.log(error);
+      if (!response.ok) {
+        alert("there is some problem");
+        throw new Error(`Server responded with status ${response.status}`);
+      }
+      if (response.ok) {
+        alert("car was added");
+        setIsPopupOpen(false);
+      }
+    } catch (error: any) {
+      console.error(error.message);
     }
-    console.log(user);
+  };
 
+  const handleUpdateCar = async (carData: any) => {
+    console.log(carData);
     try {
       const response = await fetch(
-        `http://localhost:8000/auth/updateUser/${user._id}`,
+        `http://localhost:8000/vehicle/${selectedVehicle?._id}`,
         {
           method: "PATCH",
           credentials: "include",
-          body: JSON.stringify(user),
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify(carData),
         }
       );
-      const data = await response.json();
-      console.log(data);
+      if (!response.ok) {
+        throw new Error(`Server responded with status ${response.status}`);
+      }
+      alert("Car was updated successfully");
+      setIsUpdateCarPopupOpen(false);
     } catch (error) {
-      console.log(error);
+      console.error("Error updating car:", error);
     }
   };
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    try {
-      const file = e.target.files?.[0] || null;
-      setImage(file);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newEmailValue = e.target.value;
-    setNewEmail(newEmailValue);
+  const handleUpdatePopupOpen = (vehicle: vehicle) => {
+    setSelectedVehicle(vehicle);
+    setIsUpdateCarPopupOpen(true);
   };
 
   return (
     <>
-      <div className="main_container">
-        <div className="profile-heading">Profile Update</div>
-        <div>
-          <div className="photo_upload_section">
-            <div className="image-container">
-              <input
-                onChange={handleImageChange}
-                id="file-upload"
-                type="file"
-                name=""
-              />
-              <div className="w-full h-full p-2 items-center">
-                {image ? (
-                  <img
-                    className="rounded-full"
-                    src={`http://localhost:8000/uploads/${user.image}`}
-                    alt=""
-                  />
-                ) : (
-                  <>
-                    {image && (
-                      <img
-                        className="rounded-full"
-                        src={URL.createObjectURL(image)}
-                        alt="Profile"
-                      />
-                    )}
-                  </>
-                )}
-              </div>
-              <label htmlFor="file-upload" className="upload-btn">
-                Upload Photo
-              </label>
-            </div>
+      <div className={styles.main_container}>
+        <div className={styles.profileHeading}>My Profile</div>
+        <div className={styles.first_con}>
+          <div className={styles.name}>
+            {user?.user_name &&
+              user.user_name.charAt(0).toUpperCase() + user.user_name.slice(1)}
           </div>
-          <div className="profile-details-section">
-            <form>
-              <p>Old Password</p>
-              <input
-                type="text"
-                value={passwordData.oldpassword}
-                onChange={(e) => {
-                  setPasswordData({
-                    ...passwordData,
-                    oldpassword: e.target.value,
-                  });
-                }}
-              />
-            </form>
 
-            <form>
-              <p>New Password:</p>
-              <input
-                type="text"
-                value={passwordData.newpassword}
-                onChange={(e) => {
-                  setPasswordData({
-                    ...passwordData,
-                    newpassword: e.target.value,
-                  });
-                }}
-              />
-            </form>
-            <form>
-              <p>Confirm Password</p>
-              <input
-                type="text"
-                value={passwordData.confirmnewpassword}
-                onChange={(e) => {
-                  setPasswordData({
-                    ...passwordData,
-                    confirmnewpassword: e.target.value,
-                  });
-                }}
-              />
-            </form>
-            <form>
-              <p>Email Id</p>
-              <input
-                type="text"
-                value={newEmail}
-                onChange={handleEmailChange}
-              />
-            </form>
-            <button onClick={handleSubmit} className="save-profile-btn">
-              Save Profile
-            </button>
+          <div className={styles.img}>
+            <Image
+              src={profileImage}
+              className={styles.avater}
+              width={80}
+              height={75}
+              alt="Picture of the author"
+            />
           </div>
         </div>
+        <div className={styles.second_con}>
+          <Button variant="text" className={styles.editButton}>
+            <ControlPointIcon className={styles.editIcon} /> Edit Profile
+            picture
+          </Button>
+          <Button variant="text" className={styles.editButton}>
+            Change Password
+          </Button>
+        </div>
+        <div className={styles.third_con}>
+          <div className={styles.linebetween} />
+          <div className={styles.car_details}>
+            <div className={styles.headingCar}>About Car</div>
+            <Button
+              variant="text"
+              className={styles.carEditButton}
+              onClick={() => setIsPopupOpen(true)}
+            >
+              <ControlPointIcon className={styles.editIcon} /> Add the car
+            </Button>
+          </div>
+          {vehicle.length === 0 ? (
+            <div className={styles.not_Found}>No vehicle</div>
+          ) : (
+            vehicle.map((item, index) => (
+              <div className={styles.space_between} key={index}>
+                <div>
+                  <div className={styles.carname}>
+                    {item.model} {item.name}
+                  </div>
+                  <div className={styles.carColor}>{item.color}</div>
+                </div>
+                <div>
+                  <ChevronRightIcon
+                    style={{
+                      fontSize: "2rem",
+                      marginTop: "10px",
+                    }}
+                    onClick={() => handleUpdatePopupOpen(item)}
+                  />
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </div>
+      {isPopupOpen && (
+        <AddCarPopup
+          onClose={() => setIsPopupOpen(false)}
+          onAddCar={handleAddCar}
+        />
+      )}
+      {isUpdateCarPopupOpen && selectedVehicle && (
+        <UpdateCarPopup
+          onClose={() => setIsUpdateCarPopupOpen(false)}
+          onUpdateCar={handleUpdateCar}
+          vehicle={selectedVehicle}
+        />
+      )}
     </>
   );
 };

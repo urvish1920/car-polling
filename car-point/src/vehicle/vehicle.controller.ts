@@ -29,7 +29,7 @@ export class VehicleController {
     @Res() res: Response,
   ) {
     try {
-      await this.vehicleService.create(createVehicleDto);
+      await this.vehicleService.create(createVehicleDto, req);
       return res.status(HttpStatus.OK).json({ message: 'Ride is created' });
     } catch (error) {
       return res

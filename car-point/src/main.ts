@@ -2,7 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
+import { initializeApp } from 'firebase/app';
 import * as express from 'express';
+import { firebaseConfig } from './firebase/firebase.config';
+
+initializeApp(firebaseConfig);
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     rawBody: true,

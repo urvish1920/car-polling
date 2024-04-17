@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { vehicle } from './schemas/vehicle.schemas';
@@ -13,7 +17,15 @@ export class VehicleService {
     private VehicleModel: mongoose.Model<vehicle>,
   ) {}
 
-  async create(createVehicleDto: CreateVehicleDto): Promise<vehicle> {
+  async create(
+    createVehicleDto: CreateVehicleDto,
+    req: Request,
+  ): Promise<vehicle> {
+    const userId = req['user']['_id'];
+    if (!userId) {
+      throw new BadRequestException('Invalid user');
+    }
+    createVehicleDto.user_id = userId;
     const res = await this.VehicleModel.create(createVehicleDto);
     return await res.save();
   }

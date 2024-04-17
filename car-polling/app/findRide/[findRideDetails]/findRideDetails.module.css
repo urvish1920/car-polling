@@ -155,7 +155,6 @@
 }
 .owner_avater {
   border-radius: 50%;
-  border: solid 0.5px black;
 }
 .chatButton {
   border: none;
@@ -235,5 +234,4 @@
 }
 .avater {
   border-radius: 50%;
-  border: solid 0.5px black;
 }

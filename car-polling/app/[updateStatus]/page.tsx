@@ -30,7 +30,7 @@ export default function ApprovalRequest({
         alert(`user ${status}`);
       }
     } catch (error: any) {
-      console.error("Signup failed:", error.message);
+      console.error("update failed:", error.message);
     }
   };
 

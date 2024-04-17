@@ -6,12 +6,16 @@ import findRideReducer from "@/app/redux/slice/findRideDetailsReducer";
 import searchReducer from "@/app/redux/slice/storeSearchData";
 import planRideReducer from "@/app/redux/slice/planRideDetailsReducer";
 import RequestUserReducer from "@/app/redux/slice/approvalUserReducer";
+import stepReducer from "./slice/stepReducer";
+import publishReducer from "./slice/publishReducer";
 
 const rootReducer = combineReducers({
   findRide: findRideReducer,
   search: searchReducer,
   PlanRide: planRideReducer,
   RequestUser: RequestUserReducer,
+  step: stepReducer,
+  publish: publishReducer,
 });
 
 const persistConfig = {

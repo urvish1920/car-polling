@@ -45,7 +45,6 @@
 
 .avater {
   border-radius: 50%;
-  border: solid 0.5px black;
 }
 
 .price_text {
@@ -63,7 +62,7 @@
   color: darkslategrey;
 }
 
-.leftsites{
+.leftsites {
   margin-top: 20px;
   margin-left: 20px;
   font-weight: light;

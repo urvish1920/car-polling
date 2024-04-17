@@ -3,16 +3,9 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./publishNewCar.module.css";
 import { useRouter } from "next/navigation";
 import { Autocomplete } from "@react-google-maps/api";
-
-interface PublishState {
-  pick_up?: object;
-  drop_off?: object;
-  planride_date: Date;
-  start_time: string;
-  end_time: string;
-  price: number;
-  vehicle_id: string;
-}
+import { useDispatch, useSelector } from "react-redux";
+import { setStep } from "../redux/slice/stepReducer";
+import { setPublish } from "../redux/slice/publishReducer";
 
 interface vehicle {
   _id: string;
@@ -23,35 +16,16 @@ interface vehicle {
   seaters: number;
 }
 
-const Form: React.FC = () => {
+export default function publishNewCar() {
   const router = useRouter();
-  const [publish, setPublish] = useState<PublishState>({
-    pick_up: {
-      city: "",
-      fullAddress: "",
-      lat: 0,
-      lng: 0,
-    },
-    drop_off: {
-      city: "",
-      fullAddress: "",
-      lat: 0,
-      lng: 0,
-    },
-    planride_date: new Date(),
-    start_time: "",
-    end_time: "",
-    price: 0,
-    vehicle_id: "",
-  });
   const [vehicles, setVehicles] = useState<vehicle[]>([]);
-
   const [isPending, setIsPending] = useState(true);
-  const [step, setStep] = useState(1);
   const [maxDate, setMaxDate] = useState("");
   const [button_dis, setButton_dis] = useState(false);
 
-  console.log(publish);
+  const dispatch = useDispatch();
+  const step = useSelector((state: any) => state.step);
+  const publish = useSelector((state: any) => state.publish);
 
   useEffect(() => {
     const dtToday = new Date();
@@ -65,26 +39,26 @@ const Form: React.FC = () => {
   }, []);
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPublish({
-      ...publish,
-      planride_date: e.target.valueAsDate || new Date(),
-    });
+    dispatch(setPublish({ planride_date: e.target.valueAsDate || new Date() }));
   };
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const priceValue = parseInt(e.target.value, 10);
-    setPublish({ ...publish, price: priceValue });
+    dispatch(setPublish({ price: priceValue }));
   };
   const handleVehicleClick = (vehicleId: string) => {
-    setPublish({ ...publish, vehicle_id: vehicleId });
+    dispatch(setPublish({ vehicle_id: vehicleId }));
   };
 
   const onNext = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (step !== 7) setStep(step + 1);
+    if (step !== 7) {
+      console.log(step);
+      dispatch(setStep(step + 1));
+    }
   };
   const publishRide = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
     if (step === 7) {
+      e.preventDefault();
       try {
         const response = await fetch("http://localhost:8000/rides", {
           method: "POST",
@@ -94,12 +68,45 @@ const Form: React.FC = () => {
           credentials: "include",
           body: JSON.stringify(publish),
         });
-        if (response.ok && response.status === 201) {
+        if (response.ok && response.status === 200) {
           alert("new car published");
           setButton_dis(true);
+          dispatch(
+            setPublish({
+              pick_up: { city: "", fullAddress: "", lat: 0, lng: 0 },
+            })
+          );
+          dispatch(
+            setPublish({
+              drop_off: { city: "", fullAddress: "", lat: 0, lng: 0 },
+            })
+          );
+          dispatch(setPublish({ planride_date: new Date() }));
+          dispatch(setPublish({ start_time: "" }));
+          dispatch(setPublish({ end_time: "" }));
+          dispatch(setPublish({ price: 0 }));
+          dispatch(setPublish({ vehicle_id: "" }));
+          dispatch(setStep(1));
           router.push("/");
         } else {
           alert("there is some problem retry again");
+          dispatch(
+            setPublish({
+              pick_up: { city: "", fullAddress: "", lat: 0, lng: 0 },
+            })
+          );
+          dispatch(
+            setPublish({
+              drop_off: { city: "", fullAddress: "", lat: 0, lng: 0 },
+            })
+          );
+          dispatch(setPublish({ planride_date: new Date() }));
+          dispatch(setPublish({ start_time: "" }));
+          dispatch(setPublish({ end_time: "" }));
+          dispatch(setPublish({ price: 0 }));
+          dispatch(setPublish({ vehicle_id: "" }));
+          dispatch(setStep(1));
+          router.push("/");
         }
       } catch (error: any) {
         alert(error);
@@ -148,15 +155,16 @@ const Form: React.FC = () => {
     const lat = place.geometry?.location?.lat() || 0;
     const lng = place.geometry?.location?.lng() || 0;
 
-    setPublish({
-      ...publish,
-      pick_up: {
-        city,
-        fullAddress,
-        lat,
-        lng,
-      },
-    });
+    dispatch(
+      setPublish({
+        pick_up: {
+          city,
+          fullAddress,
+          lat,
+          lng,
+        },
+      })
+    );
   };
 
   const handledropoffPlaceChanged = (place: google.maps.places.PlaceResult) => {
@@ -179,15 +187,16 @@ const Form: React.FC = () => {
     const lat = place.geometry?.location?.lat() || 0;
     const lng = place.geometry?.location?.lng() || 0;
 
-    setPublish({
-      ...publish,
-      drop_off: {
-        city,
-        fullAddress,
-        lat,
-        lng,
-      },
-    });
+    dispatch(
+      setPublish({
+        drop_off: {
+          city,
+          fullAddress,
+          lat,
+          lng,
+        },
+      })
+    );
   };
 
   const pickUpcompleteRef = useRef<google.maps.places.Autocomplete>();
@@ -258,7 +267,11 @@ const Form: React.FC = () => {
               id="planride_date"
               name="planride_date"
               type="date"
-              value={publish.planride_date.toISOString().slice(0, 10)}
+              value={
+                publish.planride_date instanceof Date
+                  ? publish.planride_date.toISOString().slice(0, 10)
+                  : ""
+              }
               min={maxDate}
               onChange={handleDateChange}
               placeholder="on which Date"
@@ -278,7 +291,7 @@ const Form: React.FC = () => {
               type="time"
               value={publish.start_time}
               onChange={(e) =>
-                setPublish({ ...publish, start_time: e.target.value })
+                dispatch(setPublish({ start_time: e.target.value }))
               }
               placeholder="Pick-up Time"
             />
@@ -296,7 +309,7 @@ const Form: React.FC = () => {
               type="time"
               value={publish.end_time}
               onChange={(e) =>
-                setPublish({ ...publish, end_time: e.target.value })
+                dispatch(setPublish({ end_time: e.target.value }))
               }
               placeholder="Drop-off Time"
             />
@@ -320,7 +333,7 @@ const Form: React.FC = () => {
           <div>
             <div className={styles.heading_button}>
               <label className={styles.input_label}>
-                Select your car details
+                Select your car details from below
               </label>
             </div>
             {isPending ? (
@@ -341,7 +354,24 @@ const Form: React.FC = () => {
                         {item.model} {item.name}
                       </div>
                     </div>
-                    <div className={styles.seater}>seater : {item.seaters}</div>
+                    <div className={styles.seater}>
+                      seater : {item.seaters}{" "}
+                      <button
+                        style={{
+                          padding: "5px",
+                          width: "80px",
+                          height: "25px",
+                          borderRadius: "2px",
+                          color: "white",
+                          backgroundColor: "darkslategrey",
+                          border: "none",
+                          marginTop: "5px",
+                        }}
+                        // onClick={""}
+                      >
+                        update
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))
@@ -352,7 +382,7 @@ const Form: React.FC = () => {
       <div className={styles.submit_Button}>
         {step === 7 ? (
           <button
-            className={styles.formbutton}
+            className={styles.publishButton}
             onClick={publishRide}
             disabled={button_dis}
           >
@@ -366,6 +396,4 @@ const Form: React.FC = () => {
       </div>
     </>
   );
-};
-
-export default Form;
+}
