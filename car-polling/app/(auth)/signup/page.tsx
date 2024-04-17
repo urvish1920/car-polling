@@ -1,7 +1,7 @@
 "use client";
 import "../../globals.css";
 import React, { useEffect, useState } from "react";
-import styles from "./signup.module.css";
+import styles from './signup.module.css';
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 

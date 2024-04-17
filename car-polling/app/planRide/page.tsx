@@ -152,7 +152,7 @@ export default function PlanRide() {
                           src={car}
                           className={styles.avater}
                           width={50}
-                          height={34}
+                          height={48}
                           alt={`Picture of car`}
                         />
                       )}

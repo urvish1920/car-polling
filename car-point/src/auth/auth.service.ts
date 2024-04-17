@@ -12,6 +12,8 @@ import { Model } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 import { UpdateSignupDto } from './dto/updatesignup-auth.dto';
 import { Request } from 'express';
+import { getDownloadURL, getStorage , ref, uploadBytesResumable } from "firebase/storage";
+import { promises } from 'dns';
 
 @Injectable()
 export class AuthService {
@@ -52,21 +54,27 @@ export class AuthService {
     return user;
   }
 
-  async updateUser(id: string, usersignupdto: UpdateSignupDto): Promise<User> {
-    try {
-      console.log(usersignupdto);
+  async updateUser(id: string, usersignupdto: UpdateSignupDto ,file:Express.Multer.File){
+      const img = await this.UploadUserImage(file,id);
       const updatedRide = await this.userModel.findByIdAndUpdate(
         id,
-        usersignupdto,
-        { new: true },
+        {
+          usersignupdto,
+          image:img
+        }
       );
       if (!updatedRide) {
-        throw new NotFoundException(`Ride with id ${id} not found`);
+        throw new NotFoundException(`Ride with Id ${id} not found`);
       }
-      console.log(`Ride with id ${id} has been successfully updated`);
-      return updatedRide;
-    } catch (error) {
-      throw error;
-    }
+      return "user update successfully";
+  }
+
+  async UploadUserImage(file : Express.Multer.File, id :  string)
+  {
+    const storage = getStorage();
+    const storageRef = ref(storage, `users/${id}`);
+    const  img = await uploadBytesResumable(storageRef, file.buffer)
+    const downloadURL = await getDownloadURL(img.ref);
+       return downloadURL;
   }
 }

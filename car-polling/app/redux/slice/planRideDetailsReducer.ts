@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { StyledString } from "next/dist/build/swc";
 
 export interface Ride {
   _id: string;
@@ -22,6 +23,7 @@ export interface Ride {
   leftSites: number;
   user: {
     user_name: string;
+    image:String
   };
   vehicle: {
     name: string;

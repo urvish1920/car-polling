@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import styles from "./signin.module.css";
+import styles from './signIn.module.css';
 import Link from "next/link";
 
 interface User {

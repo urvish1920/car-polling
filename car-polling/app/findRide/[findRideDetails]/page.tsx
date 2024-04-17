@@ -4,7 +4,6 @@ import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
-import profileImage from "../../assert/avater.png";
 import icon from "../../assert/icon.png";
 import car from "../../assert/car.png";
 import styles from "./findRideDetails.module.css";
@@ -105,10 +104,10 @@ export default function FullDetailRide({
                   <div className={styles.username}>{ride.user.user_name}</div>
                   <div className={styles.owner_img}>
                     <Image
-                      src={profileImage}
+                      src={ride.user.image}
                       className={styles.owner_avater}
-                      width={40}
-                      height={34}
+                      width={50}
+                      height={47}
                       alt="Picture of the author"
                     />
                   </div>
@@ -160,7 +159,7 @@ export default function FullDetailRide({
                       </div>
                       <div className={styles.img}>
                         <Image
-                          src={occupant.profileImage || profileImage}
+                          src={occupant.user.image}
                           className={styles.avater}
                           width={40}
                           height={34}

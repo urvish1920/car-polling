@@ -152,14 +152,14 @@
 }
 .distance {
   font-weight: 500;
-  color: greenyellow;
+  color: rgb(74, 119, 8);
   font-size: 13px;
   margin-top: 3px;
 }
 
 .distance_arrival {
   font-weight: 500;
-  color: rgb(223, 223, 1);
+  color: rgb(122, 122, 51);
   font-size: 13px;
   margin-top: 3px;
 }
@@ -176,7 +176,7 @@
 }
 
 .name {
-  margin-top: 26px;
+  margin-top: 28px;
   margin-left: 20px;
   font-weight: 600;
   color: darkslategrey;

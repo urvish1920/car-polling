@@ -78,8 +78,17 @@ export class AuthController {
     @UploadedFile() file: Express.Multer.File,
     @Body() usersignupdto: UpdateSignupDto,
     @Param('id') id: string,
-  ) {
-    console.log(JSON.stringify(file) + 'hyyy');
-    return await this.authService.updateUser(id, usersignupdto);
+    @Res() res: Response,
+  ){
+    try {
+      await this.authService.updateUser(id, usersignupdto,file);
+      return res
+        .status(HttpStatus.OK)
+        .json({ message: 'user Update successfully' });
+    } catch (error) {
+      return res
+        .status(error.status || HttpStatus.BAD_REQUEST)
+        .json({ message: error.message });
+    }
   }
 }
