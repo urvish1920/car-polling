@@ -94,7 +94,7 @@ export default function SummaryFindRide() {
                 color: "white",
                 backgroundColor: "darkslategrey",
                 border: "none",
-                marginLeft: "35%",
+                marginLeft: "40%",
                 marginTop: "5px",
               }}
               onClick={handleRequest}
