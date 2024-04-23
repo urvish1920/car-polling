@@ -140,7 +140,7 @@ const Profile = () => {
 
           <div className={styles.img}>
             <Image
-              src={profileImage}
+              src={user?.image}
               className={styles.avater}
               width={80}
               height={75}

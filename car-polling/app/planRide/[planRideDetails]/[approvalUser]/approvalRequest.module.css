@@ -73,7 +73,18 @@
   width: 30vh;
   height: 5vh;
   margin-top: 20px;
-  margin-left: 10%;
+  margin-left: 8%;
+  border-radius: 15px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: darkslategrey;
+}
+.declineButton{
+  width: 30vh;
+  height: 5vh;
+  margin-top: 20px;
+  margin-left: 10px;
   border-radius: 15px;
   border: none;
   font-size: 15px;

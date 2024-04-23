@@ -162,7 +162,7 @@ export default function ApprovalRequest({
               Approve
             </button>
             <button
-              className={styles.approveButton}
+              className={styles.declineButton}
               onClick={() => handleApproval("Decline")}
               disabled={buttondisable}
             >

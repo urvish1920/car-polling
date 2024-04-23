@@ -22,6 +22,7 @@ export interface Ride {
   price: number;
   user: {
     user_name: string;
+    image:string
   };
   vehicle: {
     name: string;

@@ -16,9 +16,7 @@ export interface RequestData {
   user: {
     _id: string;
     user_name: string;
-    email: string;
-    password: string;
-    createdAt: string;
+    image:String
   };
 }
 

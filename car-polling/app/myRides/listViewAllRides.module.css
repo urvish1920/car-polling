@@ -33,7 +33,7 @@
 }
 .outerContainer {
   width: 50%;
-  height: 190px;
+  height: 210px;
   display: grid;
   grid-template-columns: 80% 20%;
   grid-template-rows: 70% 20%;
@@ -61,12 +61,13 @@
 .status_user {
   margin-top: 5px;
   margin-left: 30px;
-  font-weight: 600;
-  color: darkslategrey;
+  font-weight: 500;
+  font-size: 12px;
+  color: gray;
 }
 
 .inneruptime {
-  margin-top: 5px;
+  margin-top: 2px;
   margin-left: 15px;
   font-weight: 600;
   color: darkslategrey;
@@ -92,7 +93,7 @@
   border-style: solid;
   border-color: darkslategrey;
   border-width: 2px;
-  margin-top: 10px;
+  margin-top: 5px;
   margin-left: 20px;
   margin-right: 10px;
 }
@@ -116,7 +117,7 @@
 }
 
 .innerupplace {
-  margin-top: 5px;
+  margin-top: 2px;
   font-weight: 600;
   color: darkslategrey;
 }
@@ -163,7 +164,7 @@
 }
 
 .name {
-  margin-top: 26px;
+  margin-top: 30px;
   margin-left: 20px;
   font-weight: 600;
   color: darkslategrey;
@@ -171,5 +172,4 @@
 
 .avater {
   border-radius: 50%;
-  border: solid 0.5px black;
 }

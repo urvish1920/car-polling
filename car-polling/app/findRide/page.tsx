@@ -30,6 +30,7 @@ export interface findState {
   price: number;
   user: {
     user_name: string;
+    image:string
   };
 }
 
@@ -179,10 +180,10 @@ export default function findRide() {
                   <div className={styles.row}>
                     <div className={styles.img}>
                       <Image
-                        src={profileImage}
+                        src={item.user.image}
                         className={styles.avater}
-                        width={40}
-                        height={35}
+                        width={50}
+                        height={47}
                         alt="Picture of the author"
                       />
                     </div>
