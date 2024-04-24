@@ -1,7 +1,7 @@
 "use client";
 import "../../globals.css";
 import React, { useEffect, useState } from "react";
-import styles from './signup.module.css';
+import styles from "./signup.module.css";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -65,8 +65,10 @@ export default function signup() {
     <div className={styles.mainconatiner}>
       <div className={styles.signupInnerContainer}>
         <div className={styles.signupInsideItem}>
-          <h1>{loading ? "Processing ..." : "signup"}</h1>
-          <label>username</label>
+          <h1 className={styles.headingSignUp}>
+            {loading ? "Processing ..." : "signup"}
+          </h1>
+          <label className={styles.label_text}>Enter your Username</label>
           <input
             className={styles.inputField}
             id="username"
@@ -75,7 +77,7 @@ export default function signup() {
             onChange={(e) => setUser({ ...user, user_name: e.target.value })}
             placeholder="username"
           />
-          <label>email</label>
+          <label className={styles.label_text}>Enter your Email</label>
           <input
             className={styles.inputField}
             id="email"
@@ -84,7 +86,7 @@ export default function signup() {
             onChange={(e) => setUser({ ...user, email: e.target.value })}
             placeholder="email"
           />
-          <label>password</label>
+          <label className={styles.label_text}>Enter your Password</label>
           <input
             className={styles.inputField}
             id="password"
@@ -93,12 +95,16 @@ export default function signup() {
             onChange={(e) => setUser({ ...user, password: e.target.value })}
             placeholder="password"
           />
-
-          <button onClick={onSignup} disabled={buttonDisabled}>
+         
+          <button
+            className={styles.button_SignUp}
+            onClick={onSignup}
+            disabled={buttonDisabled}
+          >
             {loading ? "Processing ..." : "Signup"}
           </button>
-          <Link href="/signin" className={styles.loginLink}>
-            SignIn page
+          <Link href="/signIn" className={styles.signUpLink}>
+            have an account? <span className={styles.bold_text}>Login</span>
           </Link>
         </div>
       </div>

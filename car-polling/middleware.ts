@@ -7,5 +7,5 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 export const config = {
-  matcher: ["/", "/findRides","/myRide","/planRide","/publishNewCar","/profile"],
+  matcher: ["/", "/findRide","/myRide","/planRide","/publishNewCar","/profile"],
 };

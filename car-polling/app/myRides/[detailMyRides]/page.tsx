@@ -8,7 +8,7 @@ import car from "../../assert/car.png";
 import styles from "./detailsMyRides.module.css";
 import FormattedDate from "@/app/component/Formate";
 import CircularProgress from "@mui/material/CircularProgress";
-import CancelRideModal from "./cancleHandle";
+import CancelRideModal from "./cancelHandle";
 
 export interface Ride {
   _id: string;
@@ -48,6 +48,7 @@ export interface Ride {
   };
   user: {
     user_name: string;
+    image: string;
   };
   vehicle: {
     name: string;
@@ -192,28 +193,13 @@ export default function FullDetailRide({
                   </div>
                   <div className={styles.owner_img}>
                     <Image
-                      src={profileImage}
+                      src={userRide.user.image || profileImage}
                       className={styles.owner_avater}
-                      width={40}
-                      height={34}
+                      width={50}
+                      height={47}
                       alt="Picture of the author"
                     />
                   </div>
-                </div>
-                <div className={styles.chat}>
-                  <Button
-                    className={styles.chatButton}
-                    style={{ marginLeft: "5px", marginTop: "5px" }}
-                  >
-                    <Image
-                      src={icon}
-                      className={styles.chaticon}
-                      alt="chat image"
-                    />
-                    <div className={styles.chatMessage}>
-                      Ask yash a question
-                    </div>
-                  </Button>
                 </div>
               </div>
               <div className={styles.forthComponent}>
@@ -257,7 +243,7 @@ export default function FullDetailRide({
                       </div>
                       <div className={styles.img}>
                         <Image
-                          src={occupant.profileImage || profileImage}
+                          src={occupant.user.image || profileImage}
                           className={styles.avater}
                           width={40}
                           height={34}
@@ -284,11 +270,12 @@ export default function FullDetailRide({
                     marginTop: "10px",
                   }}
                   onClick={handleCancelEvent}
-                  // disabled={
-                  //   !userRide ||
-                  //   (userRide.status_Request !== "Awaiting Approval" &&
-                  //     userRide.status_Request !== "Approval")
-                  // }
+                  disabled={
+                    userRide.status_Request === "Awaiting Approval" ||
+                    userRide.status_Request === "Approve"
+                      ? false
+                      : true
+                  }
                 >
                   cancle the request
                 </button>

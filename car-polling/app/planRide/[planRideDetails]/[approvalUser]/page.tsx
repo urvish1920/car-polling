@@ -2,8 +2,6 @@
 import styles from "./approvalRequest.module.css";
 import Image from "next/image";
 import profileImage from "../../../assert/avater.png";
-import { Button } from "@mui/material";
-import icon from "../../../assert/icon.png";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 
@@ -115,35 +113,20 @@ export default function ApprovalRequest({
               </div>
               <div className={styles.img}>
                 <Image
-                  src={profileImage}
+                  src={filteredRequests[0].user.image || profileImage}
                   className={styles.avater}
-                  width={40}
-                  height={34}
+                  width={48}
+                  height={50}
                   alt="Profile Avatar"
                 />
               </div>
-            </div>
-            <div className={styles.chat}>
-              <Button
-                className={styles.chatButton}
-                style={{ marginLeft: "5px", marginTop: "5px" }}
-              >
-                <Image
-                  src={icon}
-                  className={styles.chaticon}
-                  alt="chat image"
-                />
-                <div className={styles.chatMessage}>
-                  Ask {filteredRequests[0].user.user_name} a question
-                </div>
-              </Button>
             </div>
           </div>
           <div className={styles.second_container}>
             <div className={styles.linebetween} />
             <div className={styles.space_between}>
               <div className={styles.price_text}>1 seat</div>
-              <div className={styles.price}>{ride.price}</div>
+              <div className={styles.price}>&#8377;{ride.price}</div>
             </div>
             <div className={styles.space_between}>
               <div className={styles.leftsites}>

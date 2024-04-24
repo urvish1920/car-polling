@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import icon from "../../assert/icon.png";
 import car from "../../assert/car.png";
+import profileImage from "../../assert/avater.png";
 import styles from "./findRideDetails.module.css";
 import FormattedDate from "@/app/component/Formate";
 import { fetchFindRides } from "@/app/redux/slice/findRideDetailsReducer";
@@ -104,28 +105,13 @@ export default function FullDetailRide({
                   <div className={styles.username}>{ride.user.user_name}</div>
                   <div className={styles.owner_img}>
                     <Image
-                      src={ride.user.image}
+                      src={ride.user.image || profileImage}
                       className={styles.owner_avater}
                       width={50}
                       height={47}
-                      alt="Picture of the author"
+                      alt="User Profile"
                     />
                   </div>
-                </div>
-                <div className={styles.chat}>
-                  <Button
-                    className={styles.chatButton}
-                    style={{ marginLeft: "5px", marginTop: "5px" }}
-                  >
-                    <Image
-                      src={icon}
-                      className={styles.chaticon}
-                      alt="chat image"
-                    />
-                    <div className={styles.chatMessage}>
-                      Ask yash a question
-                    </div>
-                  </Button>
                 </div>
               </div>
               <div className={styles.forthComponent}>
@@ -159,10 +145,10 @@ export default function FullDetailRide({
                       </div>
                       <div className={styles.img}>
                         <Image
-                          src={occupant.user.image}
+                          src={occupant.user.image || profileImage}
                           className={styles.avater}
-                          width={40}
-                          height={34}
+                          width={50}
+                          height={47}
                           alt={`Picture of ${occupant.user.user_name}`}
                         />
                       </div>

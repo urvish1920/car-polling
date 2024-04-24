@@ -30,7 +30,7 @@ export interface findState {
   price: number;
   user: {
     user_name: string;
-    image:string
+    image: string;
   };
 }
 
@@ -162,7 +162,6 @@ export default function findRide() {
                           from your departure
                         </div>
                       </div>
-
                       <div className={styles.innerdownplace}>
                         {item.drop_off.city}
                         <div className={styles.distance_arrival}>
@@ -180,11 +179,11 @@ export default function findRide() {
                   <div className={styles.row}>
                     <div className={styles.img}>
                       <Image
-                        src={item.user.image}
+                        src={item.user.image || profileImage}
                         className={styles.avater}
                         width={50}
                         height={47}
-                        alt="Picture of the author"
+                        alt="User Profile"
                       />
                     </div>
                     <div className={styles.name}>{item.user.user_name}</div>

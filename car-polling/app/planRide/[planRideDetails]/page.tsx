@@ -19,11 +19,9 @@ export default function planRideDetails({
   params: { planRideDetails: string };
 }) {
   const id = params.planRideDetails;
-  console.log(id);
   const dispatch: AppDispatch = useDispatch();
   const ride = useSelector((state: any) => state.PlanRide.rides);
   const request = useSelector((state: RootState) => state.RequestUser.request);
-  console.log(request);
   const [isPending, setIsPending] = useState(true);
 
   const router = useRouter();
@@ -179,7 +177,7 @@ export default function planRideDetails({
                     </div>
                     <div className={styles.img}>
                       <Image
-                        src={occupant.user.image}
+                        src={occupant.user.image || profileImage}
                         className={styles.avater}
                         width={40}
                         height={34}

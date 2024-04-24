@@ -1,8 +1,19 @@
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15%;
+}
+.profilePage {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+}
 .main_container {
   display: flex;
   height: 80vh;
   width: 80vh;
-  margin-left: 28%;
   margin-top: 5%;
   border-radius: 3px;
   flex-direction: column;
@@ -143,4 +154,22 @@
   height: 40px;
   font-size: 16px;
   margin-left: 60px;
+}
+.forthComponent {
+  margin-top: 15px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.logoutBtn {
+  background-color: darkslategrey;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  width: 20vh;
+  height: 40px;
+  font-size: 16px;
 }

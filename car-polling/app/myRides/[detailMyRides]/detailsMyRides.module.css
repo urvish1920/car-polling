@@ -34,15 +34,7 @@
   font-size: 13px;
   margin-top: 3px;
 }
-.replay {
-  font-size: 15px;
-  margin-top: 2px;
-  font-weight: 200;
-}
-.notification {
-  margin-top: 5px;
-  margin-right: 10px;
-}
+
 .linebetween {
   border: none;
   border-top: 1px solid lightgray;
@@ -150,7 +142,7 @@
   margin-left: 20px;
 }
 .owner_img {
-  margin-top: 20px;
+  margin-top: 10px;
   margin-right: 30px;
 }
 .owner_avater {

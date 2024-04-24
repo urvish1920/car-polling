@@ -34,6 +34,7 @@ export default function SummaryFindRide() {
         window.location.href = "/";
       }
     } catch (error: any) {
+      alert(error.message);
       console.error("Booking failed:", error.message);
     }
   };

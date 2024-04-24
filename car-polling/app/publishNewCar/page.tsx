@@ -341,9 +341,10 @@ export default function publishNewCar() {
             ) : vehicles.length === 0 ? (
               <div className={styles.not_Found}>No vehicle</div>
             ) : (
-              vehicles.map((item, index) => (
-                <div className={styles.otcenter} key={index}>
+              <div className={styles.otcenter}>
+                {vehicles.map((item, index) => (
                   <div
+                    key={index}
                     className={styles.outerContainer}
                     onClick={() => handleVehicleClick(item._id)}
                   >
@@ -354,27 +355,10 @@ export default function publishNewCar() {
                         {item.model} {item.name}
                       </div>
                     </div>
-                    <div className={styles.seater}>
-                      seater : {item.seaters}{" "}
-                      <button
-                        style={{
-                          padding: "5px",
-                          width: "80px",
-                          height: "25px",
-                          borderRadius: "2px",
-                          color: "white",
-                          backgroundColor: "darkslategrey",
-                          border: "none",
-                          marginTop: "5px",
-                        }}
-                        // onClick={""}
-                      >
-                        update
-                      </button>
-                    </div>
+                    <div className={styles.seater}>seater : {item.seaters}</div>
                   </div>
-                </div>
-              ))
+                ))}
+              </div>
             )}
           </div>
         )}

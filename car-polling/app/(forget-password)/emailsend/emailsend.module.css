@@ -1,0 +1,51 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  margin-top: 10%;
+}
+
+.main_container {
+  height: 300px;
+  width: 60vh;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+.fromContain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.heading_sendmail {
+  font-weight: 600;
+  color: darkslategrey;
+  font-size: 25px;
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+.label_text {
+  font-size: 18px;
+  font-weight: bold;
+}
+.inputField_email {
+  height: 15px;
+  width: 50vh;
+}
+.buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+}
+.sendMailBtn {
+  background-color: darkslategrey;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  width: 20vh;
+  height: 40px;
+  font-size: 16px;
+}

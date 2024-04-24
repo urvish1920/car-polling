@@ -57,6 +57,7 @@ export default function PlanRide() {
           setIsPending(false);
         }
       } catch (error) {
+        alert(error);
         console.error("Error fetching data:", error);
         setIsPending(false);
       }

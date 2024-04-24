@@ -11,10 +11,15 @@ const Navbar = () => {
   const pathname = usePathname();
   const [islogin, setIsLogin] = useState(pathname === "/signIn");
   const [isSignup, setIsSingup] = useState(pathname === "/signup");
+  const [isSendemail, setSendEmail] = useState(pathname === "/emailsend");
   return (
     <nav
       className="navbar"
-      style={islogin || isSignup ? { display: "none" } : { display: "flex" }}
+      style={
+        islogin || isSignup || isSendemail
+          ? { display: "none" }
+          : { display: "flex" }
+      }
     >
       <div className="navbar-brand">
         <Image src={logoImage} alt="Logo" width={100} height={50} />

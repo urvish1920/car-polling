@@ -12,9 +12,9 @@
 
 .outercontainer {
   width: 40%;
-  height: 300px;
+  height: 250px;
   display: grid;
-  grid-template-rows: 40% 30% 20%;
+  grid-template-rows: 30% 40% 20%;
   border: 1px solid black;
   border-radius: 10px;
 }
@@ -80,7 +80,7 @@
   font-weight: 600;
   color: darkslategrey;
 }
-.declineButton{
+.declineButton {
   width: 30vh;
   height: 5vh;
   margin-top: 20px;

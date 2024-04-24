@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import styles from './signIn.module.css';
+import styles from "./signIn.module.css";
 import Link from "next/link";
 
 interface User {
@@ -51,8 +51,10 @@ export default function signIn() {
     <div className={styles.mainconatiner}>
       <div className={styles.loginInnerContainer}>
         <div className={styles.insideContainLogin}>
-          <h1>{loading ? "Processing" : "SignIn"}</h1>
-          <label>email</label>
+          <h1 className={styles.headingSignIn}>
+            {loading ? "Processing" : "SignIn"}
+          </h1>
+          <label className={styles.label_text}>Enter your Email</label>
           <input
             className={styles.inputField}
             id="email"
@@ -61,7 +63,7 @@ export default function signIn() {
             onChange={(e) => setUser({ ...user, email: e.target.value })}
             placeholder="email"
           />
-          <label>password</label>
+          <label className={styles.label_text}>Enter Your password</label>
           <input
             className={styles.inputField}
             id="password"
@@ -70,12 +72,19 @@ export default function signIn() {
             onChange={(e) => setUser({ ...user, password: e.target.value })}
             placeholder="password"
           />
-
-          <button className="input" onClick={onLogin} disabled={buttonDisabled}>
+          <Link href="/emailsend" className={styles.forgetPassword}>
+            forget Password?
+          </Link>
+          <button
+            className={styles.button_SignIn}
+            onClick={onLogin}
+            disabled={buttonDisabled}
+          >
             {loading ? "Processing ..." : "Signin"}
           </button>
           <Link href="/signup" className={styles.signupLink}>
-            signup page
+            Not have an account?{" "}
+            <span className={styles.bold_text}>Register</span>
           </Link>
         </div>
       </div>

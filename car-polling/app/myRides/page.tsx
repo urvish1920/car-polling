@@ -3,11 +3,12 @@ import React, { useEffect, useState } from "react";
 import styles from "./listViewAllRides.module.css";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsActiveOutlined';
-import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
-import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
+import profileImage from "../assert/avater.png";
+import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
+import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+import CurrencyExchangeOutlinedIcon from "@mui/icons-material/CurrencyExchangeOutlined";
 import CircularProgress from "@mui/material/CircularProgress";
-import DoDisturbAltOutlinedIcon from '@mui/icons-material/DoDisturbAltOutlined';
+import DoDisturbAltOutlinedIcon from "@mui/icons-material/DoDisturbAltOutlined";
 
 export interface allRides {
   _id: string;
@@ -46,7 +47,7 @@ export interface allRides {
   };
   user: {
     user_name: string;
-    image:string
+    image: string;
   };
 }
 
@@ -54,9 +55,8 @@ export default function findRide() {
   const [sortBy, setSortBy] = useState("");
   const [allRide, setAllRide] = useState<allRides[]>([]);
   const [isPending, setIsPending] = useState(true);
-
   const router = useRouter();
-  console.log(allRide);
+
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSortBy(event.target.value);
   };
@@ -119,30 +119,46 @@ export default function findRide() {
               >
                 <div className={styles.col80}>
                   <div className={styles.status_user}>
-                  {item.status_Request === 'Approve' && (
-    <div style={{ display: 'flex', flexDirection: 'row'}}>
-      <CheckCircleOutlinedIcon style={{ color: 'green', marginRight:"10px" }} />
-      <span style={{ color: 'green', marginTop: '5px'}}>Approve</span>
-    </div>
-  )}
-  {item.status_Request === 'Awaiting Approval' && (
-    <div style={{ display: 'flex', flexDirection: 'row',  }}>
-      <NotificationsActiveOutlinedIcon style={{ color: 'orange',marginRight:"10px" }} />
-      <span style={{ color: 'orange', marginTop: '5px' }}>Awaiting Approval</span>
-    </div>
-  )}
-  {item.status_Request === 'Exchange Ratings' && (
-    <div style={{ display: 'flex', flexDirection: 'row'}}>
-      <CurrencyExchangeOutlinedIcon style={{ color: 'gray',marginRight:"10px" }} />
-      <span style={{ color: 'gray', marginTop: '5px' }}>Exchange Ratings</span>
-    </div>
-  )}
-   {item.status_Request === 'Cancel' && (
-    <div style={{ display: 'flex', flexDirection: 'row'}}>
-      <DoDisturbAltOutlinedIcon style={{ color: 'red',marginRight:"10px" }} />
-      <span style={{ color: 'red', marginTop: '5px' }}>Cancel</span>
-    </div>
-  )}
+                    {item.status_Request === "Approve" && (
+                      <div style={{ display: "flex", flexDirection: "row" }}>
+                        <CheckCircleOutlinedIcon
+                          style={{ color: "green", marginRight: "10px" }}
+                        />
+                        <span style={{ color: "green", marginTop: "5px" }}>
+                          Approve
+                        </span>
+                      </div>
+                    )}
+                    {item.status_Request === "Awaiting Approval" && (
+                      <div style={{ display: "flex", flexDirection: "row" }}>
+                        <NotificationsActiveOutlinedIcon
+                          style={{ color: "orange", marginRight: "10px" }}
+                        />
+                        <span style={{ color: "orange", marginTop: "5px" }}>
+                          Awaiting Approval
+                        </span>
+                      </div>
+                    )}
+                    {item.status_Request === "Exchange Ratings" && (
+                      <div style={{ display: "flex", flexDirection: "row" }}>
+                        <CurrencyExchangeOutlinedIcon
+                          style={{ color: "gray", marginRight: "10px" }}
+                        />
+                        <span style={{ color: "gray", marginTop: "5px" }}>
+                          Exchange Ratings
+                        </span>
+                      </div>
+                    )}
+                    {item.status_Request === "cancel" && (
+                      <div style={{ display: "flex", flexDirection: "row" }}>
+                        <DoDisturbAltOutlinedIcon
+                          style={{ color: "red", marginRight: "10px" }}
+                        />
+                        <span style={{ color: "red", marginTop: "5px" }}>
+                          Cancel
+                        </span>
+                      </div>
+                    )}
                   </div>
                   <div className={styles.row}>
                     <div className={styles.timecol}>
@@ -177,11 +193,11 @@ export default function findRide() {
                   <div className={styles.row}>
                     <div className={styles.img}>
                       <Image
-                        src={item.user.image}
+                        src={item.user.image || profileImage}
                         className={styles.avater}
                         width={50}
                         height={47}
-                        alt="Picture of the author"
+                        alt="Picture of the Rider"
                       />
                     </div>
                     <div className={styles.name}>{item.user.user_name}</div>
