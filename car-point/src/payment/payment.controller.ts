@@ -13,7 +13,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 import Stripe from 'stripe';
 const stripe = require('stripe')(
-  'sk_test_51OrxKrSHTsu5axxCsgCo3kQh9b9sN32mOB8oygwCzxp2AhM1aSrUCDwPzBaIwEy1yU1KrR9An6XNaHboBhExDVpt00dV9w2TqO',
+  'your stripe key',
 );
 
 @Controller('payment')
@@ -73,7 +73,7 @@ export class PaymentController {
       event = Stripe.webhooks.constructEvent(
         req.rawBody,
         signature,
-        'whsec_51782bca1570674ffa7f8f01e0f87af20b3f1bf87595cc82000909ae3bf87e7f',
+        'your signature',
       );
       console.log('========', req.rawBody);
       if (event?.type === 'checkout.session.completed') {
