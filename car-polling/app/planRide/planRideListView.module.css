@@ -34,7 +34,7 @@
 }
 .outerContainer {
   width: 50%;
-  height: 160px;
+  height: 180px;
   display: grid;
   grid-template-columns: 80% 20%;
   border-radius: 10px;
@@ -47,7 +47,7 @@
   display: flex;
   flex-direction: column;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
   justify-content: space-between;
 }
 
@@ -59,8 +59,9 @@
 }
 .date {
   margin-left: 50%;
+  margin-top: 10px;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
 }
 
 .statuscon {
@@ -70,7 +71,7 @@
 
 .statusText {
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
   margin-left: 45%;
   margin-top: 20px;
   margin-right: 10px;
@@ -80,20 +81,14 @@
   margin-top: 18px;
   margin-left: 15px;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
 }
-.innertotalhours {
-  margin-top: 8px;
-  margin-left: 25px;
-  font-weight: 400;
-  font-size: 14px;
-  color: darkslategrey;
-}
+
 .innerdowntime {
-  margin-top: 10px;
+  margin-top: 35px;
   margin-left: 15px;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
 }
 
 .divider {
@@ -107,7 +102,7 @@
   background-color: white;
   border-radius: 15px;
   border-style: solid;
-  border-color: darkslategrey;
+  border-color: #02081f;
   border-width: 2px;
   margin-top: 22px;
   margin-left: 20px;
@@ -119,7 +114,7 @@
   background-color: white;
   border-radius: 15px;
   border-style: solid;
-  border-color: darkslategrey;
+  border-color: #02081f;
   border-width: 2px;
   margin-left: 20px;
   margin-right: 10px;
@@ -127,7 +122,7 @@
 
 .line {
   height: 50px;
-  background-color: darkslategrey;
+  background-color: #02081f;
   width: 3px;
   margin-left: 10px;
 }
@@ -146,16 +141,16 @@
 .innerupplace {
   margin-top: 15px;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
 }
 .innerdownplace {
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
 }
 .passengerrow {
   display: flex;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
 }
 .colored {
   background-color: darkslategray;

@@ -8,7 +8,7 @@ import { SignInDto } from './dto/signin-auth.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/auth.schemas';
 import { JwtService } from '@nestjs/jwt';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 import { UpdateSignupDto } from './dto/updatesignup-auth.dto';
 import * as nodemailer from 'nodemailer';
@@ -20,12 +20,18 @@ import {
   uploadBytesResumable,
 } from 'firebase/storage';
 import { ChangePasswordDto } from './dto/changePassword.dto';
+import { Rides } from 'src/rides/schemas/rides.schemas';
+import { Request_user } from 'src/request/schemas/Request.schemas';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name)
     private userModel: Model<User>,
+    @InjectModel(Rides.name)
+    private RideModel: mongoose.Model<Rides>,
+    @InjectModel(Request_user.name)
+    private Request_user: mongoose.Model<Request_user>,
     private jwtService: JwtService,
   ) {}
 
@@ -39,12 +45,12 @@ export class AuthService {
     });
   }
 
-  async signIn(loginDto: SignInDto): Promise<{ token: string }> {
+  async signIn(loginDto: SignInDto): Promise<{ token: string; user: User }> {
     const { email, password } = loginDto;
     const user = await this.userModel.findOne({ email });
     if (user && (await bcrypt.compare(password, user.password))) {
       const token = this.jwtService.sign({ id: user._id });
-      return { token };
+      return { token, user };
     } else {
       throw new UnauthorizedException('Invalid email or password');
     }
@@ -63,12 +69,13 @@ export class AuthService {
     id: string,
     usersignupdto: UpdateSignupDto,
     file: Express.Multer.File,
-  ): Promise<void> {
+  ): Promise<{ img: string }> {
     const img = await this.UploadUserImage(file, id);
     await this.userModel.findByIdAndUpdate(id, {
       ...usersignupdto,
       image: img,
     });
+    return { img };
   }
 
   async UploadUserImage(
@@ -114,7 +121,7 @@ export class AuthService {
         expiresIn: '5m',
       },
     );
-    const link = `http://localhost:3000/reset-password/${user._id}/${token}`;
+    const link = `http://localhost:3000/emailsend/${user._id}/${token}`;
     console.log(link);
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -139,5 +146,41 @@ export class AuthService {
         console.log('Email sent:', info.response);
       }
     });
+  }
+
+  async verifyUser(
+    id: string,
+    token: string,
+  ): Promise<{ userId: string; message: string }> {
+    console.log('ID:', id);
+    console.log('Token:', token);
+    try {
+      const decodedToken = this.jwtService.verify(token);
+      console.log('Decoded Token:', decodedToken);
+
+      const { id: tokenUserId } = decodedToken;
+      console.log('Token User ID:', tokenUserId);
+
+      const user = await this.userModel.findById(tokenUserId);
+
+      if (!user) {
+        throw new NotFoundException(`User with id ${id} not found`);
+      }
+      return { userId: tokenUserId, message: 'User is verified' };
+    } catch (error) {
+      console.error('Error verifying user:', error.message);
+      throw new Error(`Error verifying user: ${error.message}`);
+    }
+  }
+
+  async ResetPassword(newPassword: string, userId: string): Promise<void> {
+    console.log(newPassword, userId);
+    const user = await this.userModel.findById(userId);
+    if (!user) {
+      throw new NotFoundException(`User with id ${userId} not found`);
+    }
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedNewPassword;
+    await user.save();
   }
 }

@@ -2,7 +2,7 @@
   font-size: 30px;
   margin-top: 5%;
   text-align: center;
-  color: darkslategrey;
+  color: #02081f;
 }
 .otcenter {
   display: flex;
@@ -52,7 +52,7 @@
   margin-top: 30px;
   margin-left: 20px;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
 }
 .col {
   display: flex;
@@ -67,14 +67,14 @@
   margin-top: 18px;
   margin-left: 15px;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
 }
 .innerdowntime {
   margin-top: 50px;
   margin-left: 15px;
   font-weight: 600;
-  color: darkslategrey;
-  margin-bottom: 30px;
+  color: #02081f;
+  margin-bottom: 50px;
 }
 .divider {
   display: flex;
@@ -87,7 +87,7 @@
   background-color: white;
   border-radius: 15px;
   border-style: solid;
-  border-color: darkslategrey;
+  border-color: #02081f;
   border-width: 2px;
   margin-top: 22px;
   margin-left: 20px;
@@ -99,26 +99,26 @@
   background-color: white;
   border-radius: 15px;
   border-style: solid;
-  border-color: darkslategrey;
+  border-color: #02081f;
   border-width: 2px;
   margin-left: 20px;
   margin-right: 20px;
 }
 .line {
   height: 60px;
-  background-color: darkslategrey;
+  background-color: #02081f;
   width: 3px;
 }
 .innerupplace {
   margin-top: 15px;
   margin-left: 5px;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
 }
 .innerdownplace {
   margin-left: 5px;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
 }
 .city {
   font-weight: 400;
@@ -140,12 +140,12 @@
   margin-top: 20px;
   margin-right: 30px;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
 }
 .username {
   margin-right: 30px;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
   margin-top: 20px;
   margin-left: 20px;
 }
@@ -162,7 +162,7 @@
   margin-left: 20px;
   font-weight: 600;
   font-size: 12px;
-  color: darkslategrey;
+  color: #02081f;
   margin-bottom: 20px;
 }
 .caricon {
@@ -174,14 +174,14 @@
   margin-top: 20px;
   margin-left: 20px;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
 }
 .cotravellarText {
   margin-top: 10px;
   margin-left: 20px;
   margin-bottom: 5px;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
 }
 .no_passanger {
   font-weight: 600;
@@ -193,7 +193,7 @@
 .passangerName {
   margin-left: 30px;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
   margin-top: 8px;
 }
 .space_between {

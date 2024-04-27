@@ -15,9 +15,8 @@ import {
 import { AuthService } from './auth.service';
 import { SignupAuthDto } from './dto/signup-auth.dto';
 import { SignInDto } from './dto/signin-auth.dto';
-import { Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateSignupDto } from './dto/updatesignup-auth.dto';
 import { ChangePasswordDto } from './dto/changePassword.dto';
@@ -48,15 +47,15 @@ export class AuthController {
     @Body() loginDto: SignInDto,
     @Res({ passthrough: true }) res: Response,
   ): Promise<void> {
-    const access_token = await this.authService.signIn(loginDto);
+    const { token, user } = await this.authService.signIn(loginDto);
     res
-      .cookie('access_token', access_token, {
+      .cookie('access_token', token, {
         httpOnly: true,
         secure: false,
         expires: new Date(Date.now() + 365 * 24 * 60 * 1000),
         domain: 'localhost',
       })
-      .send({ status: 'ok', access_token });
+      .send({ status: 'ok', access_token: token, user });
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -82,10 +81,8 @@ export class AuthController {
     @Res() res: Response,
   ): Promise<Response> {
     try {
-      await this.authService.updateUser(id, usersignupdto, file);
-      return res
-        .status(HttpStatus.OK)
-        .json({ message: 'User updated successfully' });
+      const image = await this.authService.updateUser(id, usersignupdto, file);
+      return res.status(HttpStatus.OK).json(image);
     } catch (error) {
       return res
         .status(error.status || HttpStatus.BAD_REQUEST)
@@ -138,6 +135,40 @@ export class AuthController {
       return res
         .status(HttpStatus.OK)
         .json({ message: 'Reset password email sent successfully' });
+    } catch (error) {
+      return res
+        .status(error.status || HttpStatus.BAD_REQUEST)
+        .json({ message: error.message });
+    }
+  }
+
+  @Get('/userverify/:id/:token')
+  async verifyUser(
+    @Param('id') id: string,
+    @Param('token') token: string,
+    @Res() res: Response,
+  ): Promise<Response> {
+    try {
+      const { userId, message } = await this.authService.verifyUser(id, token);
+      return res.status(HttpStatus.OK).json({ userId, message });
+    } catch (error) {
+      return res
+        .status(error.status || HttpStatus.BAD_REQUEST)
+        .json({ message: error.message });
+    }
+  }
+
+  @Patch('/resetPassword/:userId')
+  async resetPassword(
+    @Body('newPassword') newPassword: string,
+    @Param('userId') userId: string,
+    @Res() res: Response,
+  ): Promise<Response> {
+    try {
+      await this.authService.ResetPassword(newPassword, userId);
+      return res
+        .status(HttpStatus.OK)
+        .json({ message: 'Reset password successfully' });
     } catch (error) {
       return res
         .status(error.status || HttpStatus.BAD_REQUEST)

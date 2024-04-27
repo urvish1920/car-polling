@@ -4,18 +4,18 @@ import { ObjectId } from 'mongoose';
 export class CreateVehicleDto {
   user_id: ObjectId;
 
-  @IsString({ message: 'name is required' })
+  @IsString({ message: 'name is String' })
   name: string;
 
-  @IsString({ message: 'Number plate is required' })
+  @IsString({ message: 'Number plate is string' })
   No_Plate: string;
 
-  @IsString({ message: 'car model is required' })
+  @IsString({ message: 'car model is string' })
   model: string;
 
-  @IsNumber({}, { message: 'seaters is required' })
-  seaters: number;
+  @IsString({ message: 'seaters is string' })
+  seaters: string;
 
-  @IsString({ message: 'color of is required' })
+  @IsString({ message: 'color of is string' })
   color: string;
 }

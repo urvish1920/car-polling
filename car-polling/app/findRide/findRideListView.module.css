@@ -10,7 +10,7 @@
   color: rgb(142, 137, 137);
   display: flex;
   justify-content: center;
-  margin-top: 20%;
+  margin-top: 15%;
 }
 .customselect {
   width: 200px;
@@ -48,7 +48,7 @@
   display: flex;
   flex-direction: column;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
   justify-content: space-between;
 }
 
@@ -64,7 +64,7 @@
   margin-top: 10px;
   margin-left: 15px;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
 }
 
 .innertotalhours {
@@ -72,14 +72,14 @@
   margin-left: 25px;
   font-weight: 500;
   font-size: 10px;
-  color: darkslategrey;
+  color: #02081f;
 }
 
 .innerdowntime {
   margin-top: 15px;
   margin-left: 15px;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
 }
 
 .divider {
@@ -93,7 +93,7 @@
   background-color: white;
   border-radius: 15px;
   border-style: solid;
-  border-color: darkslategrey;
+  border-color: #02081f;
   border-width: 2px;
   margin-top: 15px;
   margin-left: 20px;
@@ -105,7 +105,7 @@
   background-color: white;
   border-radius: 15px;
   border-style: solid;
-  border-color: darkslategrey;
+  border-color: #02081f;
   border-width: 2px;
   margin-left: 20px;
   margin-right: 10px;
@@ -113,7 +113,7 @@
 
 .line {
   height: 50px;
-  background-color: darkslategrey;
+  background-color: #02081f;
   width: 3px;
   margin-left: 10px;
 }
@@ -132,16 +132,16 @@
 .innerupplace {
   margin-top: 10px;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
 }
 .innerdownplace {
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
 }
 .passengerrow {
   display: flex;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
 }
 .colored {
   background-color: darkslategray;
@@ -180,7 +180,7 @@
   margin-top: 28px;
   margin-left: 20px;
   font-weight: 600;
-  color: darkslategrey;
+  color: #02081f;
 }
 
 .avater {

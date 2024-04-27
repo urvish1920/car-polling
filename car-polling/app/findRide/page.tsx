@@ -44,6 +44,17 @@ export default function findRide() {
   const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSortBy(event.target.value);
   };
+  const sortRides = (rides: findState[], sortBy: string) => {
+    let sortedArray = [...rides];
+    if (sortBy === "option1") {
+      sortedArray.sort((a, b) => a.price - b.price);
+    } else if (sortBy === "option2") {
+      sortedArray.sort((a, b) =>
+        a.user.user_name.localeCompare(b.user.user_name)
+      );
+    }
+    return sortedArray;
+  };
 
   const data = useSelector((state: RootState) => state.search);
   const from = data.from;
@@ -69,7 +80,7 @@ export default function findRide() {
           if (data.message) {
             setAllRide([]);
           } else {
-            setAllRide(data.rides);
+            setAllRide(sortRides(data.rides, sortBy));
           }
           setIsPending(false);
         }
@@ -79,7 +90,7 @@ export default function findRide() {
       }
     };
     fetchRides();
-  }, []);
+  }, [sortBy]);
 
   const calculateTotalTime = (
     startTime: string,
@@ -110,7 +121,6 @@ export default function findRide() {
         >
           <option value="">Select sort type</option>
           <option value="option1">price</option>
-          <option value="option2">Passenger</option>
         </select>
       </div>
       {isPending ? (

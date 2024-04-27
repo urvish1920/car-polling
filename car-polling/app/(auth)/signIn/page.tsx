@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from "react";
 import styles from "./signIn.module.css";
 import Link from "next/link";
+import { setUserAndToken } from "../../redux/slice/userDataReducer";
+import { AppDispatch } from "@/app/redux/store";
+import { useDispatch } from "react-redux";
 
 interface User {
   email: string;
@@ -15,7 +18,7 @@ export default function signIn() {
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [buttonDisabled, setButtonDisable] = useState<boolean>(false);
-
+  const dispatch: AppDispatch = useDispatch();
   const onLogin = async () => {
     setLoading(true);
     try {
@@ -27,12 +30,25 @@ export default function signIn() {
         credentials: "include",
         body: JSON.stringify(user),
       });
-      if (response.ok && response.status === 201) {
-        window.location.href = "/";
+      const data = await response.json();
+      if (response.ok) {
+        const { access_token, user } = data;
+        if (access_token && user) {
+          dispatch(setUserAndToken({ user, token: access_token }));
+          if (user.IsAdmin) {
+            window.location.href = "/Admin";
+          } else {
+            window.location.href = "/";
+          }
+        } else {
+          console.log("Token or user data not found in response");
+        }
       } else {
-        console.log(response);
+        alert(data.message);
+        console.log("Login failed", response.statusText);
       }
     } catch (error: any) {
+      alert(error.message);
       console.log("Login failed", error.message);
     } finally {
       setLoading(false);

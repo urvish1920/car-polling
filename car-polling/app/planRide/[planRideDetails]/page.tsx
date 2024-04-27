@@ -179,8 +179,8 @@ export default function planRideDetails({
                       <Image
                         src={occupant.user.image || profileImage}
                         className={styles.avater}
-                        width={40}
-                        height={34}
+                        width={50}
+                        height={50}
                         alt={`Picture of ${occupant.user_name}`}
                       />
                       <div className={styles.arrow}>

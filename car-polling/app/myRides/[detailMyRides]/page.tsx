@@ -1,9 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Button } from "@mui/material";
 import Image from "next/image";
 import profileImage from "../../assert/avater.png";
-import icon from "../../assert/icon.png";
 import car from "../../assert/car.png";
 import styles from "./detailsMyRides.module.css";
 import FormattedDate from "@/app/component/Formate";
@@ -100,6 +98,30 @@ export default function FullDetailRide({
 
   const handleCancelEvent = () => {
     setShowModal(true);
+  };
+
+  const handlePaymentEvent = async () => {
+    try {
+      const response = await fetch(`http://localhost:8000/payment/order`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          price: userRide?.ride.price,
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        alert(data.message);
+      } else {
+        window.location.href = data.session_id;
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setIsPending(false);
+    }
   };
 
   useEffect(() => {
@@ -245,8 +267,8 @@ export default function FullDetailRide({
                         <Image
                           src={occupant.user.image || profileImage}
                           className={styles.avater}
-                          width={40}
-                          height={34}
+                          width={50}
+                          height={50}
                           alt={`Picture of ${occupant.user.user_name}`}
                         />
                       </div>
@@ -257,28 +279,50 @@ export default function FullDetailRide({
 
               <div className={styles.lastComponent}>
                 <div className={styles.linebetween} />
-                <button
-                  style={{
-                    padding: "5px",
-                    width: "150px",
-                    height: "40px",
-                    borderRadius: "10px",
-                    color: "white",
-                    backgroundColor: "red",
-                    border: "none",
-                    marginLeft: "40%",
-                    marginTop: "10px",
-                  }}
-                  onClick={handleCancelEvent}
-                  disabled={
-                    userRide.status_Request === "Awaiting Approval" ||
-                    userRide.status_Request === "Approve"
-                      ? false
-                      : true
-                  }
-                >
-                  cancle the request
-                </button>
+                <div>
+                  <button
+                    style={{
+                      padding: "5px",
+                      width: "150px",
+                      height: "40px",
+                      borderRadius: "10px",
+                      color: "white",
+                      backgroundColor: "red",
+                      border: "none",
+                      marginLeft: "25%",
+                      marginTop: "10px",
+                    }}
+                    onClick={handleCancelEvent}
+                    disabled={
+                      userRide.status_Request === "Awaiting Approval" ||
+                      userRide.status_Request === "Approve"
+                        ? false
+                        : true
+                    }
+                  >
+                    cancle the request
+                  </button>
+                  <button
+                    style={{
+                      padding: "5px",
+                      width: "150px",
+                      height: "40px",
+                      borderRadius: "10px",
+                      color: "white",
+                      backgroundColor: "green",
+                      marginLeft: "10%",
+                      border: "none",
+                      marginTop: "10px",
+                    }}
+                    onClick={handlePaymentEvent}
+                    disabled={
+                      userRide.status_Request === "Approve" ? false : true
+                    }
+                  >
+                    payment
+                  </button>
+                </div>
+
                 {showModal && (
                   <CancelRideModal
                     onCancel={handleCancel}

@@ -21,9 +21,11 @@ export interface Ride {
   end_time: string;
   price: number;
   leftSites: number;
+  occupation: [];
+  ride_status: string;
   user: {
     user_name: string;
-    image:String
+    image: String;
   };
   vehicle: {
     name: string;

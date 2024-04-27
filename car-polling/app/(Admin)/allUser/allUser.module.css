@@ -1,0 +1,162 @@
+.otcenter {
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+  width: 100vh;
+  margin-left: 27%;
+  border-radius: 10px;
+  align-items: center;
+}
+.not_Found {
+  font-size: 30px;
+  font-weight: 600;
+  color: rgb(142, 137, 137);
+  display: flex;
+  justify-content: center;
+  margin-top: 15%;
+}
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15%;
+}
+.heading_allUser {
+  font-weight: 600;
+  color: #02081f;
+  font-size: 30px;
+  text-align: center;
+  margin-top: 2%;
+  margin-bottom: 10px;
+}
+
+.outerContainer {
+  width: 90%;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 2vh;
+}
+
+.firstcontainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.secondComponent {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.inner_container {
+  display: flex;
+  width: 70%;
+  height: 600px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.user_name {
+  font-weight: 600;
+  color: #02081f;
+  font-size: 20px;
+  margin-top: 18px;
+  margin-left: 15px;
+}
+
+.user_img {
+  margin-top: 8px;
+  margin-right: 10px;
+}
+.user_avater {
+  border-radius: 50%;
+  border: 1px solid black;
+}
+
+.totalPublishRide {
+  color: #02081f;
+  font-weight: 600;
+  font-size: 15px;
+  margin-top: 10px;
+  margin-left: 20px;
+}
+.totalRequestRide {
+  color: #02081f;
+  font-weight: 600;
+  font-size: 15px;
+  margin-top: 10px;
+  margin-right: 20px;
+}
+
+.deleteIcon {
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+.prevNextButtons {
+  background-color: #02081f;
+  border: none;
+  border-radius: 2px;
+  color: white;
+  width: 15vh;
+  height: 35px;
+  font-size: 16px;
+  margin-top: 5%;
+  margin-left: 10px;
+}
+
+.allUser {
+  position: relative;
+}
+
+.modalBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContainer {
+  height: 150px;
+  width: 40vh;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+.text {
+  font-weight: 600;
+  font-size: 20px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.modalContainer p {
+  margin-bottom: 15px;
+}
+
+.modalContainer button {
+  margin-left: 50px;
+  margin-top: 20px;
+  height: 30px;
+  width: 80px;
+  border: none;
+  color: white;
+  background-color: #02081f;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modalContainer button:hover {
+  background-color: gray;
+}

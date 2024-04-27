@@ -1,10 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
-import icon from "../../assert/icon.png";
 import car from "../../assert/car.png";
 import profileImage from "../../assert/avater.png";
 import styles from "./findRideDetails.module.css";

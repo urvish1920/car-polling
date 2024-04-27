@@ -61,6 +61,18 @@ export default function findRide() {
     setSortBy(event.target.value);
   };
 
+  const sortRides = (rides: allRides[], sortBy: string) => {
+    let sortedArray = [...rides];
+    if (sortBy === "option1") {
+      sortedArray.sort((a, b) => a.ride.price - b.ride.price);
+    } else if (sortBy === "option2") {
+      sortedArray.sort((a, b) =>
+        a.user.user_name.localeCompare(b.user.user_name)
+      );
+    }
+    return sortedArray;
+  };
+
   useEffect(() => {
     const fetchRides = async () => {
       try {
@@ -74,7 +86,7 @@ export default function findRide() {
           if (data.message) {
             setAllRide([]);
           } else {
-            setAllRide(data);
+            setAllRide(sortRides(data, sortBy));
           }
           setIsPending(false);
         }
@@ -84,7 +96,7 @@ export default function findRide() {
       }
     };
     fetchRides();
-  }, []);
+  }, [sortBy]);
 
   return (
     <div className={styles.planRide}>
@@ -97,7 +109,6 @@ export default function findRide() {
         >
           <option value="">Select sort type</option>
           <option value="option1">price</option>
-          <option value="option2">Passenger</option>
         </select>
       </div>
       {isPending ? (

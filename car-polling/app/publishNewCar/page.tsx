@@ -6,6 +6,7 @@ import { Autocomplete } from "@react-google-maps/api";
 import { useDispatch, useSelector } from "react-redux";
 import { setStep } from "../redux/slice/stepReducer";
 import { setPublish } from "../redux/slice/publishReducer";
+import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 
 interface vehicle {
   _id: string;
@@ -263,7 +264,7 @@ export default function publishNewCar() {
           <div>
             <label className={styles.input_label}>When are you going?</label>
             <input
-              className={styles.input}
+              className={styles.input_date}
               id="planride_date"
               name="planride_date"
               type="date"
@@ -317,9 +318,9 @@ export default function publishNewCar() {
         )}
         {step === 6 && (
           <div>
-            <label className={styles.input_label}>Price per sites</label>
+            <label className={styles.input_label}>Price per sites ?</label>
             <input
-              className={styles.input}
+              className={styles.input_date}
               id="price"
               name="price"
               type="number"
@@ -337,7 +338,9 @@ export default function publishNewCar() {
               </label>
             </div>
             {isPending ? (
-              "loading ....."
+              <div className={styles.loading}>
+                <CircularProgress color="inherit" />
+              </div>
             ) : vehicles.length === 0 ? (
               <div className={styles.not_Found}>No vehicle</div>
             ) : (

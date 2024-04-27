@@ -31,13 +31,16 @@ export default function signup() {
         },
         body: JSON.stringify(user),
       });
+      const data = await response.json();
       if (!response.ok) {
+        alert(data.message);
         throw new Error(`Server responded with status ${response.status}`);
       }
       if (response.ok) {
         router.push("/signIn");
       }
     } catch (error: any) {
+      alert(error.message);
       console.error("Signup failed:", error.message);
     } finally {
       setLoading(false);
@@ -95,7 +98,6 @@ export default function signup() {
             onChange={(e) => setUser({ ...user, password: e.target.value })}
             placeholder="password"
           />
-         
           <button
             className={styles.button_SignUp}
             onClick={onSignup}

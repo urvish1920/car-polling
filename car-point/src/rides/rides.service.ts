@@ -60,6 +60,7 @@ export class RidesService {
             { 'drop_off.city': toPlace.city },
             { planride_date: { $gte: searchDateStart, $lte: searchDateEnd } },
             { leftSites: { $gte: passenger } },
+            { ride_status: { $ne: 'completed' } },
           ],
         },
       },

@@ -29,6 +29,7 @@ export interface planRide {
   ride_status: string;
   user: {
     user_name: string;
+    image: string;
   };
 }
 
@@ -42,6 +43,18 @@ export default function PlanRide() {
     setSortBy(event.target.value);
   };
 
+  const sortRides = (rides: planRide[], sortBy: string) => {
+    let sortedArray = [...rides];
+    if (sortBy === "option1") {
+      sortedArray.sort((a, b) => a.price - b.price);
+    } else if (sortBy === "option2") {
+      sortedArray.sort((a, b) =>
+        a.user.user_name.localeCompare(b.user.user_name)
+      );
+    }
+    return sortedArray;
+  };
+
   useEffect(() => {
     const fetchRides = async () => {
       try {
@@ -53,7 +66,7 @@ export default function PlanRide() {
         } else {
           const data = await response.json();
           console.log(data);
-          setAllRide(data);
+          setAllRide(sortRides(data, sortBy));
           setIsPending(false);
         }
       } catch (error) {
@@ -62,16 +75,8 @@ export default function PlanRide() {
         setIsPending(false);
       }
     };
-
-    const fetchTimeout = setTimeout(() => {
-      setIsPending(false);
-      console.log("Server is not responding. Please try again later.");
-    }, 5000);
-
     fetchRides();
-
-    return () => clearTimeout(fetchTimeout);
-  }, []);
+  }, [sortBy]);
 
   return (
     <div className={styles.planRide}>
@@ -84,7 +89,6 @@ export default function PlanRide() {
         >
           <option value="">Select sort type</option>
           <option value="option1">price</option>
-          <option value="option2">Passenger</option>
         </select>
       </div>
       {isPending ? (
@@ -115,7 +119,6 @@ export default function PlanRide() {
                       <div className={styles.inneruptime}>
                         {item.start_time}
                       </div>
-                      <div className={styles.innertotalhours}>5h</div>
                       <div className={styles.innerdowntime}>
                         {item.end_time}
                       </div>

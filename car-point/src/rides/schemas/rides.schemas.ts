@@ -57,7 +57,7 @@ export class Rides {
   @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }], default: [] })
   occupation: Types.ObjectId[];
 
-  @Prop({ type: String, default: 'not started' })
+  @Prop({ type: String, default: 'Not started' })
   ride_status: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })

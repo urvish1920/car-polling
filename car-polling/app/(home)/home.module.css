@@ -1,8 +1,7 @@
 .home {
-  background-color: darkslategrey;
   width: 100vw;
   height: 100vh;
-  background-color: darkslategrey;
+  background-color: #02081f;
   width: 100vw;
   display: flex;
   height: 100vh;
@@ -52,4 +51,73 @@
   margin-left: 20px;
   border-radius: 10px;
   font-size: 15px;
+}
+
+.headingAdmin {
+  margin-left: 45%;
+  color: white;
+  font-size: 40px;
+}
+
+.AdminCheckUser {
+  height: 200px;
+  width: 400px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  background-color: lightgray;
+  margin-top: 5%;
+  margin-left: 35%;
+}
+.AdminHome {
+  display: flex;
+  flex-direction: row;
+}
+.inner_text {
+  color: black;
+  font-size: 30px;
+  margin-top: 40px;
+}
+.totalNo {
+  color: black;
+  font-size: 40px;
+  margin-top: 10px;
+}
+
+.AdminCheckTotalPublish {
+  height: 200px;
+  width: 400px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  background-color: lightgray;
+  margin-top: 5%;
+  margin-left: 10%;
+}
+
+.inner_text_publish {
+  color: black;
+  font-size: 25px;
+  margin-top: 40px;
+}
+
+.AdminCheckTotelRequest {
+  height: 200px;
+  width: 400px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  background-color: lightgray;
+  margin-top: 5%;
+  margin-left: 52%;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15%;
 }

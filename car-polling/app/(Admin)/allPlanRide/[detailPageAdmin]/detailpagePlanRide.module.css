@@ -15,49 +15,8 @@
   justify-content: center;
 }
 .outercontainer {
-  width: 55%;
+  width: 40%;
   height: 500px;
-  display: grid;
-  grid-template-rows: 20% 40% 30% 50%;
-}
-.request {
-  margin-left: 30px;
-  margin-top: 20px;
-}
-
-.notification {
-  position: relative;
-}
-
-.notificationCount {
-  position: absolute;
-  top: -3px;
-  right: -3px;
-  background-color: red;
-  color: white;
-  font-size: 12px;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.bookingRequest {
-  margin-top: 5px;
-  color: rgb(19, 119, 153);
-}
-.replay {
-  font-size: 12px;
-  margin-top: 2px;
-  font-weight: 200;
-  background: none;
-  border: none;
-  margin-left: 0px;
-}
-.notification {
-  margin-top: 5px;
-  margin-right: 10px;
 }
 .linebetween {
   border: none;
@@ -134,11 +93,51 @@
 
 .loccol {
   display: grid;
-  grid-template-rows: 78% 25%;
+  grid-template-rows: 70% 30%;
+  margin-bottom: 20px;
 }
 .fullAddress {
   font-weight: 400;
   font-size: 12px;
+}
+.fullAddressDown {
+  font-weight: 400;
+  font-size: 12px;
+  margin-bottom: 5%;
+}
+.space_between_text {
+  display: flex;
+  justify-content: space-between;
+}
+.priceText {
+  margin-top: 20px;
+  margin-left: 20px;
+  font-weight: light;
+  color: grey;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+.price {
+  margin-top: 20px;
+  margin-right: 30px;
+  font-weight: 600;
+  color: #02081f;
+}
+.username {
+  margin-right: 30px;
+  font-weight: 600;
+  font-size: 18px;
+  color: #02081f;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+.owner_img {
+  margin-top: 10px;
+  margin-right: 30px;
+  margin-bottom: 5px;
+}
+.owner_avater {
+  border-radius: 50%;
 }
 .ride_status {
   font-weight: 600;
@@ -146,34 +145,23 @@
   margin-left: 10px;
   margin-top: 10px;
 }
-.labeltext {
-  margin-top: 15px;
-  margin-left: 2%;
+.statesRide {
   font-weight: 600;
   color: #02081f;
-}
-.updatebutton {
-  height: 30px;
-  width: 80px;
-  margin-top: 15px;
-  margin-right: 20px;
-  background-color: #02081f;
-  color: white;
-  border: none;
-  border-radius: 2px;
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .co_travellers {
   margin-top: 10px;
-  margin-left: 20px;
+  margin-left: 10px;
   font-weight: 600;
   color: #02081f;
 }
-
 .space_between {
   display: flex;
   justify-content: space-between;
 }
-
 .img {
   margin-right: 30px;
   margin-top: 5px;
@@ -190,15 +178,10 @@
   margin-top: 18px;
 }
 
-.co_travellersBorder {
+/* .co_travellersBorder {
   border: 1px solid lightgray;
   height: 8vh;
   width: 95%;
   border-radius: 4px;
   margin-top: 10px;
-}
-
-.arrow {
-  margin-top: 8px;
-  margin-left: 20px;
-}
+} */
