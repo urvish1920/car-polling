@@ -22,6 +22,7 @@ import {
 import { ChangePasswordDto } from './dto/changePassword.dto';
 import { Rides } from 'src/rides/schemas/rides.schemas';
 import { Request_user } from 'src/request/schemas/Request.schemas';
+import * as Tesseract from 'tesseract.js';
 
 @Injectable()
 export class AuthService {
@@ -64,7 +65,13 @@ export class AuthService {
     }
     return user;
   }
-
+  async findOneId(id: string): Promise<User> {
+    const user = await this.userModel.findById(id);
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+    return user;
+  }
   async updateUser(
     id: string,
     usersignupdto: UpdateSignupDto,

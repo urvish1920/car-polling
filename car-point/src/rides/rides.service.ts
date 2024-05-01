@@ -51,6 +51,7 @@ export class RidesService {
     searchDateStart.setUTCHours(0, 0, 0, 0);
     const searchDateEnd = new Date(searchDate);
     searchDateEnd.setUTCHours(23, 59, 59, 999);
+    console.log(fromPlace, toPlace, searchDateStart, searchDateEnd, passenger);
 
     const rides = await this.RideModel.aggregate([
       {
@@ -76,6 +77,7 @@ export class RidesService {
         $unwind: '$user',
       },
     ]).exec();
+    console.log(rides);
 
     if (rides.length === 0) {
       return { message: 'Rides not found' };

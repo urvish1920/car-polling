@@ -2,6 +2,7 @@
 import { FormEvent, useState } from "react";
 import styles from "./emailsend.module.css";
 import TextField from "@mui/material/TextField/TextField";
+import { BASE_URL } from "@/app/utils/apiutils";
 
 export default function ApprovalRequest() {
   const [email, setEmail] = useState("");
@@ -9,23 +10,21 @@ export default function ApprovalRequest() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        "http://localhost:8000/auth/sendResetPasswordEmail",
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email }),
-        }
-      );
-      console.log(response);
-      if (!response.ok) {
+      const response = await fetch(`${BASE_URL}/auth/sendResetPasswordEmail`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        alert(data.message);
+      } else {
         alert("Failed to change password");
         return;
       }
-      alert("Password changed successfully!");
     } catch (error) {
       console.error("Error changing password:", error);
       alert(error);

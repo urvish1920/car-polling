@@ -9,8 +9,9 @@ import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import CurrencyExchangeOutlinedIcon from "@mui/icons-material/CurrencyExchangeOutlined";
 import CircularProgress from "@mui/material/CircularProgress";
 import DoDisturbAltOutlinedIcon from "@mui/icons-material/DoDisturbAltOutlined";
+import { BASE_URL } from "../utils/apiutils";
 
-export interface allRides {
+interface allRides {
   _id: string;
   Ride_id: string;
   from: {
@@ -76,13 +77,14 @@ export default function findRide() {
   useEffect(() => {
     const fetchRides = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/request`, {
+        const response = await fetch(`${BASE_URL}/request`, {
           credentials: "include",
         });
+        const data = await response.json();
         if (!response.ok) {
+          alert(data.message);
           throw new Error(`Server responded with status ${response.status}`);
         } else {
-          const data = await response.json();
           if (data.message) {
             setAllRide([]);
           } else {
@@ -91,6 +93,7 @@ export default function findRide() {
           setIsPending(false);
         }
       } catch (error) {
+        alert(error);
         console.error("Error fetching data:", error);
         setIsPending(false);
       }

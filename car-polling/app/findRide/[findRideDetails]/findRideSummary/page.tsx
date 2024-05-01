@@ -2,6 +2,7 @@
 import styles from "./findRideSummary.module.css";
 import FormattedDate from "@/app/component/Formate";
 import { RootState } from "@/app/redux/store";
+import { BASE_URL } from "@/app/utils/apiutils";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -13,7 +14,7 @@ export default function SummaryFindRide() {
 
   const handleRequest = async () => {
     try {
-      const response = await fetch("http://localhost:8000/request", {
+      const response = await fetch(`${BASE_URL}/request`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,11 +27,14 @@ export default function SummaryFindRide() {
           Ride_Id: ride._id,
         }),
       });
+      const data = await response.json();
       if (!response.ok) {
+        alert(data.message);
         throw new Error(`Server responded with status ${response.status}`);
       }
       if (response.ok) {
-        alert("send request to user");
+        alert(data.message);
+        setCheckButton(true);
         window.location.href = "/";
       }
     } catch (error: any) {

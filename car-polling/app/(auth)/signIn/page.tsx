@@ -5,6 +5,7 @@ import Link from "next/link";
 import { setUserAndToken } from "../../redux/slice/userDataReducer";
 import { AppDispatch } from "@/app/redux/store";
 import { useDispatch } from "react-redux";
+import { BASE_URL } from "@/app/utils/apiutils";
 
 interface User {
   email: string;
@@ -22,7 +23,7 @@ export default function signIn() {
   const onLogin = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:8000/auth/signIn", {
+      const response = await fetch(`${BASE_URL}/auth/signIn`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField/TextField";
 import InputAdornment from "@mui/material/InputAdornment/InputAdornment";
 import IconButton from "@mui/material/IconButton/IconButton";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { BASE_URL } from "@/app/utils/apiutils";
 
 export default function forgetPassword() {
   const [changePassword, setChangePassword] = useState({
@@ -19,6 +20,7 @@ export default function forgetPassword() {
   console.log(userId);
   const [passwordValid, setPasswordValid] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
+
   useEffect(() => {
     const currentUrl = window.location.href;
     const parts = currentUrl.split("/");
@@ -27,15 +29,16 @@ export default function forgetPassword() {
     const fetchRides = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/auth/userverify/${id}/${token}`,
+          `${BASE_URL}/auth/userverify/${id}/${token}`,
           {
             credentials: "include",
           }
         );
+        const data = await response.json();
         if (!response.ok) {
+          alert(data.message);
           throw new Error(`Server responded with status ${response.status}`);
         } else {
-          const data = await response.json();
           setUserId(data.userId);
           if (data.message) {
             setIsVerified(true);
@@ -43,6 +46,7 @@ export default function forgetPassword() {
           }
         }
       } catch (error) {
+        alert(error);
         console.error("Error fetching data:", error);
       }
     };
@@ -80,17 +84,14 @@ export default function forgetPassword() {
         throw new Error("User ID is not defined");
       }
 
-      const response = await fetch(
-        `http://localhost:8000/auth/resetPassword/${userId}`,
-        {
-          method: "PATCH",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ newPassword: changePassword.newPassword }),
-        }
-      );
+      const response = await fetch(`${BASE_URL}/auth/resetPassword/${userId}`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ newPassword: changePassword.newPassword }),
+      });
       console.log(response);
       if (!response.ok) {
         throw new Error("Failed to change password");

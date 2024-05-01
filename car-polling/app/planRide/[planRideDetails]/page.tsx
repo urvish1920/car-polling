@@ -1,7 +1,7 @@
 "use client";
 import NotificationsNoneRoundedIcon from "@mui/icons-material/NotificationsNoneRounded";
 import styles from "./planRideDetails.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FormattedDate from "@/app/component/Formate";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +12,9 @@ import { fetchPlanRides } from "@/app/redux/slice/planRideDetailsReducer";
 import { fetchRequestUser } from "@/app/redux/slice/approvalUserReducer";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import CircularProgress from "@mui/material/CircularProgress";
-
+import ChatIcon from "@mui/icons-material/Chat";
+import ChatBox from "@/app/component/Chat";
+import { BASE_URL } from "@/app/utils/apiutils";
 export default function planRideDetails({
   params,
 }: {
@@ -23,8 +25,10 @@ export default function planRideDetails({
   const ride = useSelector((state: any) => state.PlanRide.rides);
   const request = useSelector((state: RootState) => state.RequestUser.request);
   const [isPending, setIsPending] = useState(true);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const router = useRouter();
+
   useEffect(() => {
     dispatch(fetchPlanRides(id))
       .then(() => {
@@ -47,7 +51,7 @@ export default function planRideDetails({
 
   const handleStatus = async (status: string) => {
     try {
-      const response = await fetch(`http://localhost:8000/rides/${id}`, {
+      const response = await fetch(`${BASE_URL}/rides/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -57,15 +61,25 @@ export default function planRideDetails({
           ride_status: status,
         }),
       });
+      const data = await response.json();
       if (!response.ok) {
+        alert(data.message);
         throw new Error(`Server responded with status ${response.status}`);
       }
       if (response.ok) {
-        alert(`Ride was ${status}`);
+        alert(data.message);
       }
     } catch (error: any) {
       console.error("Signup failed:", error.message);
     }
+  };
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
   };
 
   return (
@@ -170,17 +184,30 @@ export default function planRideDetails({
               <div className={styles.linebetween} />
               <div className={styles.co_travellers}>co-travellers</div>
               {ride.occupation.map((occupant: any, index: number) => (
-                <div className={styles.co_travellersBorder}>
-                  <div className={styles.space_between} key={index}>
+                <div className={styles.co_travellersBorder} key={index}>
+                  <div className={styles.space_between}>
                     <div className={styles.passangerName}>
-                      {occupant.user.user_name}
+                      {occupant.user.user_name.charAt(0).toUpperCase() +
+                        occupant.user.user_name.slice(1)}
+
+                      <ChatIcon
+                        className={styles.chatIcon}
+                        onClick={openPopup}
+                      />
                     </div>
+                    {isPopupOpen && (
+                      <div className={styles.overlay}>
+                        <div className={styles.popup}>
+                          <ChatBox reciverId={occupant.user._id} />
+                        </div>
+                      </div>
+                    )}
                     <div className={styles.img}>
                       <Image
                         src={occupant.user.image || profileImage}
                         className={styles.avater}
-                        width={50}
-                        height={50}
+                        width={60}
+                        height={60}
                         alt={`Picture of ${occupant.user_name}`}
                       />
                       <div className={styles.arrow}>

@@ -7,6 +7,7 @@ import styles from "./detailsMyRides.module.css";
 import FormattedDate from "@/app/component/Formate";
 import CircularProgress from "@mui/material/CircularProgress";
 import CancelRideModal from "./cancelHandle";
+import { BASE_URL } from "@/app/utils/apiutils";
 
 export interface Ride {
   _id: string;
@@ -72,7 +73,7 @@ export default function FullDetailRide({
 
   const handleDelete = () => {
     console.log("deleted user");
-    fetch(`http://localhost:8000/rides/delete`, {
+    fetch(`${BASE_URL}/rides/delete`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -102,7 +103,7 @@ export default function FullDetailRide({
 
   const handlePaymentEvent = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/payment/order`, {
+      const response = await fetch(`${BASE_URL}/payment/order`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -127,13 +128,14 @@ export default function FullDetailRide({
   useEffect(() => {
     const fetchRides = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/request/${id}`, {
+        const response = await fetch(`${BASE_URL}/request/${id}`, {
           credentials: "include",
         });
+        const data = await response.json();
         if (!response.ok) {
+          alert(data.message);
           throw new Error(`Server responded with status ${response.status}`);
         } else {
-          const data = await response.json();
           if (data.message) {
             alert(data.message);
           } else {
@@ -142,6 +144,7 @@ export default function FullDetailRide({
           setIsPending(false);
         }
       } catch (error) {
+        alert(error);
         console.error("Error fetching data:", error);
         setIsPending(false);
       }

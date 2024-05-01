@@ -22,6 +22,9 @@ export class User {
 
   @Prop({ default: false })
   IsAdmin: boolean;
+
+  @Prop()
+  aadharCard: string;
 }
 
 export const User_schema = SchemaFactory.createForClass(User);

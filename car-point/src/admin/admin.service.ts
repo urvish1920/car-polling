@@ -79,6 +79,8 @@ export class AdminService {
             user_name: 1,
             email: 1,
             image: 1,
+            IsVerify: 1,
+            aadharCard: 1,
             ridesCount: { $size: '$rides' },
             requestsCount: { $size: '$requests' },
           },
@@ -153,6 +155,16 @@ export class AdminService {
       }
     } else {
       throw new UnauthorizedException('Not proper User');
+    }
+  }
+
+  async GetUser(req: Request, id: string) {
+    if (req['user']['IsAdmin']) {
+      const user = await this.userModel.findById(id);
+      if (!user) {
+        throw new NotFoundException(`User with id ${id} not found`);
+      }
+      return user;
     }
   }
 }

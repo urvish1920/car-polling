@@ -8,6 +8,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 import FormattedDate from "@/app/component/Formate";
 import { useRouter } from "next/navigation";
+import { BASE_URL } from "@/app/utils/apiutils";
 
 interface Rides {
   _id: string;
@@ -48,7 +49,7 @@ export default function AllUserPage() {
     const fetchTotalData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/admin/AllRides?page=${currentPage}`,
+          `${BASE_URL}/admin/AllRides?page=${currentPage}`,
           {
             credentials: "include",
           }
@@ -75,13 +76,10 @@ export default function AllUserPage() {
 
   const confirmDelete = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:8000/admin/deleteRide/${deleteId}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/admin/deleteRide/${deleteId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
       const data = await response.json();
       if (!response.ok) {
         alert(`Failed to delete user ${response}`);

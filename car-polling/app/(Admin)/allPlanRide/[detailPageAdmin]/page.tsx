@@ -7,6 +7,7 @@ import Image from "next/image";
 import profileImage from "../../../assert/avater.png";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Ride } from "@/app/redux/slice/planRideDetailsReducer";
+import { BASE_URL } from "@/app/utils/apiutils";
 
 export default function RideDetails({
   params,
@@ -21,7 +22,7 @@ export default function RideDetails({
   useEffect(() => {
     const fetchDetail = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/rides/${id}`, {
+        const response = await fetch(`${BASE_URL}/rides/${id}`, {
           credentials: "include",
         });
         if (!response.ok) {

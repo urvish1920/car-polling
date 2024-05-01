@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import CircularProgress from "@mui/material/CircularProgress";
 import DistanceCalculator from "../component/DistanceCalulator";
+import { BASE_URL } from "../utils/apiutils";
 
 export interface findState {
   _id: string;
@@ -66,17 +67,18 @@ export default function findRide() {
     const fetchRides = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/rides/filterData?from=${JSON.stringify(
+          `${BASE_URL}/rides/filterData?from=${JSON.stringify(
             from
           )}&to=${JSON.stringify(to)}&date=${date}&passanger=${passenger}`,
           {
             credentials: "include",
           }
         );
+        const data = await response.json();
         if (!response.ok) {
+          alert(data.message);
           throw new Error(`Server responded with status ${response.status}`);
         } else {
-          const data = await response.json();
           if (data.message) {
             setAllRide([]);
           } else {
@@ -85,6 +87,7 @@ export default function findRide() {
           setIsPending(false);
         }
       } catch (error) {
+        alert(error);
         console.error("Error fetching data:", error);
         setIsPending(false);
       }

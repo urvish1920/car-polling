@@ -95,4 +95,22 @@ export class AdminController {
         .json({ message: error.message });
     }
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/userdetail/:id')
+  async userGet(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Res() res: Response,
+  ) {
+    try {
+      console.log(id);
+      const User = await this.adminService.GetUser(req, id);
+      return res.status(HttpStatus.OK).json(User);
+    } catch (error) {
+      return res
+        .status(error.status || HttpStatus.BAD_REQUEST)
+        .json({ message: error.message });
+    }
+  }
 }

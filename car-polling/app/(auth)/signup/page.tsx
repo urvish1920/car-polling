@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./signup.module.css";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { BASE_URL } from "@/app/utils/apiutils";
 
 interface User {
   email: string;
@@ -24,7 +25,7 @@ export default function signup() {
   const onSignup = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:8000/auth/signup", {
+      const response = await fetch(`${BASE_URL}/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

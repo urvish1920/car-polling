@@ -67,6 +67,7 @@
   font-size: 20px;
   margin-top: 18px;
   margin-left: 15px;
+  display: flex;
 }
 
 .user_img {

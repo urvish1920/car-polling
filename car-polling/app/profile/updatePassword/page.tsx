@@ -5,6 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import styles from "./updatePassword.module.css";
 import { ChangeEvent, FormEvent, useState } from "react";
+import { BASE_URL } from "@/app/utils/apiutils";
 
 export default function ApprovalRequest() {
   const [changePassword, setChangePassword] = useState({
@@ -57,20 +58,17 @@ export default function ApprovalRequest() {
     }
 
     try {
-      const response = await fetch(
-        "http://localhost:8000/auth/changePassword",
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            oldPassword: changePassword.oldPassword,
-            newPassword: changePassword.newPassword,
-          }),
-        }
-      );
+      const response = await fetch(`${BASE_URL}/auth/changePassword`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          oldPassword: changePassword.oldPassword,
+          newPassword: changePassword.newPassword,
+        }),
+      });
       console.log(response);
       if (!response.ok) {
         alert("Failed to change password.");

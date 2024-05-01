@@ -65,12 +65,27 @@
   font-size: medium !important;
   margin-right: 5px;
 }
-.headingCar {
+.aadharCardUploadButton {
+  text-transform: none !important;
+  height: 20px !important;
+  width: 200px !important;
+  margin-left: 20px !important;
+  margin-top: 5px;
+}
+.headingProfile {
   font-weight: 600;
   color: #02081f;
   font-size: 20px;
   margin-top: 20px;
   margin-left: 28px;
+}
+.innerTextVer {
+  font-weight: 600;
+  color: #02081f;
+  font-size: 15px;
+  margin-left: 35px;
+  margin-top: 15px;
+  margin-bottom: 10px;
 }
 .car_details {
   display: flex;

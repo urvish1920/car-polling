@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { ObjectId, Types } from 'mongoose';
 
-//validation function for time
 const validateTimeFormat = (value: string) => {
   const regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
   return regex.test(value);

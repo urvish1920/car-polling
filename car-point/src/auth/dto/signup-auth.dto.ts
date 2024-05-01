@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
-import  {Multer}  from 'multer';
+
 export class SignupAuthDto {
   @IsNotEmpty()
   @IsString()

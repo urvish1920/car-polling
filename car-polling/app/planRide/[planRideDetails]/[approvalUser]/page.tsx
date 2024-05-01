@@ -4,6 +4,7 @@ import Image from "next/image";
 import profileImage from "../../../assert/avater.png";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import { BASE_URL } from "@/app/utils/apiutils";
 
 export default function ApprovalRequest({
   params,
@@ -22,7 +23,7 @@ export default function ApprovalRequest({
   const handleApproval = async (approvalStatus: string) => {
     if (approvalStatus === "decline") {
       try {
-        const response = await fetch(`http://localhost:8000/request/${id}`, {
+        const response = await fetch(`${BASE_URL}/request/${id}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
@@ -32,11 +33,12 @@ export default function ApprovalRequest({
             status_Request: approvalStatus,
           }),
         });
+        const data = await response.json();
         if (!response.ok) {
+          alert(data.message);
           throw new Error(`Server responded with status ${response.status}`);
-        }
-        if (response.ok) {
-          alert(`user was ${approvalStatus}`);
+        } else {
+          alert(data.message);
           setButtondisable(true);
         }
       } catch (error: any) {
@@ -45,7 +47,7 @@ export default function ApprovalRequest({
     } else {
       if (ride.leftSites >= filteredRequests[0].passenger) {
         try {
-          const response = await fetch(`http://localhost:8000/request/${id}`, {
+          const response = await fetch(`${BASE_URL}/request/${id}`, {
             method: "PATCH",
             headers: {
               "Content-Type": "application/json",
@@ -55,11 +57,12 @@ export default function ApprovalRequest({
               status_Request: approvalStatus,
             }),
           });
+          const data = await response.json();
           if (!response.ok) {
+            alert(data.message);
             throw new Error(`Server responded with status ${response.status}`);
-          }
-          if (response.ok) {
-            alert(`user was ${approvalStatus}`);
+          } else {
+            alert(data.message);
             setButtondisable(true);
           }
         } catch (error: any) {
@@ -67,27 +70,25 @@ export default function ApprovalRequest({
         }
         const newleftsites = ride.leftSites - filteredRequests[0].passenger;
         const newOccupation = [...ride.occupation, filteredRequests[0]];
-        console.log(newOccupation);
         try {
-          const response = await fetch(
-            `http://localhost:8000/rides/${ride._id}`,
-            {
-              method: "PATCH",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              credentials: "include",
-              body: JSON.stringify({
-                leftSites: newleftsites,
-                occupation: newOccupation,
-              }),
-            }
-          );
+          const response = await fetch(`${BASE_URL}/rides/${ride._id}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({
+              leftSites: newleftsites,
+              occupation: newOccupation,
+            }),
+          });
+          const data = await response.json();
           if (!response.ok) {
+            alert(data.message);
             throw new Error(`Server responded with status ${response.status}`);
-          }
-          if (response.ok) {
-            alert(`user add in car`);
+          } else {
+            alert(data.message);
+            setButtondisable(true);
           }
         } catch (error: any) {
           console.error("Signup failed:", error.message);
@@ -115,8 +116,8 @@ export default function ApprovalRequest({
                 <Image
                   src={filteredRequests[0].user.image || profileImage}
                   className={styles.avater}
-                  width={48}
-                  height={50}
+                  width={80}
+                  height={80}
                   alt="Profile Avatar"
                 />
               </div>

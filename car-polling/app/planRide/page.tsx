@@ -6,6 +6,7 @@ import FormattedDate from "@/app/component/Formate";
 import Image from "next/image";
 import car from "../assert/logo.png";
 import CircularProgress from "@mui/material/CircularProgress";
+import { BASE_URL } from "../utils/apiutils";
 
 export interface planRide {
   _id: string;
@@ -58,14 +59,14 @@ export default function PlanRide() {
   useEffect(() => {
     const fetchRides = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/rides/planRide`, {
+        const response = await fetch(`${BASE_URL}/rides/planRide`, {
           credentials: "include",
         });
+        const data = await response.json();
         if (!response.ok) {
+          alert(data.message);
           throw new Error(`Server responded with status ${response.status}`);
         } else {
-          const data = await response.json();
-          console.log(data);
           setAllRide(sortRides(data, sortBy));
           setIsPending(false);
         }

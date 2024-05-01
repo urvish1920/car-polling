@@ -11,8 +11,9 @@ import UpdateCarPopup from "../component/(profileComponent)/updateCar";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { updateUserImage } from "../redux/slice/userDataReducer";
+import { BASE_URL } from "../utils/apiutils";
 
-export interface User {
+interface User {
   _id: string;
   user_name: string;
   email: string;
@@ -45,7 +46,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userResponse = await fetch(`http://localhost:8000/auth/getUser`, {
+        const userResponse = await fetch(`${BASE_URL}/auth/getUser`, {
           credentials: "include",
         });
         if (!userResponse.ok) {
@@ -60,7 +61,7 @@ const Profile = () => {
       }
 
       try {
-        const vehiclesResponse = await fetch(`http://localhost:8000/vehicle`, {
+        const vehiclesResponse = await fetch(`${BASE_URL}/vehicle`, {
           credentials: "include",
         });
         if (!vehiclesResponse.ok) {
@@ -83,7 +84,7 @@ const Profile = () => {
   const handleAddCar = async (carData: any) => {
     console.log(carData);
     try {
-      const response = await fetch("http://localhost:8000/vehicle", {
+      const response = await fetch(`${BASE_URL}/vehicle`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -108,7 +109,7 @@ const Profile = () => {
     console.log(carData);
     try {
       const response = await fetch(
-        `http://localhost:8000/vehicle/${selectedVehicle?._id}`,
+        `${BASE_URL}/vehicle/${selectedVehicle?._id}`,
         {
           method: "PATCH",
           credentials: "include",
@@ -137,7 +138,7 @@ const Profile = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:8000/auth/logout", {
+      const response = await fetch(`${BASE_URL}/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
@@ -167,22 +168,24 @@ const Profile = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:8000/auth/updateUser/${user?._id}`,
+          `${BASE_URL}/auth/updateUser/${user?._id}`,
           {
             method: "PATCH",
             credentials: "include",
             body: formdata,
           }
         );
+        const data = await response.json();
+        console.log(data.image.img);
         if (!response.ok) {
+          alert(data.message);
           throw new Error(`Server responded with status ${response.status}`);
         }
-        const data = await response.json();
-        alert("image added successfully uploaded");
-        console.log(data);
-        dispatch(updateUserImage(data.img));
+        alert(data.message);
+        dispatch(updateUserImage(data.image.img));
         window.location.reload();
       } catch (error) {
+        alert(error);
         console.error("Error updating user image:", error);
       }
     }
@@ -205,7 +208,6 @@ const Profile = () => {
                 user.user_name.charAt(0).toUpperCase() +
                   user.user_name.slice(1)}
             </div>
-
             <div className={styles.img}>
               {user ? (
                 <Image
@@ -253,42 +255,44 @@ const Profile = () => {
             </Button>
           </div>
           {!user?.IsAdmin && (
-            <div className={styles.third_con}>
-              <div className={styles.linebetween} />
-              <div className={styles.car_details}>
-                <div className={styles.headingCar}>About Car</div>
-                <Button
-                  variant="text"
-                  className={styles.carEditButton}
-                  onClick={() => setIsPopupOpen(true)}
-                >
-                  <ControlPointIcon className={styles.editIcon} /> Add the car
-                </Button>
-              </div>
-              {vehicle.length === 0 ? (
-                <div className={styles.not_Found}>No vehicle</div>
-              ) : (
-                vehicle.map((item, index) => (
-                  <div className={styles.space_between} key={index}>
-                    <div>
-                      <div className={styles.carname}>
-                        {item.model} {item.name}
+            <>
+              <div className={styles.third_con}>
+                <div className={styles.linebetween} />
+                <div className={styles.car_details}>
+                  <div className={styles.headingProfile}>About Car</div>
+                  <Button
+                    variant="text"
+                    className={styles.carEditButton}
+                    onClick={() => setIsPopupOpen(true)}
+                  >
+                    <ControlPointIcon className={styles.editIcon} /> Add the car
+                  </Button>
+                </div>
+                {vehicle.length === 0 ? (
+                  <div className={styles.not_Found}>No vehicle</div>
+                ) : (
+                  vehicle.map((item, index) => (
+                    <div className={styles.space_between} key={index}>
+                      <div>
+                        <div className={styles.carname}>
+                          {item.model} {item.name}
+                        </div>
+                        <div className={styles.carColor}>{item.color}</div>
                       </div>
-                      <div className={styles.carColor}>{item.color}</div>
+                      <div>
+                        <ChevronRightIcon
+                          style={{
+                            fontSize: "2rem",
+                            marginTop: "10px",
+                          }}
+                          onClick={() => handleUpdatePopupOpen(item)}
+                        />
+                      </div>
                     </div>
-                    <div>
-                      <ChevronRightIcon
-                        style={{
-                          fontSize: "2rem",
-                          marginTop: "10px",
-                        }}
-                        onClick={() => handleUpdatePopupOpen(item)}
-                      />
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
+                  ))
+                )}
+              </div>
+            </>
           )}
           <div className={styles.forthComponent}>
             <div className={styles.linebetween} />

@@ -5,11 +5,15 @@ import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 import Image from "next/image";
 import profile from "@/app/assert/avater.png";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
+import { useRouter } from "next/navigation";
+import { BASE_URL } from "@/app/utils/apiutils";
 
-interface User {
+export interface User {
   _id: string;
   user_name: string;
   image: string;
+  email: string;
   requestsCount: number;
   ridesCount: number;
 }
@@ -20,12 +24,13 @@ export default function AllUserPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteId, setDeleteId] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchTotalData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/admin/AllUser?page=${currentPage}`,
+          `${BASE_URL}/admin/AllUser?page=${currentPage}`,
           {
             credentials: "include",
           }
@@ -34,6 +39,7 @@ export default function AllUserPage() {
           throw new Error(`Server responded with status ${response.status}`);
         } else {
           const data = await response.json();
+          console.log(data);
           setAllUser(data.AllUsers);
           setIsPending(false);
         }
@@ -52,13 +58,10 @@ export default function AllUserPage() {
 
   const confirmDelete = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:8000/admin/deleteUser/${deleteId}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/admin/deleteUser/${deleteId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
       const data = await response.json();
       if (!response.ok) {
         alert(data.message);

@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setStep } from "../redux/slice/stepReducer";
 import { setPublish } from "../redux/slice/publishReducer";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
+import { RootState } from "../redux/store";
+import { BASE_URL } from "../utils/apiutils";
 
 interface vehicle {
   _id: string;
@@ -25,8 +27,8 @@ export default function publishNewCar() {
   const [button_dis, setButton_dis] = useState(false);
 
   const dispatch = useDispatch();
-  const step = useSelector((state: any) => state.step);
-  const publish = useSelector((state: any) => state.publish);
+  const step = useSelector((state: RootState) => state.step);
+  const publish = useSelector((state: RootState) => state.publish);
 
   useEffect(() => {
     const dtToday = new Date();
@@ -61,7 +63,7 @@ export default function publishNewCar() {
     if (step === 7) {
       e.preventDefault();
       try {
-        const response = await fetch("http://localhost:8000/rides", {
+        const response = await fetch(`${BASE_URL}/rides`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -69,8 +71,9 @@ export default function publishNewCar() {
           credentials: "include",
           body: JSON.stringify(publish),
         });
+        const data = await response.json();
         if (response.ok && response.status === 200) {
-          alert("new car published");
+          alert(data.message);
           setButton_dis(true);
           dispatch(
             setPublish({
@@ -90,7 +93,7 @@ export default function publishNewCar() {
           dispatch(setStep(1));
           router.push("/");
         } else {
-          alert("there is some problem retry again");
+          alert(data.message);
           dispatch(
             setPublish({
               pick_up: { city: "", fullAddress: "", lat: 0, lng: 0 },
@@ -118,7 +121,7 @@ export default function publishNewCar() {
   useEffect(() => {
     const fetchVehicles = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/vehicle`, {
+        const response = await fetch(`${BASE_URL}/vehicle`, {
           credentials: "include",
         });
         if (!response.ok) {

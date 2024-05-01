@@ -1,4 +1,5 @@
 "use client";
+import { BASE_URL } from "../utils/apiutils";
 import styles from "./updateStatus.module.css";
 export default function ApprovalRequest({
   params,
@@ -15,7 +16,7 @@ export default function ApprovalRequest({
       if (status === "Exchange Ratings") {
         requestBody = { ...requestBody, status_Request: status };
       }
-      const response = await fetch(`http://localhost:8000/request/${id}`, {
+      const response = await fetch(`${BASE_URL}/request/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -23,13 +24,16 @@ export default function ApprovalRequest({
         credentials: "include",
         body: JSON.stringify(requestBody),
       });
+      const data = await response.json();
       if (!response.ok) {
+        alert(data.message);
         throw new Error(`Server responded with status ${response.status}`);
       }
       if (response.ok) {
-        alert(`user ${status}`);
+        alert(data.message);
       }
     } catch (error: any) {
+      alert(error);
       console.error("update failed:", error.message);
     }
   };

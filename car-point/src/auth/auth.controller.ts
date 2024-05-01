@@ -72,6 +72,22 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @Get('/user/:id')
+  async findOneId(
+    @Param('id') id: string,
+    @Res() res: Response,
+  ): Promise<Response> {
+    try {
+      const user = await this.authService.findOneId(id);
+      return res.status(HttpStatus.OK).json(user);
+    } catch (error) {
+      return res
+        .status(error.status || HttpStatus.BAD_REQUEST)
+        .json({ message: error.message });
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @Patch('/updateUser/:id')
   @UseInterceptors(FileInterceptor('file'))
   async update(
@@ -81,8 +97,11 @@ export class AuthController {
     @Res() res: Response,
   ): Promise<Response> {
     try {
+      console.log(file, id, UpdateSignupDto);
       const image = await this.authService.updateUser(id, usersignupdto, file);
-      return res.status(HttpStatus.OK).json(image);
+      return res
+        .status(HttpStatus.OK)
+        .json({ message: 'User Image upload successfully', image });
     } catch (error) {
       return res
         .status(error.status || HttpStatus.BAD_REQUEST)

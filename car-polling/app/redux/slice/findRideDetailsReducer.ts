@@ -21,8 +21,9 @@ export interface Ride {
   end_time: string;
   price: number;
   user: {
+    _id: string;
     user_name: string;
-    image:string
+    image: string;
   };
   vehicle: {
     name: string;

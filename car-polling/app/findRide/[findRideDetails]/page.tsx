@@ -1,27 +1,33 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import car from "../../assert/car.png";
 import profileImage from "../../assert/avater.png";
+import icon from "../../assert/icon.png";
 import styles from "./findRideDetails.module.css";
 import FormattedDate from "@/app/component/Formate";
 import { fetchFindRides } from "@/app/redux/slice/findRideDetailsReducer";
 import { AppDispatch, RootState } from "@/app/redux/store";
 import CircularProgress from "@mui/material/CircularProgress";
 import DistanceCalculator from "@/app/component/DistanceCalulator";
+import Button from "@mui/material/Button";
+import ChatBox from "@/app/component/Chat";
 
 export default function FullDetailRide({
   params,
 }: {
   params: { findRideDetails: string };
 }) {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
   const id = params.findRideDetails;
   const dispatch: AppDispatch = useDispatch();
   const ride = useSelector((state: any) => state.findRide.rides);
   const data = useSelector((state: RootState) => state.search);
   const [isPending, setIsPending] = useState(true);
+
   const router = useRouter();
   useEffect(() => {
     dispatch(fetchFindRides(id))
@@ -32,6 +38,14 @@ export default function FullDetailRide({
         console.log(err.message);
       });
   }, [dispatch, id]);
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
 
   return (
     <div>
@@ -111,7 +125,30 @@ export default function FullDetailRide({
                     />
                   </div>
                 </div>
+                <div className={styles.chat}>
+                  <Button
+                    className={styles.chatButton}
+                    style={{ marginLeft: "5px", marginTop: "5px" }}
+                    onClick={openPopup}
+                  >
+                    <Image
+                      src={icon}
+                      className={styles.chaticon}
+                      alt="chat image"
+                    />
+                    <div className={styles.chatMessage}>
+                      Ask yash a question
+                    </div>
+                  </Button>
+                </div>
               </div>
+              {isPopupOpen && (
+                <div className={styles.overlay}>
+                  <div className={styles.popup}>
+                    <ChatBox reciverId={ride.user._id} />
+                  </div>
+                </div>
+              )}
               <div className={styles.forthComponent}>
                 <div className={styles.linebetween} />
                 <div className={styles.space_between_text}>
@@ -136,8 +173,8 @@ export default function FullDetailRide({
                 </div>
               ) : (
                 ride.occupation.map((occupant: any, index: number) => (
-                  <div className={styles.co_travellersBorder}>
-                    <div className={styles.space_between} key={index}>
+                  <div className={styles.co_travellersBorder} key={index}>
+                    <div className={styles.space_between}>
                       <div className={styles.passangerName}>
                         {occupant.user.user_name}
                       </div>
@@ -154,7 +191,6 @@ export default function FullDetailRide({
                   </div>
                 ))
               )}
-
               <div className={styles.lastComponent}>
                 <div className={styles.linebetween} />
                 <button
