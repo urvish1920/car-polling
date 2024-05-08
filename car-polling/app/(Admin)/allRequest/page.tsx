@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import styles from "./allPlanRide.module.css";
+import styles from "./allRequest.module.css";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 import Image from "next/image";
 import profile from "@/app/assert/avater.png";
@@ -9,26 +9,42 @@ import FormattedDate from "@/app/component/Formate";
 import { useRouter } from "next/navigation";
 import { BASE_URL } from "@/app/utils/apiutils";
 
-interface Rides {
+interface Request {
   _id: string;
-  vehicle_id: string;
-  pick_up: {
+  Ride_id: string;
+  from: {
     city: string;
     fullAddress: string;
     lat: number;
     lng: number;
   };
-  drop_off: {
+  to: {
     city: string;
     fullAddress: string;
     lat: number;
     lng: number;
   };
-  planride_date: string;
-  start_time: string;
-  end_time: string;
-  price: number;
-  ride_status: string;
+  status_Request: string;
+  ride: {
+    _id: string;
+    vehicle_id: string;
+    pick_up: {
+      city: string;
+      fullAddress: string;
+      lat: number;
+      lng: number;
+    };
+    drop_off: {
+      city: string;
+      fullAddress: string;
+      lat: number;
+      lng: number;
+    };
+    start_time: string;
+    end_time: string;
+    price: number;
+    planride_date: Date;
+  };
   user: {
     user_name: string;
     image: string;
@@ -37,16 +53,17 @@ interface Rides {
 
 export default function AllUserPage() {
   const [isPending, setIsPending] = useState(true);
-  const [allRides, setAllRides] = useState<Rides[]>([]);
+  const [allRequest, setAllRequest] = useState<Request[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
 
+  console.log(allRequest);
   const router = useRouter();
 
   useEffect(() => {
     const fetchTotalData = async () => {
       try {
         const response = await fetch(
-          `${BASE_URL}/admin/AllRides?page=${currentPage}`,
+          `${BASE_URL}/admin/AllRequest?page=${currentPage}`,
           {
             credentials: "include",
           }
@@ -55,7 +72,7 @@ export default function AllUserPage() {
           throw new Error(`Server responded with status ${response.status}`);
         } else {
           const data = await response.json();
-          setAllRides(data.AllRides);
+          setAllRequest(data.AllRequest);
           setIsPending(false);
         }
       } catch (error) {
@@ -76,31 +93,25 @@ export default function AllUserPage() {
 
   return (
     <div className={styles.allUser}>
-      <div className={styles.heading_allUser}>All Rides</div>
+      <div className={styles.heading_allUser}>All Request</div>
       {isPending ? (
         <div className={styles.loading}>
           <CircularProgress color="inherit" />
         </div>
-      ) : allRides.length === 0 ? (
+      ) : allRequest.length === 0 ? (
         <div className={styles.not_Found}>No data</div>
       ) : (
         <div className={styles.otcenter}>
           <div className={styles.inner_container}>
-            {Array.isArray(allRides) &&
-              allRides.map((item, index) => {
+            {Array.isArray(allRequest) &&
+              allRequest.map((item, index) => {
                 return (
-                  <div
-                    className={styles.outerContainer}
-                    key={index}
-                    onClick={() => {
-                      router.push(`/allPlanRide/${item._id}`);
-                    }}
-                  >
+                  <div className={styles.outerContainer} key={index}>
                     <div className={styles.firstcontainer}>
-                      <div className={styles.ride_name}>
-                        {item.pick_up.city}{" "}
+                      <div className={styles.user_name}>
+                        {item.from.city}{" "}
                         <TrendingFlatIcon className={styles.arrow} />{" "}
-                        {item.drop_off.city}
+                        {item.to.city}
                       </div>
                       <div className={styles.next_con}>
                         <div className={styles.user}>
@@ -120,7 +131,9 @@ export default function AllUserPage() {
                     </div>
                     <div className={styles.secondComponent}>
                       <div className={styles.date}>
-                        <FormattedDate date={new Date(item.planride_date)} />
+                        <FormattedDate
+                          date={new Date(item.ride.planride_date)}
+                        />
                       </div>
                     </div>
                   </div>
@@ -137,7 +150,7 @@ export default function AllUserPage() {
             </button>
             <button
               onClick={nextPage}
-              disabled={allRides.length < 5}
+              disabled={allRequest.length < 5}
               className={styles.prevNextButtons}
             >
               Next
@@ -145,6 +158,7 @@ export default function AllUserPage() {
           </div>
         </div>
       )}
+      hyy
     </div>
   );
 }

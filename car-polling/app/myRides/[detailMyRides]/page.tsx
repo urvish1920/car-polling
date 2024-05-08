@@ -8,6 +8,11 @@ import FormattedDate from "@/app/component/Formate";
 import CircularProgress from "@mui/material/CircularProgress";
 import CancelRideModal from "./cancelHandle";
 import { BASE_URL } from "@/app/utils/apiutils";
+import Button from "@mui/material/Button/Button";
+import icon from "../../assert/icon.png";
+import ChatBox from "@/app/component/Chat";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/redux/store";
 
 export interface Ride {
   _id: string;
@@ -46,6 +51,7 @@ export interface Ride {
     occupation: [];
   };
   user: {
+    _id: string;
     user_name: string;
     image: string;
   };
@@ -66,6 +72,17 @@ export default function FullDetailRide({
   const [userRide, setUserRide] = useState<Ride>();
   const [isPending, setIsPending] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const user = useSelector((state: RootState) => state.auth.user);
+
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
 
   const handleCancel = () => {
     setShowModal(false);
@@ -214,7 +231,8 @@ export default function FullDetailRide({
                 <div className={styles.linebetween} />
                 <div className={styles.space_between_text}>
                   <div className={styles.username}>
-                    {userRide.user.user_name}
+                    {userRide.user.user_name.charAt(0).toUpperCase() +
+                      userRide.user.user_name.slice(1)}
                   </div>
                   <div className={styles.owner_img}>
                     <Image
@@ -226,7 +244,33 @@ export default function FullDetailRide({
                     />
                   </div>
                 </div>
+                <div className={styles.chat}>
+                  <Button
+                    className={styles.chatButton}
+                    style={{ marginLeft: "5px", marginTop: "5px" }}
+                    onClick={openPopup}
+                  >
+                    <Image
+                      src={icon}
+                      className={styles.chaticon}
+                      alt="chat image"
+                    />
+                    <div className={styles.chatMessage}>
+                      Ask yash a question
+                    </div>
+                  </Button>
+                </div>
               </div>
+              {isPopupOpen && (
+                <div className={styles.popup_com}>
+                  <div className={styles.popup}>
+                    <ChatBox
+                      reciverId={userRide.user._id}
+                      onClose={closePopup}
+                    />
+                  </div>
+                </div>
+              )}
               <div className={styles.forthComponent}>
                 <div className={styles.linebetween} />
                 <div className={styles.status}>
@@ -264,7 +308,9 @@ export default function FullDetailRide({
                   >
                     <div className={styles.space_between}>
                       <div className={styles.passangerName}>
-                        {occupant.user.user_name}
+                        {(occupant.user._id === user?._id && "You") ||
+                          occupant.user.user_name.charAt(0).toUpperCase() +
+                            occupant.user.user_name.slice(1)}
                       </div>
                       <div className={styles.img}>
                         <Image

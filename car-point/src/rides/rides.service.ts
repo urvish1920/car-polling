@@ -165,7 +165,6 @@ export class RidesService {
         my_status: 'cancel',
       },
     );
-
     await this.RideModel.updateOne(
       { _id: new mongoose.Types.ObjectId(ride_id) },
       {

@@ -10,6 +10,10 @@ import CurrencyExchangeOutlinedIcon from "@mui/icons-material/CurrencyExchangeOu
 import CircularProgress from "@mui/material/CircularProgress";
 import DoDisturbAltOutlinedIcon from "@mui/icons-material/DoDisturbAltOutlined";
 import { BASE_URL } from "../utils/apiutils";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 interface allRides {
   _id: string;
@@ -58,8 +62,8 @@ export default function findRide() {
   const [isPending, setIsPending] = useState(true);
   const router = useRouter();
 
-  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortBy(event.target.value);
+  const handleSortChange = (event: SelectChangeEvent<string>) => {
+    setSortBy(event.target.value as string);
   };
 
   const sortRides = (rides: allRides[], sortBy: string) => {
@@ -103,16 +107,30 @@ export default function findRide() {
 
   return (
     <div className={styles.planRide}>
-      <div className={styles.text}>
-        Sort By:
-        <select
-          className={styles.customselect}
-          value={sortBy}
-          onChange={handleSortChange}
+      <div className={styles.sortCom}>
+        <div className={styles.sortText}>Sort By:</div>
+        <FormControl
+          sx={{
+            m: 1,
+            minWidth: 200,
+            fontSize: "1.8rem",
+          }}
         >
-          <option value="">Select sort type</option>
-          <option value="option1">price</option>
-        </select>
+          <InputLabel id="demo-simple-select-helper-label">sort</InputLabel>
+          <Select
+            labelId="demo-simple-select-helper-label"
+            id="demo-simple-select-helper"
+            value={sortBy}
+            onChange={handleSortChange}
+            className={styles.customselect}
+            label="Sort"
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            <MenuItem value="option1">Price</MenuItem>
+          </Select>
+        </FormControl>
       </div>
       {isPending ? (
         <div className={styles.loading}>
@@ -214,7 +232,10 @@ export default function findRide() {
                         alt="Picture of the Rider"
                       />
                     </div>
-                    <div className={styles.name}>{item.user.user_name}</div>
+                    <div className={styles.name}>
+                      {item.user.user_name.charAt(0).toUpperCase() +
+                        item.user.user_name.slice(1)}
+                    </div>
                   </div>
                 </div>
                 <div className={styles.col20}>

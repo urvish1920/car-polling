@@ -1,10 +1,35 @@
 @import url("https://fonts.googleapis.com/css2?family=Chewy&display=swap");
 
-.logo-image {
-  padding-left: 15%;
-  padding-right: 200px;
+.main_container {
+  background-color: #e7f7fe;
+  width: 100vw;
+  height: 90vh;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
 }
 
+.text_publishNewRide {
+  color: #054652;
+  text-align: center;
+  margin-top: 50px;
+  font-weight: 600;
+  font-size: 30px;
+}
+.middle_com {
+  display: flex;
+}
+.form_comp {
+  height: 350px;
+  width: 300px;
+  background-color: white;
+  margin-top: 2%;
+  margin-left: 20%;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
 .addVehicleButton {
   background-color: #02081f;
   color: white;
@@ -21,56 +46,15 @@
   border: none;
   padding: 8px 16px;
   margin-right: 10px;
-  border-radius: 10px;
-  width: 140px;
-  height: 40px;
+  border-radius: 0px 0px 10px 10px;
+  width: 100%;
+  height: 50px;
   font-size: 18px;
-  margin-top: 5%;
-  margin-left: 46%;
-}
-
-.input {
-  width: 50%;
-  height: 50px;
-  border-radius: 8px;
-  font-size: weight;
-  font-size: 15px;
-  outline: none;
-  padding-left: 20px;
-  margin: 20px;
-  margin-left: 25%;
-}
-.input_date {
-  height: 50px;
-  border-radius: 20px;
-  font-size: weight;
-  font-size: 15px;
-  outline: none;
-  padding-left: 20px;
-  margin: 20px;
-  margin-left: 45%;
-}
-
-.forminput {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10%;
-}
-
-.timeinput {
-  height: 50px;
-  border-radius: 20px;
-  font-size: weight;
-  font-size: 15px;
-  outline: none;
-  padding-left: 20px;
-  margin: 20px;
-  margin-left: 47%;
 }
 
 .input_label {
   color: #02081f;
-  font-size: 40px;
+  font-size: 20px;
   font-family: "chewy", cursive;
   display: flex;
   justify-content: center;
@@ -79,19 +63,19 @@
 }
 
 .text {
-  font-size: 20px;
+  font-size: 30px;
   font-weight: bold;
   margin-left: 60%;
   margin-top: 30px;
 }
 
 .not_Found {
-  font-size: 30px;
+  font-size: 20px;
   font-weight: 600;
   color: rgb(142, 137, 137);
   display: flex;
   justify-content: center;
-  margin-top: 10%;
+  margin-top: 30%;
 }
 .loading {
   display: flex;
@@ -106,50 +90,38 @@
   margin-top: 5%;
 }
 .outerContainer {
-  width: 25%;
-  height: 70px;
+  width: 70%;
+  height: 30px;
   border-radius: 10px;
-  display: grid;
-  grid-template-columns: 60% 40%;
   border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 2vh;
 }
-
 .no_plate {
   font-weight: 600;
   color: #02081f;
-  font-size: 18px;
-  margin-top: 10px;
+  font-size: 12px;
   margin-left: 10px;
 }
-
 .modelname_text {
   font-weight: 600;
   color: #02081f;
   font-size: 12px;
-  margin-top: 5px;
-  margin-left: 10px;
-}
-
-.seater {
-  color: #02081f;
-  font-weight: 600;
-  font-weight: 20px;
-  margin-top: 10px;
-  margin-left: 80px;
-}
-
-.publishButton {
-  color: white;
-  background-color: #02081f;
-  border: none;
-  margin-top: 0px;
-  padding: 8px 16px;
   margin-right: 10px;
-  border-radius: 10px;
-  width: 140px;
-  height: 40px;
-  font-size: 18px;
-  margin-left: 46%;
+}
+
+.car_img {
+  margin-left: 50px;
+}
+
+.bt_text {
+  color: #054652;
+  text-align: center;
+  font-size: 40px;
+  font-weight: bold;
+  margin-top: 30px;
+  -moz-osx-font-smoothing: grayscale;
 }

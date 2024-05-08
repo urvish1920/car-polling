@@ -20,9 +20,14 @@ export class MessageService {
     return await message.save();
   }
 
-  async getMessages(id: string): Promise<Message[]> {
+  async getMessages(chatId: string, receiverId: string): Promise<Message[]> {
     return await this.messageModel
-      .find({ $or: [{ chatId: id }, { senderId: id }] })
+      .find({
+        $or: [
+          { $and: [{ chatId: chatId }, { senderId: receiverId }] },
+          { $and: [{ chatId: receiverId }, { senderId: chatId }] },
+        ],
+      })
       .exec();
   }
 }

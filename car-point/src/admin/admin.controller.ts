@@ -64,18 +64,12 @@ export class AdminController {
     }
   }
 
+  @Get('/AllRides')
   @UseGuards(AuthGuard('jwt'))
-  @Delete('/deleteRide/:id')
-  async removeRide(
-    @Req() req: Request,
-    @Param('id') id: string,
-    @Res() res: Response,
-  ) {
+  async allRides(@Req() req: Request, @Res() res: Response): Promise<Response> {
     try {
-      await this.adminService.removeRide(req, id);
-      return res
-        .status(HttpStatus.OK)
-        .json({ message: 'delete data successfuly' });
+      const rides = await this.adminService.AllRides(req);
+      return res.status(HttpStatus.OK).json(rides);
     } catch (error) {
       return res
         .status(error.status || HttpStatus.BAD_REQUEST)
@@ -83,11 +77,14 @@ export class AdminController {
     }
   }
 
-  @Get('/AllRides')
+  @Get('/AllRequest')
   @UseGuards(AuthGuard('jwt'))
-  async allRides(@Req() req: Request, @Res() res: Response): Promise<Response> {
+  async allRequest(
+    @Req() req: Request,
+    @Res() res: Response,
+  ): Promise<Response> {
     try {
-      const rides = await this.adminService.AllRides(req);
+      const rides = await this.adminService.AllRequest(req);
       return res.status(HttpStatus.OK).json(rides);
     } catch (error) {
       return res

@@ -5,6 +5,9 @@ import Search from "./(home)/search";
 import { RootState } from "./redux/store";
 import { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
+import Image from "next/image";
+4;
+import home_image from "../app/assert/home_image.png";
 
 export interface TotalCount {
   totalUsers: number;
@@ -14,10 +17,9 @@ export interface TotalCount {
 export default function Home() {
   const [isPending, setIsPending] = useState(true);
   const [totalCount, setTotalCount] = useState<TotalCount>();
-  console.log(totalCount);
-  const isAdmin = useSelector((state: RootState) => state.auth.user);
+  const user = useSelector((state: RootState) => state.auth.user);
 
-  if (isAdmin?.IsAdmin) {
+  if (user?.IsAdmin) {
     useEffect(() => {
       const fetchTotalData = async () => {
         try {
@@ -47,7 +49,7 @@ export default function Home() {
         ) : (
           <div className={Styles.inner_container}>
             <div className={Styles.headingAdmin}>
-              Hii {isAdmin.user_name} You Can Check All Data
+              Hii {user.user_name} You Can Check All Data
             </div>
             <div className={Styles.AdminHome}>
               <div className={Styles.AdminCheckUser}>
@@ -87,6 +89,15 @@ export default function Home() {
             <br />A Ride
           </h1>
           <Search />
+        </div>
+        <div>
+          <Image
+            src={home_image}
+            className={Styles.homeImage}
+            width={600}
+            height={400}
+            alt="Picture of the author"
+          />
         </div>
       </div>
     );

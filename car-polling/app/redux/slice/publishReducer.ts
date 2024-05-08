@@ -13,7 +13,7 @@ const initialState = {
     lat: 0,
     lng: 0,
   },
-  planride_date: new Date(),
+  planride_date: "",
   start_time: "",
   end_time: "",
   price: 0,

@@ -9,6 +9,21 @@ import { setPublish } from "../redux/slice/publishReducer";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 import { RootState } from "../redux/store";
 import { BASE_URL } from "../utils/apiutils";
+import Stepper from "@mui/material/Stepper/Stepper";
+import Step from "@mui/material/Step/Step";
+import StepLabel from "@mui/material/StepLabel/StepLabel";
+import Box from "@mui/material/Box/Box";
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment/InputAdornment";
+import Image from "next/image";
+import car_bg from "../assert/82e402da-7a70-4895-9331-cde0d1ccac86.svg";
+import location from "../assert/location_icon.svg";
+import moneyIcon from "../assert/sort_price.svg";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
+import dayjs from "dayjs";
 
 interface vehicle {
   _id: string;
@@ -29,27 +44,31 @@ export default function publishNewCar() {
   const dispatch = useDispatch();
   const step = useSelector((state: RootState) => state.step);
   const publish = useSelector((state: RootState) => state.publish);
+  console.log(publish);
 
-  useEffect(() => {
-    const dtToday = new Date();
-    const month = dtToday.getMonth() + 1;
-    const day = dtToday.getDate();
-    const year = dtToday.getFullYear();
-    const formattedMonth = month < 10 ? `0${month}` : month.toString();
-    const formattedDay = day < 10 ? `0${day}` : day.toString();
-    const maxDateString = `${year}-${formattedMonth}-${formattedDay}`;
-    setMaxDate(maxDateString);
-  }, []);
-
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setPublish({ planride_date: e.target.valueAsDate || new Date() }));
+  const stepStyle = {
+    marginTop: "20px",
+    "& .Mui-active": {
+      "&.MuiStepIcon-root": {
+        color: "warning.main",
+        fontSize: "2rem",
+      },
+    },
+    "& .Mui-completed": {
+      "&.MuiStepIcon-root": {
+        color: "green",
+        fontSize: "2rem",
+      },
+    },
   };
+
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const priceValue = parseInt(e.target.value, 10);
     dispatch(setPublish({ price: priceValue }));
   };
   const handleVehicleClick = (vehicleId: string) => {
     dispatch(setPublish({ vehicle_id: vehicleId }));
+    alert("car is added");
   };
 
   const onNext = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -60,7 +79,7 @@ export default function publishNewCar() {
     }
   };
   const publishRide = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (step === 7) {
+    if (step === 3) {
       e.preventDefault();
       try {
         const response = await fetch(`${BASE_URL}/rides`, {
@@ -207,183 +226,336 @@ export default function publishNewCar() {
   const dropoffcompleteRef = useRef<google.maps.places.Autocomplete>();
 
   return (
-    <>
-      <form className={styles.forminput}>
-        {step === 1 && (
-          <div>
-            <label className={styles.input_label}>Enter your Pick-up</label>
-            <Autocomplete
-              onLoad={(autocomplete) => {
-                console.log("Autocomplete loaded:", autocomplete);
-                pickUpcompleteRef.current = autocomplete;
-              }}
-              onPlaceChanged={() => {
-                const place = pickUpcompleteRef.current?.getPlace();
-                if (place) {
-                  handlePickupPlaceChanged(place);
-                } else {
-                  console.error("Place information is not available.");
-                }
-              }}
+    <div className={styles.main_container}>
+      <div className={styles.text_publishNewRide}>
+        {" "}
+        Become a car-polling driver and save on travel costs by <br /> sharing
+        your ride with passengers.
+      </div>
+      <Stepper activeStep={step - 1} alternativeLabel sx={stepStyle}>
+        {["Place", "Time & Price", "Car"].map((label, index) => (
+          <Step key={label}>
+            <StepLabel
+              className={step > index ? styles.completedStepLabel : ""}
             >
-              <input
-                className={styles.input}
-                id="pick_up"
-                name="pick_up"
-                type="text"
-                placeholder="Enter pickup Location"
-              />
-            </Autocomplete>
-          </div>
-        )}
-        {step === 2 && (
-          <div>
-            <label className={styles.input_label}>Enter your Drop-off</label>
-            <Autocomplete
-              onLoad={(autocomplete) => {
-                console.log("Autocomplete loaded:", autocomplete);
-                dropoffcompleteRef.current = autocomplete;
-              }}
-              onPlaceChanged={() => {
-                const place = dropoffcompleteRef.current?.getPlace();
-                if (place) {
-                  handledropoffPlaceChanged(place);
-                } else {
-                  console.error("Place information is not available.");
-                }
-              }}
-            >
-              <input
-                className={styles.input}
-                id="drop_off"
-                name="drop_off"
-                type="text"
-                placeholder="Enter Drop off Location"
-              />
-            </Autocomplete>
-          </div>
-        )}
-        {step === 3 && (
-          <div>
-            <label className={styles.input_label}>When are you going?</label>
-            <input
-              className={styles.input_date}
-              id="planride_date"
-              name="planride_date"
-              type="date"
-              value={
-                publish.planride_date instanceof Date
-                  ? publish.planride_date.toISOString().slice(0, 10)
-                  : ""
-              }
-              min={maxDate}
-              onChange={handleDateChange}
-              placeholder="on which Date"
-            />
-          </div>
-        )}
-        {step === 4 && (
-          <div>
-            <label className={styles.input_label}>
-              At What time will you pick passenger up ?
-            </label>
-
-            <input
-              className={styles.timeinput}
-              id="start_time"
-              name="start_time"
-              type="time"
-              value={publish.start_time}
-              onChange={(e) =>
-                dispatch(setPublish({ start_time: e.target.value }))
-              }
-              placeholder="Pick-up Time"
-            />
-          </div>
-        )}
-        {step === 5 && (
-          <div>
-            <label className={styles.input_label}>
-              At What time will you Drop passenger off ?
-            </label>
-            <input
-              className={styles.timeinput}
-              id="end_time"
-              name="end_time"
-              type="time"
-              value={publish.end_time}
-              onChange={(e) =>
-                dispatch(setPublish({ end_time: e.target.value }))
-              }
-              placeholder="Drop-off Time"
-            />
-          </div>
-        )}
-        {step === 6 && (
-          <div>
-            <label className={styles.input_label}>Price per sites ?</label>
-            <input
-              className={styles.input_date}
-              id="price"
-              name="price"
-              type="number"
-              value={isNaN(publish.price) ? "" : publish.price}
-              onChange={handlePriceChange}
-              placeholder=" price"
-            />
-          </div>
-        )}
-        {step === 7 && (
-          <div>
-            <div className={styles.heading_button}>
-              <label className={styles.input_label}>
-                Select your car details from below
-              </label>
-            </div>
-            {isPending ? (
-              <div className={styles.loading}>
-                <CircularProgress color="inherit" />
-              </div>
-            ) : vehicles.length === 0 ? (
-              <div className={styles.not_Found}>No vehicle</div>
-            ) : (
-              <div className={styles.otcenter}>
-                {vehicles.map((item, index) => (
-                  <div
-                    key={index}
-                    className={styles.outerContainer}
-                    onClick={() => handleVehicleClick(item._id)}
+              {label}
+            </StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+      <div className={styles.middle_com}>
+        <div className={styles.form_comp}>
+          <form className={styles.forminput}>
+            {step === 1 && (
+              <div>
+                <Autocomplete
+                  onLoad={(autocomplete) => {
+                    console.log("Autocomplete loaded:", autocomplete);
+                    pickUpcompleteRef.current = autocomplete;
+                  }}
+                  onPlaceChanged={() => {
+                    const place = pickUpcompleteRef.current?.getPlace();
+                    if (place) {
+                      handlePickupPlaceChanged(place);
+                    } else {
+                      console.error("Place information is not available.");
+                    }
+                  }}
+                >
+                  <Box sx={{ display: "flex", justifyContent: "center" }}>
+                    <Box
+                      sx={{
+                        "& > :not(style)": {
+                          m: 1,
+                          width: "250px",
+                          marginTop: "30px",
+                        },
+                      }}
+                    >
+                      <TextField
+                        id="pick_up"
+                        name="pick_up"
+                        type="text"
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <Image
+                                src={location}
+                                height={20}
+                                width={20}
+                                alt={`Location`}
+                              />
+                            </InputAdornment>
+                          ),
+                        }}
+                        placeholder="Leaving from"
+                        variant="standard"
+                        sx={{
+                          "& input": {
+                            fontSize: "18px",
+                            fontWeight: "bold",
+                            margin: "10px",
+                          },
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                </Autocomplete>
+                <Autocomplete
+                  onLoad={(autocomplete) => {
+                    console.log("Autocomplete loaded:", autocomplete);
+                    dropoffcompleteRef.current = autocomplete;
+                  }}
+                  onPlaceChanged={() => {
+                    const place = dropoffcompleteRef.current?.getPlace();
+                    if (place) {
+                      handledropoffPlaceChanged(place);
+                    } else {
+                      console.error("Place information is not available.");
+                    }
+                  }}
+                >
+                  <Box sx={{ display: "flex", justifyContent: "center" }}>
+                    <Box
+                      sx={{
+                        "& > :not(style)": {
+                          m: 1,
+                          width: "250px",
+                          marginTop: "20px",
+                        },
+                      }}
+                    >
+                      <TextField
+                        id="drop_off"
+                        name="drop_off"
+                        type="text"
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <Image
+                                src={location}
+                                height={20}
+                                width={20}
+                                alt={`Location`}
+                              />
+                            </InputAdornment>
+                          ),
+                        }}
+                        placeholder="Going to"
+                        variant="standard"
+                        sx={{
+                          "& input": {
+                            fontSize: "18px",
+                            fontWeight: "bold",
+                            margin: "10px",
+                          },
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                </Autocomplete>
+                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                  <Box
+                    sx={{
+                      "& > :not(style)": {
+                        m: 1,
+                        width: "250px",
+                        marginTop: "20px",
+                      },
+                    }}
                   >
-                    {" "}
-                    <div>
-                      <div className={styles.no_plate}>{item.No_Plate}</div>
-                      <div className={styles.modelname_text}>
-                        {item.model} {item.name}
-                      </div>
-                    </div>
-                    <div className={styles.seater}>seater : {item.seaters}</div>
-                  </div>
-                ))}
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        label="when"
+                        value={
+                          publish.planride_date
+                            ? dayjs(publish.planride_date)
+                            : null
+                        }
+                        onChange={(date) => {
+                          const selectedDate = date ? date.toDate() : null;
+                          dispatch(setPublish({ planride_date: selectedDate }));
+                        }}
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            border: "none",
+                            "&:hover": {
+                              border: "none",
+                            },
+                          },
+                        }}
+                      />
+                    </LocalizationProvider>
+                  </Box>
+                </Box>
               </div>
             )}
+            {step === 2 && (
+              <div>
+                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                  <Box
+                    sx={{
+                      "& > :not(style)": {
+                        m: 1,
+                        width: "250px",
+                        marginTop: "5px",
+                      },
+                    }}
+                  >
+                    <label className={styles.input_label}>pick up ?</label>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <MobileTimePicker
+                        name="start_time"
+                        defaultValue={
+                          publish.start_time
+                            ? dayjs(publish.start_time, "HH:mm")
+                            : null
+                        }
+                        value={
+                          publish.start_time
+                            ? dayjs(publish.start_time, "HH:mm")
+                            : null
+                        }
+                        onChange={(time) => {
+                          const selectedTime = time
+                            ? time.format("hh:mm A")
+                            : null;
+                          dispatch(setPublish({ start_time: selectedTime }));
+                        }}
+                      />
+                    </LocalizationProvider>
+                  </Box>
+                </Box>
+                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                  <Box
+                    sx={{
+                      "& > :not(style)": {
+                        m: 1,
+                        width: "250px",
+                        marginTop: "5px",
+                      },
+                    }}
+                  >
+                    <label className={styles.input_label}>Drop off?</label>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <MobileTimePicker
+                        name="end_time"
+                        defaultValue={
+                          publish.end_time
+                            ? dayjs(publish.end_time, "HH:mm")
+                            : null
+                        }
+                        value={
+                          publish.end_time
+                            ? dayjs(publish.end_time, "HH:mm")
+                            : null
+                        }
+                        onChange={(time) => {
+                          const selectedTime = time
+                            ? time.format("hh:mm A")
+                            : null;
+                          dispatch(setPublish({ end_time: selectedTime }));
+                        }}
+                      />
+                    </LocalizationProvider>
+                  </Box>
+                </Box>
+                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                  <Box
+                    sx={{
+                      "& > :not(style)": {
+                        m: 1,
+                        width: "250px",
+                        marginTop: "5px",
+                        alignItems: "center",
+                      },
+                    }}
+                  >
+                    <TextField
+                      id="price"
+                      name="price"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Image
+                              src={moneyIcon}
+                              height={20}
+                              width={20}
+                              alt={`money`}
+                            />
+                          </InputAdornment>
+                        ),
+                      }}
+                      value={isNaN(publish.price) ? "" : publish.price}
+                      onChange={handlePriceChange}
+                      placeholder="Price"
+                      variant="standard"
+                      sx={{
+                        "& input": {
+                          fontSize: "18px",
+                          fontWeight: "bold",
+                          margin: "10px",
+                        },
+                      }}
+                    />
+                  </Box>
+                </Box>
+              </div>
+            )}
+            {step === 3 && (
+              <div>
+                <div className={styles.heading_button}>
+                  <label className={styles.input_label}>
+                    Select your car details from below
+                  </label>
+                </div>
+                {isPending ? (
+                  <div className={styles.loading}>
+                    <CircularProgress color="inherit" />
+                  </div>
+                ) : vehicles.length === 0 ? (
+                  <div className={styles.not_Found}>No vehicle</div>
+                ) : (
+                  <div className={styles.otcenter}>
+                    {vehicles.map((item, index) => (
+                      <div
+                        key={index}
+                        className={styles.outerContainer}
+                        onClick={() => handleVehicleClick(item._id)}
+                      >
+                        {" "}
+                        <div className={styles.no_plate}>{item.No_Plate}</div>
+                        <div className={styles.modelname_text}>{item.name}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </form>
+          <div className={styles.submit_Button}>
+            {step === 3 ? (
+              <button className={styles.formbutton} onClick={publishRide}>
+                Publish Ride
+              </button>
+            ) : (
+              <button className={styles.formbutton} onClick={onNext}>
+                Continue
+              </button>
+            )}
           </div>
-        )}
-      </form>
-      <div className={styles.submit_Button}>
-        {step === 7 ? (
-          <button
-            className={styles.publishButton}
-            onClick={publishRide}
-            disabled={button_dis}
-          >
-            Publish Ride
-          </button>
-        ) : (
-          <button className={styles.formbutton} onClick={onNext}>
-            Continue
-          </button>
-        )}
+        </div>
+        <div className={styles.car_img}>
+          <Image
+            src={car_bg}
+            className={styles.publish_carbg}
+            width={700}
+            height={400}
+            alt={`Picture of car`}
+          />
+        </div>
       </div>
-    </>
+      <div className={styles.bt_text}>Drive.Share.Save</div>
+    </div>
   );
 }

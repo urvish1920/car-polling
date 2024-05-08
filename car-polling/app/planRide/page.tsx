@@ -4,9 +4,15 @@ import styles from "./planRideListView.module.css";
 import { useRouter } from "next/navigation";
 import FormattedDate from "@/app/component/Formate";
 import Image from "next/image";
-import car from "../assert/logo.png";
+import moneyImage from "../assert/sort_price.svg";
+import timeImage from "../assert/sort_time.svg";
+import car_bg from "../assert/82e402da-7a70-4895-9331-cde0d1ccac86.svg";
 import CircularProgress from "@mui/material/CircularProgress";
 import { BASE_URL } from "../utils/apiutils";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 export interface planRide {
   _id: string;
@@ -40,8 +46,8 @@ export default function PlanRide() {
   const [isPending, setIsPending] = useState(true);
   const router = useRouter();
 
-  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortBy(event.target.value);
+  const handleSortChange = (event: SelectChangeEvent<string>) => {
+    setSortBy(event.target.value as string);
   };
 
   const sortRides = (rides: planRide[], sortBy: string) => {
@@ -49,11 +55,46 @@ export default function PlanRide() {
     if (sortBy === "option1") {
       sortedArray.sort((a, b) => a.price - b.price);
     } else if (sortBy === "option2") {
-      sortedArray.sort((a, b) =>
-        a.user.user_name.localeCompare(b.user.user_name)
-      );
+      sortedArray.sort((a, b) => {
+        const [aHourStr, aMinStr, aAmPm] = a.end_time.split(/[ :]/);
+        const [bHourStr, bMinStr, bAmPm] = b.end_time.split(/[ :]/);
+
+        let aHour = parseInt(aHourStr, 10);
+        let bHour = parseInt(bHourStr, 10);
+        const aMin = parseInt(aMinStr, 10);
+        const bMin = parseInt(bMinStr, 10);
+
+        if (aAmPm === "PM" && aHour !== 12) {
+          aHour += 12;
+        } else if (aAmPm === "AM" && aHour === 12) {
+          aHour = 0;
+        }
+
+        if (bAmPm === "PM" && bHour !== 12) {
+          bHour += 12;
+        } else if (bAmPm === "AM" && bHour === 12) {
+          bHour = 0;
+        }
+
+        const aTotalMinutes = aHour * 60 + aMin;
+        const bTotalMinutes = bHour * 60 + bMin;
+
+        return aTotalMinutes - bTotalMinutes;
+      });
     }
     return sortedArray;
+  };
+
+  const stepStyle = {
+    "& .MuiSelect-select": {
+      height: "auto",
+      minHeight: "1.4375em",
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      display: "flex",
+      alignItems: "center",
+    },
   };
 
   useEffect(() => {
@@ -81,23 +122,83 @@ export default function PlanRide() {
 
   return (
     <div className={styles.planRide}>
-      <div className={styles.text}>
-        Sort By:
-        <select
-          className={styles.customselect}
-          value={sortBy}
-          onChange={handleSortChange}
-        >
-          <option value="">Select sort type</option>
-          <option value="option1">price</option>
-        </select>
-      </div>
+      {!isPending && allRide.length > 0 && (
+        <div className={styles.sortCom}>
+          <div className={styles.sortText}>Sort By:</div>
+          <FormControl
+            sx={{
+              m: 1,
+              minWidth: 200,
+              fontSize: "1.8rem",
+            }}
+          >
+            <InputLabel id="demo-simple-select-helper-label">sort</InputLabel>
+            <Select
+              labelId="demo-simple-select-helper-label"
+              id="demo-simple-select-helper"
+              value={sortBy}
+              onChange={handleSortChange}
+              sx={stepStyle}
+              label="Sort"
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="option1">
+                {" "}
+                <Image
+                  src={moneyImage}
+                  className={styles.sort}
+                  alt="money_icon"
+                />
+                Price
+              </MenuItem>
+              <MenuItem value="option2">
+                <Image
+                  src={timeImage}
+                  className={styles.sort}
+                  alt="money_icon"
+                />
+                Earliest departure
+              </MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+      )}
       {isPending ? (
         <div className={styles.loading}>
           <CircularProgress color="inherit" />
         </div>
       ) : allRide.length === 0 ? (
-        <div className={styles.not_Found}>No plan ride</div>
+        <div className={styles.notFound_main}>
+          <div className={styles.not_Found}>
+            <div className={styles.notFound_text}>
+              There are no plan rides yet, Become a car-polling driver and save
+              on travel <br />
+              costs by sharing your ride with passengers.
+            </div>
+            <div className={styles.inner_notfound}>
+              <button
+                className={styles.notFound_button}
+                onClick={() => {
+                  router.push(`/publishNewCar`);
+                }}
+              >
+                Publish Rides
+              </button>
+            </div>
+            <div className={styles.inner_notfound}>
+              <Image
+                src={car_bg}
+                className={styles.publish_carbg}
+                width={600}
+                height={600}
+                alt={`Picture of car`}
+              />
+            </div>
+          </div>
+          <div className={styles.bt_text}>Drive.Share.Save</div>
+        </div>
       ) : (
         allRide.map((item, index) => {
           console.log(item);
@@ -150,17 +251,6 @@ export default function PlanRide() {
                     <div className={styles.statusText}>
                       {" "}
                       Ride was {item.ride_status}!{" "}
-                    </div>
-                    <div>
-                      {item.ride_status === "started" && (
-                        <Image
-                          src={car}
-                          className={styles.avater}
-                          width={50}
-                          height={48}
-                          alt={`Picture of car`}
-                        />
-                      )}
                     </div>
                   </div>
                 </div>

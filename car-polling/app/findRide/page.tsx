@@ -1,14 +1,22 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "./findRideListView.module.css";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import Image from "next/image";
 import profileImage from "../assert/avater.png";
+import moneyImage from "../assert/sort_price.svg";
+import timeImage from "../assert/sort_time.svg";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import CircularProgress from "@mui/material/CircularProgress";
 import DistanceCalculator from "../component/DistanceCalulator";
 import { BASE_URL } from "../utils/apiutils";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import FormattedDate from "../component/Formate";
+import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 
 export interface findState {
   _id: string;
@@ -36,25 +44,61 @@ export interface findState {
 }
 
 export default function findRide() {
-  const [sortBy, setSortBy] = useState("");
+  const [sortBy, setSortBy] = useState<string>("");
   const [allRide, setAllRide] = useState<findState[]>([]);
   const [isPending, setIsPending] = useState(true);
 
   const router = useRouter();
 
-  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortBy(event.target.value);
+  const handleSortChange = (event: SelectChangeEvent<string>) => {
+    setSortBy(event.target.value as string);
   };
+
   const sortRides = (rides: findState[], sortBy: string) => {
     let sortedArray = [...rides];
     if (sortBy === "option1") {
       sortedArray.sort((a, b) => a.price - b.price);
     } else if (sortBy === "option2") {
-      sortedArray.sort((a, b) =>
-        a.user.user_name.localeCompare(b.user.user_name)
-      );
+      sortedArray.sort((a, b) => {
+        const [aHourStr, aMinStr, aAmPm] = a.end_time.split(/[ :]/);
+        const [bHourStr, bMinStr, bAmPm] = b.end_time.split(/[ :]/);
+
+        let aHour = parseInt(aHourStr, 10);
+        let bHour = parseInt(bHourStr, 10);
+        const aMin = parseInt(aMinStr, 10);
+        const bMin = parseInt(bMinStr, 10);
+
+        if (aAmPm === "PM" && aHour !== 12) {
+          aHour += 12;
+        } else if (aAmPm === "AM" && aHour === 12) {
+          aHour = 0;
+        }
+
+        if (bAmPm === "PM" && bHour !== 12) {
+          bHour += 12;
+        } else if (bAmPm === "AM" && bHour === 12) {
+          bHour = 0;
+        }
+
+        const aTotalMinutes = aHour * 60 + aMin;
+        const bTotalMinutes = bHour * 60 + bMin;
+
+        return aTotalMinutes - bTotalMinutes;
+      });
     }
     return sortedArray;
+  };
+
+  const stepStyle = {
+    "& .MuiSelect-select": {
+      height: "auto",
+      minHeight: "1.4375em",
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      display: "flex",
+      alignItems: "center",
+    },
   };
 
   const data = useSelector((state: RootState) => state.search);
@@ -99,39 +143,100 @@ export default function findRide() {
     startTime: string,
     endTime: string
   ): { hours: number; minutes: string } => {
-    const startParts = startTime.split(":").map(Number);
-    const endParts = endTime.split(":").map(Number);
+    const [startHourStr, startMinStr, startAmPm] = startTime.split(/[ :]/);
+    const [endHourStr, endMinStr, endAmPm] = endTime.split(/[ :]/);
 
-    const startMinutes = startParts[0] * 60 + startParts[1];
-    const endMinutes = endParts[0] * 60 + endParts[1];
+    let startHour = parseInt(startHourStr, 10);
+    let endHour = parseInt(endHourStr, 10);
+    const startMin = parseInt(startMinStr, 10);
+    const endMin = parseInt(endMinStr, 10);
 
-    const differenceMinutes = Math.abs(endMinutes - startMinutes);
+    if (startAmPm === "PM" && startHour !== 12) {
+      startHour += 12;
+    } else if (startAmPm === "AM" && startHour === 12) {
+      startHour = 0;
+    }
+
+    if (endAmPm === "PM" && endHour !== 12) {
+      endHour += 12;
+    } else if (endAmPm === "AM" && endHour === 12) {
+      endHour = 0;
+    }
+
+    const startMinutes = startHour * 60 + startMin;
+    const endMinutes = endHour * 60 + endMin;
+
+    let differenceMinutes = Math.abs(endMinutes - startMinutes);
+
+    if (endMinutes < startMinutes) {
+      differenceMinutes = 24 * 60 - differenceMinutes;
+    }
 
     const totalHours = Math.floor(differenceMinutes / 60);
     const totalMinutes = String(differenceMinutes % 60).padStart(2, "0");
 
     return { hours: totalHours, minutes: totalMinutes };
   };
-
   return (
     <div className={styles.planRide}>
-      <div className={styles.text}>
-        Sort By:
-        <select
-          className={styles.customselect}
-          value={sortBy}
-          onChange={handleSortChange}
+      <div className={styles.sortCom}>
+        <div className={styles.sortText}>Sort By:</div>
+        <FormControl
+          sx={{
+            m: 1,
+            minWidth: 200,
+            fontSize: "1.8rem",
+          }}
         >
-          <option value="">Select sort type</option>
-          <option value="option1">price</option>
-        </select>
+          <InputLabel id="demo-simple-select-helper-label">sort</InputLabel>
+          <Select
+            labelId="demo-simple-select-helper-label"
+            id="demo-simple-select-helper"
+            value={sortBy}
+            onChange={handleSortChange}
+            label="Sort"
+            sx={stepStyle}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            <MenuItem value="option1">
+              {" "}
+              <Image
+                src={moneyImage}
+                className={styles.sort}
+                alt="money_icon"
+              />
+              Price
+            </MenuItem>
+            <MenuItem value="option2">
+              <Image src={timeImage} className={styles.sort} alt="money_icon" />
+              Earliest departure
+            </MenuItem>
+          </Select>
+        </FormControl>
       </div>
       {isPending ? (
         <div className={styles.loading}>
           <CircularProgress color="inherit" />
         </div>
       ) : allRide.length === 0 ? (
-        <div className={styles.not_Found}>Rides is Not Found</div>
+        <div className={styles.notFound_main}>
+          <div className={styles.not_Found}>
+            <div className={styles.user_date}>
+              {<FormattedDate date={new Date(data.date)} />}
+            </div>
+            <div className={styles.notFound_text}>
+              There are no rides yet for today between these
+              <br /> cities
+            </div>
+            <div className={styles.city_name}>
+              {from.fullAddress}
+              <TrendingFlatIcon className={styles.arrow} />
+              {to.fullAddress}
+            </div>
+          </div>
+        </div>
       ) : (
         Array.isArray(allRide) &&
         allRide.map((item, index) => {
@@ -166,24 +271,20 @@ export default function findRide() {
                       <div className={styles.innerupplace}>
                         {item.pick_up.city}
                         <div className={styles.distance}>
-                          {
-                            <DistanceCalculator
-                              origin={from.fullAddress}
-                              destination={item.pick_up.fullAddress}
-                            />
-                          }{" "}
+                          {/* <DistanceCalculator
+                            origin={from.fullAddress}
+                            destination={item.pick_up.fullAddress}
+                          />{" "} */}
                           from your departure
                         </div>
                       </div>
                       <div className={styles.innerdownplace}>
                         {item.drop_off.city}
                         <div className={styles.distance_arrival}>
-                          {
-                            <DistanceCalculator
-                              origin={to.fullAddress}
-                              destination={item.drop_off.fullAddress}
-                            />
-                          }{" "}
+                          {/* <DistanceCalculator
+                            origin={to.fullAddress}
+                            destination={item.drop_off.fullAddress}
+                          />{" "} */}
                           from your arrival
                         </div>
                       </div>

@@ -176,7 +176,7 @@
 
 .img {
   margin-right: 30px;
-  margin-top: 2px;
+  margin-top: 8px;
   display: flex;
   flex-direction: row;
 }
@@ -188,7 +188,7 @@
   font-weight: 600;
   font-size: 20px;
   color: #02081f;
-  margin-top: 25px;
+  margin-top: 18px;
   display: flex;
 }
 .chatIcon {
@@ -203,7 +203,7 @@
 }
 
 .arrow {
-  margin-top: 20px;
+  margin-top: 5px;
   margin-left: 20px;
 }
 .overlay {
@@ -220,7 +220,6 @@
 
 .popup {
   background-color: white;
-  padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   width: 40%;

@@ -79,10 +79,10 @@ export default function FullDetailRide({
                       {ride.pick_up.fullAddress}
                       <div className={styles.distance}>
                         {
-                          <DistanceCalculator
-                            origin={data.from.fullAddress}
-                            destination={ride.pick_up.fullAddress}
-                          />
+                          // <DistanceCalculator
+                          //   origin={data.from.fullAddress}
+                          //   destination={ride.pick_up.fullAddress}
+                          // />
                         }{" "}
                         from your departure
                       </div>
@@ -91,10 +91,10 @@ export default function FullDetailRide({
                       {ride.drop_off.fullAddress}
                       <div className={styles.distance_arrival}>
                         {
-                          <DistanceCalculator
-                            origin={data.to.fullAddress}
-                            destination={ride.drop_off.fullAddress}
-                          />
+                          // <DistanceCalculator
+                          //   origin={data.to.fullAddress}
+                          //   destination={ride.drop_off.fullAddress}
+                          // />
                         }{" "}
                         from your departure
                       </div>
@@ -114,7 +114,10 @@ export default function FullDetailRide({
               <div className={styles.thirdComponent}>
                 <div className={styles.linebetween} />
                 <div className={styles.space_between_text}>
-                  <div className={styles.username}>{ride.user.user_name}</div>
+                  <div className={styles.username}>
+                    {ride.user.user_name.charAt(0).toUpperCase() +
+                      ride.user.user_name.slice(1)}
+                  </div>
                   <div className={styles.owner_img}>
                     <Image
                       src={ride.user.image || profileImage}
@@ -131,11 +134,13 @@ export default function FullDetailRide({
                     style={{ marginLeft: "5px", marginTop: "5px" }}
                     onClick={openPopup}
                   >
-                    <Image
-                      src={icon}
-                      className={styles.chaticon}
-                      alt="chat image"
-                    />
+                    <div>
+                      <Image
+                        src={icon}
+                        className={styles.chaticon}
+                        alt="chat image"
+                      />
+                    </div>
                     <div className={styles.chatMessage}>
                       Ask yash a question
                     </div>
@@ -145,7 +150,7 @@ export default function FullDetailRide({
               {isPopupOpen && (
                 <div className={styles.overlay}>
                   <div className={styles.popup}>
-                    <ChatBox reciverId={ride.user._id} />
+                    <ChatBox reciverId={ride.user._id} onClose={closePopup} />
                   </div>
                 </div>
               )}

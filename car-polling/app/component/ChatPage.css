@@ -1,47 +1,81 @@
 .ChatBox-container {
-  background: var(--cardColor);
   border-radius: 1rem;
   display: grid;
-  grid-template-rows: 14vh 55vh 13vh;
+  grid-template-rows: 10vh 60vh 10vh;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 42%;
 }
 
 .chat-header {
-  padding: 1rem 1rem 0rem 1rem;
   display: flex;
   flex-direction: column;
+  background-color: #02081f;
+  border-radius: 5px 5px 0px 0px;
 }
 
-.chat-body {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 1.5rem;
-  overflow: scroll;
+.linkStyle {
+  color: #0077ff;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .follower {
   display: flex;
-  flex-direction: row;
+  justify-content: space-between;
 }
+
+.header_profile_name {
+  display: flex;
+}
+
 .followerImage {
   width: 3.2rem;
   height: 3.2rem;
   border-radius: 50%;
   border: 1px solid black;
   margin-left: 30px;
+  margin-top: 10px;
 }
+
 .name {
-  color: #02081f;
+  color: white;
   font-weight: 600;
   font-size: 20px;
   margin-left: 20px;
-  margin-top: 15px;
+  margin-top: 25px;
 }
+
+.closeIconStyle {
+  margin-top: 1.5rem;
+  margin-right: 2rem;
+  color: white;
+}
+
 .message_com {
   display: contents;
 }
+
+.chat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  overflow: scroll;
+  background-color: black;
+  background-image: url("../assert/blackchatbg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  z-index: 1;
+}
+
 .message {
-  background: linear-gradient(98.63deg, #24e4f0 0%, #358ff9 100%);
+  background: #414649;
   color: white;
   padding: 0.7rem;
   border-radius: 1rem 1rem 1rem 0;
@@ -54,26 +88,26 @@
 
 .message > span:nth-child(2) {
   font-size: 0.7rem;
-  color: var(--textColor);
   align-self: end;
 }
 
 .own {
   align-self: flex-end;
   border-radius: 1rem 1rem 0 1rem;
-  background: linear-gradient(98.63deg, #24e4f0 0%, #358ff9 100%);
+  background: #075e54;
 }
 
 .chat-sender {
-  background: white;
+  background: #02081f;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
   padding: 0.8rem;
-  border-radius: 1rem;
+  border-radius: 0px 0px 5px 5px;
   align-self: end;
 }
+
 .chat-sender > input {
   height: 70%;
   background-color: rgb(236, 236, 236);
@@ -84,6 +118,7 @@
   font-size: 14px;
   padding: 0px 15px 0px 15px;
 }
+
 .chat-sender > div:nth-of-type(1) {
   background: rgb(233, 233, 233);
   border-radius: 0.5rem;
@@ -93,13 +128,13 @@
   font-weight: bold;
   cursor: pointer;
 }
+
 .chat-sender > div {
   height: 70%;
-  padding: 0px 15px 0px 15px;
 }
 
 .send_Button {
-  background-color: #02081f;
+  background-color: green;
   border: none;
   border-radius: 10px;
   color: white;

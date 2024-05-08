@@ -5,8 +5,11 @@
   width: 100vw;
   display: flex;
   height: 100vh;
-  flex-direction: column;
   justify-content: flex-start;
+}
+.homeImage {
+  margin-top: 150px;
+  margin-right: 150px;
 }
 .inner_container {
   height: 50vh;
@@ -43,6 +46,7 @@
   border-radius: 10px;
   border: none;
   text-align: center;
+  background-color: white;
 }
 
 .searchButton {

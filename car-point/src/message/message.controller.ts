@@ -37,8 +37,11 @@ export class MessageController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('/:chatId')
-  async getMessages(@Param('chatId') chatId: string): Promise<Message[]> {
-    return await this.messageService.getMessages(chatId);
+  @Get('/:chatId/:receiverId')
+  async getMessages(
+    @Param('chatId') chatId: string,
+    @Param('receiverId') receiverId: string,
+  ): Promise<Message[]> {
+    return await this.messageService.getMessages(chatId, receiverId);
   }
 }

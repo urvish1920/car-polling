@@ -26,6 +26,7 @@ export default function planRideDetails({
   const request = useSelector((state: RootState) => state.RequestUser.request);
   const [isPending, setIsPending] = useState(true);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [recipientId, setRecipientId] = useState<string>("");
 
   const router = useRouter();
 
@@ -74,8 +75,10 @@ export default function planRideDetails({
     }
   };
 
-  const openPopup = () => {
+  const openPopup = (recipientId: string) => {
     setIsPopupOpen(true);
+    setRecipientId(recipientId);
+    console.log(recipientId);
   };
 
   const closePopup = () => {
@@ -192,13 +195,16 @@ export default function planRideDetails({
 
                       <ChatIcon
                         className={styles.chatIcon}
-                        onClick={openPopup}
+                        onClick={() => openPopup(occupant.user._id)}
                       />
                     </div>
                     {isPopupOpen && (
                       <div className={styles.overlay}>
                         <div className={styles.popup}>
-                          <ChatBox reciverId={occupant.user._id} />
+                          <ChatBox
+                            reciverId={recipientId}
+                            onClose={closePopup}
+                          />
                         </div>
                       </div>
                     )}
@@ -206,8 +212,8 @@ export default function planRideDetails({
                       <Image
                         src={occupant.user.image || profileImage}
                         className={styles.avater}
-                        width={60}
-                        height={60}
+                        width={50}
+                        height={50}
                         alt={`Picture of ${occupant.user_name}`}
                       />
                       <div className={styles.arrow}>

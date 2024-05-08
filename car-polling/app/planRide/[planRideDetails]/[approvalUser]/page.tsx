@@ -110,14 +110,15 @@ export default function ApprovalRequest({
           <div className={styles.first_container}>
             <div className={styles.space_between}>
               <div className={styles.username}>
-                {filteredRequests[0].user.user_name}
+                {filteredRequests[0].user.user_name.charAt(0).toUpperCase() +
+                  filteredRequests[0].user.user_name.slice(1)}
               </div>
               <div className={styles.img}>
                 <Image
                   src={filteredRequests[0].user.image || profileImage}
                   className={styles.avater}
-                  width={80}
-                  height={80}
+                  width={70}
+                  height={70}
                   alt="Profile Avatar"
                 />
               </div>

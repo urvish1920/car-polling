@@ -65,13 +65,7 @@
   font-size: medium !important;
   margin-right: 5px;
 }
-.aadharCardUploadButton {
-  text-transform: none !important;
-  height: 20px !important;
-  width: 200px !important;
-  margin-left: 20px !important;
-  margin-top: 5px;
-}
+
 .headingProfile {
   font-weight: 600;
   color: #02081f;
@@ -125,7 +119,6 @@
   display: flex;
   justify-content: center;
 }
-
 .overlay {
   position: fixed;
   top: 0;
@@ -137,7 +130,6 @@
   justify-content: center;
   align-items: center;
 }
-
 .popup {
   background-color: white;
   padding: 20px;
@@ -146,20 +138,16 @@
   max-width: 400px;
   width: 100%;
 }
-
 .popup h2 {
   margin-top: 0;
   text-align: center;
 }
-
 .buttons {
   margin-top: 20px;
 }
-
 .popup form {
   margin-bottom: 0;
 }
-
 .addCarBtn {
   background-color: #02081f;
   border: none;
@@ -173,7 +161,6 @@
 .forthComponent {
   margin-top: 15px;
 }
-
 .buttons {
   display: flex;
   justify-content: center;

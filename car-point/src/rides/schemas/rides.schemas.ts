@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { ObjectId, Types } from 'mongoose';
 
 const validateTimeFormat = (value: string) => {
-  const regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
+  const regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9] (AM|PM)$/;
   return regex.test(value);
 };
 

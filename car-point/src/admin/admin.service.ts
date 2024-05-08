@@ -141,20 +141,45 @@ export class AdminService {
     }
   }
 
-  async removeRide(req: Request, id: string) {
-    console.log(id);
+  async AllRequest(req: Request): Promise<{ AllRequest: Request[] }> {
+    const { page = '1', pageSize = '5' } = req.query;
+    const parsedPage = parseInt(page as string, 10);
+    const parsedPageSize = parseInt(pageSize as string, 10);
+    const skip = (parsedPage - 1) * parsedPageSize;
     if (req['user']['IsAdmin']) {
-      const deleteRequest = await this.Request_user.deleteMany({
-        Ride_Id: new mongoose.Types.ObjectId(id),
-      });
-      const deleteRide = await this.RideModel.findByIdAndDelete({ _id: id });
-      if (deleteRequest && deleteRide) {
-        return `ride ${id} has been successfully deleted`;
-      } else {
-        throw new NotFoundException(`ride with this id ${id} not found`);
-      }
+      const allRequest = await this.Request_user.aggregate([
+        {
+          $skip: skip,
+        },
+        {
+          $limit: parsedPageSize,
+        },
+        {
+          $lookup: {
+            from: 'rides',
+            localField: 'Ride_Id',
+            foreignField: '_id',
+            as: 'ride',
+          },
+        },
+        {
+          $unwind: '$ride',
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'user_id',
+            foreignField: '_id',
+            as: 'user',
+          },
+        },
+        {
+          $unwind: '$user',
+        },
+      ]);
+      return { AllRequest: allRequest };
     } else {
-      throw new UnauthorizedException('Not proper User');
+      throw new UnauthorizedException('Invalid User');
     }
   }
 

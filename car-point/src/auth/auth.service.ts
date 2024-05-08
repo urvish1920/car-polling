@@ -72,6 +72,7 @@ export class AuthService {
     }
     return user;
   }
+
   async updateUser(
     id: string,
     usersignupdto: UpdateSignupDto,
@@ -82,6 +83,13 @@ export class AuthService {
       ...usersignupdto,
       image: img,
     });
+    console.log(id);
+    const update = await this.RideModel.updateMany(
+      { 'occupation.user._id': id },
+      { $set: { 'occupation.$.user.image': img } },
+      { new: true, runValidators: true },
+    );
+    console.log(update);
     return { img };
   }
 
