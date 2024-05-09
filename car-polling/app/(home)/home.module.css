@@ -1,122 +1,75 @@
-.home {
-  width: 100vw;
-  height: 100vh;
-  background-color: #02081f;
-  width: 100vw;
-  display: flex;
-  height: 100vh;
-  justify-content: flex-start;
-}
 .homeImage {
-  margin-top: 150px;
-  margin-right: 150px;
+  width: 100vw;
+  height: 40vh;
 }
-.inner_container {
-  height: 50vh;
-  width: 150vh;
-  display: flex;
-  flex-direction: column;
-  margin-top: 10vh;
-}
-
-.placeInputField {
-  display: flex;
-}
-.homeheading {
-  color: white;
-  margin-left: 5%;
-  margin-top: 8%;
-  font-size: 40px;
-}
-.homeheading_second {
-  color: white;
-  margin-top: 2%;
-  margin-left: 5%;
-  font-size: 80px;
-}
-.meanCom {
-  display: flex;
-  flex-direction: column;
-}
-.inputField {
-  height: 8vh;
-  width: 300px;
-  margin-left: 20px;
-  margin-top: 10px;
-  border-radius: 10px;
-  border: none;
+.overlayText {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
-  background-color: white;
+  color: white;
+}
+.home_maintext {
+  color: white;
+  font-size: 35px;
+}
+.search_main_com {
+  display: flex;
+  justify-content: center;
+}
+.forminputfield {
+  display: flex;
 }
 
 .searchButton {
-  height: 8vh;
-  width: 200px;
-  margin-left: 20px;
-  border-radius: 10px;
-  font-size: 15px;
+  font-size: 20px;
+  color: white;
+  font-weight: bold;
+  background-color: #00aff5;
+  width: 25vh;
+  border-radius: 0px 10px 10px 0px;
 }
 
+.main_text_com {
+  display: flex;
+  justify-content: center;
+}
+.out_com {
+  margin-left: 30px;
+  margin-top: 50px;
+}
+.text_heading {
+  font-weight: bold;
+  margin: 5px;
+  color: #054652;
+}
+.text_inner {
+  font-weight: 600;
+  margin: 10px;
+  color: #6f8d90;
+}
 .headingAdmin {
   margin-left: 45%;
   color: white;
   font-size: 40px;
 }
-
-.AdminCheckUser {
-  height: 200px;
-  width: 400px;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  background-color: lightgray;
-  margin-top: 5%;
-  margin-left: 35%;
-}
-.AdminHome {
+.button_admin {
+  color: #054652;
+  font-weight: bold;
+  font-size: 18px;
+  width: 30vh;
+  height: 8vh;
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
-.inner_text {
-  color: black;
-  font-size: 30px;
-  margin-top: 40px;
+.img_admin {
+  margin-right: 10px;
 }
-.totalNo {
-  color: black;
-  font-size: 40px;
-  margin-top: 10px;
-}
-
-.AdminCheckTotalPublish {
-  height: 200px;
-  width: 400px;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  background-color: lightgray;
-  margin-top: 5%;
-  margin-left: 10%;
-}
-
-.inner_text_publish {
-  color: black;
-  font-size: 25px;
-  margin-top: 40px;
-}
-
-.AdminCheckTotelRequest {
-  height: 200px;
-  width: 400px;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  background-color: lightgray;
-  margin-top: 5%;
-  margin-left: 52%;
+.text_admin {
+  margin-right: 10px;
 }
 
 .loading {

@@ -1,10 +1,43 @@
+.notFound_main {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
 .not_Found {
   font-size: 30px;
   font-weight: 600;
-  color: rgb(142, 137, 137);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #e7f7fe;
+}
+.notFound_text {
+  color: #054652;
+  text-align: center;
+  margin-top: 50px;
+}
+.inner_notfound {
   display: flex;
   justify-content: center;
-  margin-top: 15%;
+}
+.notFound_button {
+  background-color: #02081f;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  width: 20vh;
+  height: 40px;
+  font-size: 16px;
+  margin-top: 40px;
+}
+.bt_text {
+  color: #054652;
+  text-align: center;
+  font-size: 40px;
+  margin-top: 10px;
+  font-weight: bold;
+  -moz-osx-font-smoothing: grayscale;
 }
 .sortCom {
   margin-left: 60%;

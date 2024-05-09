@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./listViewAllRides.module.css";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import car_bg from "../assert/bg_car_publiser.svg";
 import profileImage from "../assert/avater.png";
 import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
@@ -70,10 +71,6 @@ export default function findRide() {
     let sortedArray = [...rides];
     if (sortBy === "option1") {
       sortedArray.sort((a, b) => a.ride.price - b.ride.price);
-    } else if (sortBy === "option2") {
-      sortedArray.sort((a, b) =>
-        a.user.user_name.localeCompare(b.user.user_name)
-      );
     }
     return sortedArray;
   };
@@ -107,37 +104,66 @@ export default function findRide() {
 
   return (
     <div className={styles.planRide}>
-      <div className={styles.sortCom}>
-        <div className={styles.sortText}>Sort By:</div>
-        <FormControl
-          sx={{
-            m: 1,
-            minWidth: 200,
-            fontSize: "1.8rem",
-          }}
-        >
-          <InputLabel id="demo-simple-select-helper-label">sort</InputLabel>
-          <Select
-            labelId="demo-simple-select-helper-label"
-            id="demo-simple-select-helper"
-            value={sortBy}
-            onChange={handleSortChange}
-            className={styles.customselect}
-            label="Sort"
+      {!isPending && allRide.length > 0 && (
+        <div className={styles.sortCom}>
+          <div className={styles.sortText}>Sort By:</div>
+          <FormControl
+            sx={{
+              m: 1,
+              minWidth: 200,
+              fontSize: "1.8rem",
+            }}
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value="option1">Price</MenuItem>
-          </Select>
-        </FormControl>
-      </div>
+            <InputLabel id="demo-simple-select-helper-label">sort</InputLabel>
+            <Select
+              labelId="demo-simple-select-helper-label"
+              id="demo-simple-select-helper"
+              value={sortBy}
+              onChange={handleSortChange}
+              className={styles.customselect}
+              label="Sort"
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="option1">Price</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+      )}
       {isPending ? (
         <div className={styles.loading}>
           <CircularProgress color="inherit" />
         </div>
       ) : !allRide || allRide.length === 0 ? (
-        <div className={styles.not_Found}>Rides is Not Found</div>
+        <div className={styles.notFound_main}>
+          <div className={styles.not_Found}>
+            <div className={styles.notFound_text}>
+              you not pull any car yet now, Become a car-puller and save a
+              travel <br />
+              costs.
+            </div>
+            <div className={styles.inner_notfound}>
+              <button
+                className={styles.notFound_button}
+                onClick={() => {
+                  router.push(`/`);
+                }}
+              >
+                find Rides
+              </button>
+            </div>
+            <div className={styles.inner_notfound}>
+              <Image
+                src={car_bg}
+                className={styles.publish_carbg}
+                width={600}
+                height={600}
+                alt={`Picture of car`}
+              />
+            </div>
+          </div>
+        </div>
       ) : (
         Array.isArray(allRide) &&
         allRide.map((item, index) => {

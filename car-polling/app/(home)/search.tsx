@@ -5,6 +5,16 @@ import styles from "./home.module.css";
 import { useDispatch } from "react-redux";
 import { setSearchData } from "../redux/slice/storeSearchData";
 import { Autocomplete } from "@react-google-maps/api";
+import InputAdornment from "@mui/material/InputAdornment/InputAdornment";
+import TextField from "@mui/material/TextField/TextField";
+import Box from "@mui/material/Box/Box";
+import Image from "next/image";
+import location from "../assert/location_icon.svg";
+import person from "../assert/person.svg";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs, { Dayjs } from "dayjs";
 
 interface SearchState {
   from: {
@@ -50,16 +60,12 @@ const Search = () => {
     router.push("/findRide");
   };
 
-  useEffect(() => {
-    const dtToday = new Date();
-    const month = dtToday.getMonth() + 1;
-    const day = dtToday.getDate();
-    const year = dtToday.getFullYear();
-    const formattedMonth = month < 10 ? `0${month}` : month.toString();
-    const formattedDay = day < 10 ? `0${day}` : day.toString();
-    const maxDateString = `${year}-${formattedMonth}-${formattedDay}`;
-    setMaxDate(maxDateString);
-  }, []);
+  const handleDateChange = (newDate: Dayjs | null) => {
+    if (newDate) {
+      console.log("Selected date:", newDate);
+      setSearch({ ...search, date: newDate.toDate() });
+    }
+  };
 
   useEffect(() => {
     if (search.passenger.length > 0) {
@@ -69,9 +75,6 @@ const Search = () => {
     }
   }, [search]);
 
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch({ ...search, date: e.target.valueAsDate || new Date() });
-  };
   const handlefromPlaceChanged = (place: google.maps.places.PlaceResult) => {
     const cityComponent = place.address_components?.find((component) =>
       component.types.includes("locality")
@@ -138,86 +141,174 @@ const Search = () => {
   const toAutocompleteRef = useRef<google.maps.places.Autocomplete>();
 
   return (
-    <div className={styles.meanCom}>
-      <form>
-        <div className={styles.innCom}>
-          <div className={styles.placeInputField}>
-            <Autocomplete
-              onLoad={(autocomplete) => {
-                console.log("Autocomplete loaded:", autocomplete);
-                fromAutocompleteRef.current = autocomplete;
+    <form className={styles.forminputfield}>
+      <Autocomplete
+        onLoad={(autocomplete) => {
+          console.log("Autocomplete loaded:", autocomplete);
+          fromAutocompleteRef.current = autocomplete;
+        }}
+        onPlaceChanged={() => {
+          const place = fromAutocompleteRef.current?.getPlace();
+          console.log(place);
+          if (place) {
+            handlefromPlaceChanged(place);
+          } else {
+            console.error("Place information is not available.");
+          }
+        }}
+      >
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <Box
+            sx={{
+              "& > :not(style)": {
+                m: 1,
+                width: "250px",
+              },
+            }}
+          >
+            <TextField
+              id="from"
+              type="text"
+              InputProps={{
+                style: {
+                  border: "none",
+                  fontSize: "18px",
+                  fontWeight: "bold",
+                  outline: "none",
+                  boxShadow: "none",
+                },
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Image
+                      src={location}
+                      height={20}
+                      width={20}
+                      alt={`Location`}
+                    />
+                  </InputAdornment>
+                ),
               }}
-              onPlaceChanged={() => {
-                const place = fromAutocompleteRef.current?.getPlace();
-                console.log(place);
-                if (place) {
-                  handlefromPlaceChanged(place);
-                } else {
-                  console.error("Place information is not available.");
-                }
+              placeholder="Leaving from"
+              variant="outlined"
+            />
+          </Box>
+        </Box>
+      </Autocomplete>
+      <Autocomplete
+        onLoad={(autocomplete) => {
+          console.log("Autocomplete loaded:", autocomplete);
+          toAutocompleteRef.current = autocomplete;
+        }}
+        onPlaceChanged={() => {
+          const place = toAutocompleteRef.current?.getPlace();
+          console.log(place);
+          if (place) {
+            handletoPlaceChanged(place);
+          } else {
+            console.error("Place information is not available.");
+          }
+        }}
+      >
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <Box
+            sx={{
+              "& > :not(style)": {
+                m: 1,
+                width: "250px",
+              },
+            }}
+          >
+            <TextField
+              id="to"
+              type="text"
+              InputProps={{
+                style: {
+                  fontSize: "18px",
+                  fontWeight: "bold",
+                },
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Image
+                      src={location}
+                      height={20}
+                      width={20}
+                      alt={`Location`}
+                    />
+                  </InputAdornment>
+                ),
               }}
-            >
-              <input
-                className={styles.inputField}
-                id="from"
-                type="text"
-                placeholder="from"
-              />
-            </Autocomplete>
-            <Autocomplete
-              onLoad={(autocomplete) => {
-                console.log("Autocomplete loaded:", autocomplete);
-                toAutocompleteRef.current = autocomplete;
+              placeholder="Going to"
+              variant="outlined"
+            />
+          </Box>
+        </Box>
+      </Autocomplete>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Box
+          sx={{
+            "& > :not(style)": {
+              m: 1,
+              width: "250px",
+            },
+          }}
+        >
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="when"
+              value={dayjs(search.date)}
+              onChange={handleDateChange}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  border: "none",
+                  "&:hover": {
+                    border: "none",
+                  },
+                },
               }}
-              onPlaceChanged={() => {
-                const place = toAutocompleteRef.current?.getPlace();
-                console.log(place);
-                if (place) {
-                  handletoPlaceChanged(place);
-                } else {
-                  console.error("Place information is not available.");
-                }
-              }}
-            >
-              <input
-                className={styles.inputField}
-                id="to"
-                type="text"
-                placeholder="to"
-              />
-            </Autocomplete>
-          </div>
-        </div>
-        <div className={styles.innCom}>
-          <input
-            className={styles.inputField}
-            id="date"
-            type="date"
-            value={search.date.toISOString().slice(0, 10)}
-            min={maxDate}
-            onChange={handleDateChange}
-            placeholder="dd-mm-yyyy"
-          />
-          <input
-            className={styles.inputField}
+            />
+          </LocalizationProvider>
+        </Box>
+      </Box>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Box
+          sx={{
+            "& > :not(style)": {
+              m: 1,
+              width: "250px",
+            },
+          }}
+        >
+          <TextField
             id="passenger"
             type="text"
+            InputProps={{
+              style: {
+                fontSize: "18px",
+                fontWeight: "bold",
+              },
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Image src={person} height={20} width={20} alt={`person`} />
+                </InputAdornment>
+              ),
+            }}
             value={search.passenger}
             onChange={(e) =>
               setSearch({ ...search, passenger: e.target.value })
             }
-            placeholder="No of Passenger"
+            placeholder="Passenger"
+            variant="outlined"
           />
-          <button
-            onClick={handleSearchData}
-            className={styles.searchButton}
-            disabled={buttonDisabled}
-          >
-            Search
-          </button>
-        </div>
-      </form>
-    </div>
+        </Box>
+      </Box>
+      <button
+        onClick={handleSearchData}
+        className={styles.searchButton}
+        disabled={buttonDisabled}
+      >
+        Search
+      </button>
+    </form>
   );
 };
 

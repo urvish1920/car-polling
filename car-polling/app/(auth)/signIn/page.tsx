@@ -5,6 +5,8 @@ import Link from "next/link";
 import { setUserAndToken } from "../../redux/slice/userDataReducer";
 import { AppDispatch } from "@/app/redux/store";
 import { useDispatch } from "react-redux";
+import Image from "next/image";
+import car_bg from "../../assert/bg_car_publiser.svg";
 import { BASE_URL } from "@/app/utils/apiutils";
 
 interface User {
@@ -36,11 +38,7 @@ export default function signIn() {
         const { access_token, user } = data;
         if (access_token && user) {
           dispatch(setUserAndToken({ user, token: access_token }));
-          if (user.IsAdmin) {
-            window.location.href = "/Admin";
-          } else {
-            window.location.href = "/";
-          }
+          window.location.href = "/";
         } else {
           console.log("Token or user data not found in response");
         }
@@ -66,6 +64,9 @@ export default function signIn() {
 
   return (
     <div className={styles.mainconatiner}>
+      <div className={styles.text_publishNewRide}>
+        Unlock the Road Together: Sign In, Share Rides, Save Money!
+      </div>
       <div className={styles.loginInnerContainer}>
         <div className={styles.insideContainLogin}>
           <h1 className={styles.headingSignIn}>
@@ -105,6 +106,16 @@ export default function signIn() {
           </Link>
         </div>
       </div>
+      <div className={styles.car_img}>
+        <Image
+          src={car_bg}
+          className={styles.publish_carbg}
+          width={700}
+          height={500}
+          alt={`Picture of car`}
+        />
+      </div>
+      <div className={styles.bt_text}>Drive.Share.Save</div>
     </div>
   );
 }

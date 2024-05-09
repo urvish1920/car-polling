@@ -25,7 +25,7 @@ export default function FullDetailRide({
   const id = params.findRideDetails;
   const dispatch: AppDispatch = useDispatch();
   const ride = useSelector((state: any) => state.findRide.rides);
-  const data = useSelector((state: RootState) => state.search);
+  // const data = useSelector((state: RootState) => state.search);
   const [isPending, setIsPending] = useState(true);
 
   const router = useRouter();

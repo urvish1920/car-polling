@@ -16,7 +16,7 @@ import Box from "@mui/material/Box/Box";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment/InputAdornment";
 import Image from "next/image";
-import car_bg from "../assert/82e402da-7a70-4895-9331-cde0d1ccac86.svg";
+import car_bg from "../assert/bg_car_publiser.svg";
 import location from "../assert/location_icon.svg";
 import moneyIcon from "../assert/sort_price.svg";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -38,8 +38,6 @@ export default function publishNewCar() {
   const router = useRouter();
   const [vehicles, setVehicles] = useState<vehicle[]>([]);
   const [isPending, setIsPending] = useState(true);
-  const [maxDate, setMaxDate] = useState("");
-  const [button_dis, setButton_dis] = useState(false);
 
   const dispatch = useDispatch();
   const step = useSelector((state: RootState) => state.step);
@@ -93,7 +91,6 @@ export default function publishNewCar() {
         const data = await response.json();
         if (response.ok && response.status === 200) {
           alert(data.message);
-          setButton_dis(true);
           dispatch(
             setPublish({
               pick_up: { city: "", fullAddress: "", lat: 0, lng: 0 },

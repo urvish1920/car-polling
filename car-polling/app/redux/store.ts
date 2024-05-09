@@ -9,7 +9,7 @@ import RequestUserReducer from "@/app/redux/slice/approvalUserReducer";
 import stepReducer from "./slice/stepReducer";
 import publishReducer from "./slice/publishReducer";
 import authSlice from "./slice/userDataReducer";
-import userReducer from "./slice/userDataReducer";
+import totalAdminData from "./slice/totalCountAdminReducer";
 
 const rootReducer = combineReducers({
   findRide: findRideReducer,
@@ -19,6 +19,7 @@ const rootReducer = combineReducers({
   step: stepReducer,
   publish: publishReducer,
   auth: authSlice,
+  totalDateAdmin: totalAdminData,
 });
 
 const persistConfig = {

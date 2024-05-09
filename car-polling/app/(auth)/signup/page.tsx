@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import styles from "./signup.module.css";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import car_bg from "../../assert/bg_car_publiser.svg";
 import { BASE_URL } from "@/app/utils/apiutils";
 
 interface User {
@@ -67,6 +69,9 @@ export default function signup() {
 
   return (
     <div className={styles.mainconatiner}>
+      <div className={styles.text_publishNewRide}>
+        Unlock the Road Together: Sign Up, Share Rides, Save Money!
+      </div>
       <div className={styles.signupInnerContainer}>
         <div className={styles.signupInsideItem}>
           <h1 className={styles.headingSignUp}>
@@ -111,6 +116,16 @@ export default function signup() {
           </Link>
         </div>
       </div>
+      <div className={styles.car_img}>
+        <Image
+          src={car_bg}
+          className={styles.publish_carbg}
+          width={700}
+          height={500}
+          alt={`Picture of car`}
+        />
+      </div>
+      <div className={styles.bt_text}>Drive.Share.Save</div>
     </div>
   );
 }

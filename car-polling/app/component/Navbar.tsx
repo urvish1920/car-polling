@@ -50,22 +50,22 @@ const Navbar = () => {
           </li>
           <li className="nav-item">
             <Link
-              href="/allRequest"
-              className={`navLink ${
-                pathname.startsWith("/allRequest") ? "active" : ""
-              }`}
-            >
-              All Request
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link
               href="/allPlanRide"
               className={`navLink ${
                 pathname.startsWith("/allPlanRide") ? "active" : ""
               }`}
             >
               All Plan Ride
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link
+              href="/allRequest"
+              className={`navLink ${
+                pathname.startsWith("/allRequest") ? "active" : ""
+              }`}
+            >
+              All Request
             </Link>
           </li>
         </ul>

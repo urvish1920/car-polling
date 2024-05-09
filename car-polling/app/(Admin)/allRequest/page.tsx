@@ -8,6 +8,10 @@ import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 import FormattedDate from "@/app/component/Formate";
 import { useRouter } from "next/navigation";
 import { BASE_URL } from "@/app/utils/apiutils";
+import { RootState } from "@/app/redux/store";
+import { useSelector } from "react-redux";
+import Stack from "@mui/material/Stack/Stack";
+import Pagination from "@mui/material/Pagination/Pagination";
 
 interface Request {
   _id: string;
@@ -56,7 +60,9 @@ export default function AllUserPage() {
   const [allRequest, setAllRequest] = useState<Request[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  console.log(allRequest);
+  const totalCount = useSelector(
+    (state: RootState) => state.totalDateAdmin.totalData?.totalRequests
+  );
   const router = useRouter();
 
   useEffect(() => {
@@ -80,15 +86,20 @@ export default function AllUserPage() {
         setIsPending(false);
       }
     };
-    fetchTotalData();
+
+    if (totalCount !== undefined) {
+      const totalPages = Math.ceil(totalCount / 5);
+      if (currentPage <= totalPages) {
+        fetchTotalData();
+      }
+    }
   }, [currentPage]);
 
-  const nextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
-  };
-
-  const prevPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setCurrentPage(value);
   };
 
   return (
@@ -140,25 +151,22 @@ export default function AllUserPage() {
                 );
               })}
           </div>
-          <div>
-            <button
-              onClick={prevPage}
-              disabled={currentPage === 1}
-              className={styles.prevNextButtons}
-            >
-              Previous
-            </button>
-            <button
-              onClick={nextPage}
-              disabled={allRequest.length < 5}
-              className={styles.prevNextButtons}
-            >
-              Next
-            </button>
-          </div>
+          {totalCount && (
+            <div className={styles.paginationButton}>
+              <Stack spacing={2} className={styles.pagination}>
+                <Pagination
+                  count={Math.ceil(totalCount / 5)}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  variant="outlined"
+                  shape="rounded"
+                  color="primary"
+                />
+              </Stack>
+            </div>
+          )}
         </div>
       )}
-      hyy
     </div>
   );
 }

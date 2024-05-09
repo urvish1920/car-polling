@@ -5,9 +5,12 @@ import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 import Image from "next/image";
 import profile from "@/app/assert/avater.png";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 import { useRouter } from "next/navigation";
 import { BASE_URL } from "@/app/utils/apiutils";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/redux/store";
+import Stack from "@mui/material/Stack/Stack";
+import Pagination from "@mui/material/Pagination/Pagination";
 
 export interface User {
   _id: string;
@@ -22,9 +25,11 @@ export default function AllUserPage() {
   const [isPending, setIsPending] = useState(true);
   const [allUser, setAllUser] = useState<User[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [deleteId, setDeleteId] = useState("");
-  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
+
+  const totalCount = useSelector(
+    (state: RootState) => state.totalDateAdmin.totalData?.totalUsers
+  );
 
   useEffect(() => {
     const fetchTotalData = async () => {
@@ -48,44 +53,19 @@ export default function AllUserPage() {
         setIsPending(false);
       }
     };
-    fetchTotalData();
-  }, [currentPage]);
-
-  const handleDelete = (_id: string) => {
-    setDeleteId(_id);
-    setShowModal(true);
-  };
-
-  const confirmDelete = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/admin/deleteUser/${deleteId}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        alert(data.message);
-        throw new Error(`Failed to delete user with ID ${deleteId}`);
+    if (totalCount !== undefined) {
+      const totalPages = Math.ceil(totalCount / 5);
+      if (currentPage <= totalPages) {
+        fetchTotalData();
       }
-      alert(data.message);
-      window.location.reload();
-    } catch (error) {
-      alert(error);
-      console.error("Error deleting user:", error);
     }
-    setShowModal(false);
-  };
+  }, [currentPage, totalCount]);
 
-  const cancelDelete = () => {
-    setShowModal(false);
-  };
-
-  const nextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
-  };
-
-  const prevPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setCurrentPage(value);
   };
 
   return (
@@ -117,11 +97,6 @@ export default function AllUserPage() {
                           height={47}
                           alt="User Profile"
                         />
-                        <DeleteOutlineIcon
-                          className={styles.deleteIcon}
-                          style={{ color: "red" }}
-                          onClick={() => handleDelete(item._id)}
-                        />
                       </div>
                     </div>
                   </div>
@@ -137,35 +112,20 @@ export default function AllUserPage() {
               );
             })}
           </div>
-          <div>
-            <button
-              onClick={prevPage}
-              disabled={currentPage === 1}
-              className={styles.prevNextButtons}
-            >
-              Previous
-            </button>
-            <button
-              onClick={nextPage}
-              disabled={allUser.length < 5}
-              className={styles.prevNextButtons}
-            >
-              Next
-            </button>
-          </div>
-        </div>
-      )}
-      {showModal && (
-        <div className={styles.modalBackground}>
-          <div className={styles.modalContainer}>
-            <div className={styles.text}>
-              Are you sure you want to delete this user?
+          {totalCount && (
+            <div className={styles.paginationButton}>
+              <Stack spacing={2} className={styles.pagination}>
+                <Pagination
+                  count={Math.ceil(totalCount / 5)}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  variant="outlined"
+                  shape="rounded"
+                  color="primary"
+                />
+              </Stack>
             </div>
-            <div>
-              <button onClick={confirmDelete}>Yes</button>
-              <button onClick={cancelDelete}>No</button>
-            </div>
-          </div>
+          )}
         </div>
       )}
     </div>

@@ -1,4 +1,4 @@
-// redux/slice/findRideDetailsReducer.ts
+import { BASE_URL } from "@/app/utils/apiutils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export interface Ride {
@@ -49,7 +49,7 @@ export const fetchFindRides = createAsyncThunk(
   "findRide/fetchFindRides",
   async (id: string, thunkAPI) => {
     try {
-      const response = await fetch(`http://localhost:8000/rides/${id}`);
+      const response = await fetch(`${BASE_URL}/rides/${id}`);
       if (!response.ok) {
         throw new Error("Failed to fetch ride details");
       }

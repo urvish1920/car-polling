@@ -1,4 +1,5 @@
 // redux/slice/findRideDetailsReducer.ts
+import { BASE_URL } from "@/app/utils/apiutils";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export interface RequestData {
@@ -16,7 +17,7 @@ export interface RequestData {
   user: {
     _id: string;
     user_name: string;
-    image:String
+    image: String;
   };
 }
 
@@ -36,12 +37,9 @@ export const fetchRequestUser = createAsyncThunk(
   "findRide/fetchFindRides",
   async (id: string, thunkAPI) => {
     try {
-      const response = await fetch(
-        `http://localhost:8000/request/notifationUser/${id}`,
-        {
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/request/notifationUser/${id}`, {
+        credentials: "include",
+      });
       if (!response.ok) {
         throw new Error("Failed to fetch request details");
       }

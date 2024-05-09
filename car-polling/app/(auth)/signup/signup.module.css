@@ -1,20 +1,32 @@
 .mainconatiner {
-  background-color: #02081f;
+  background-color: #e7f7fe;
   width: 100vw;
-  height: 100vh;
+  height: 92vh;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+}
+.text_publishNewRide {
+  color: #054652;
+  text-align: center;
+  margin-top: 5%;
+  font-weight: 600;
+  font-size: 40px;
+}
+.car_img {
+  margin-left: 50%;
+  margin-top: 5%;
 }
 
 .signupInnerContainer {
-  height: 60vh;
+  height: 55vh;
   width: 50vh;
   border-radius: 10px;
   display: flex;
   justify-content: center;
-  background-color: lightgray;
+  background-color: white;
   position: absolute;
-  margin-top: 10%;
+  margin-top: 15%;
+  margin-left: 20%;
 }
 
 .signupInsideItem {
@@ -48,12 +60,24 @@
   font-weight: bold;
 }
 .button_SignUp {
-  height: 30px;
+  height: 40px;
   width: 20vh;
   margin-top: 20px;
   margin-left: 18%;
-  background-color: white;
+  background-color: #054652;
   border: none;
   border-radius: 5px;
-  color: black;
+  color: white;
+}
+
+.bold_text {
+  font-weight: bold;
+}
+.bt_text {
+  color: #054652;
+  text-align: center;
+  font-size: 40px;
+  font-weight: bold;
+  margin-top: 30px;
+  -moz-osx-font-smoothing: grayscale;
 }

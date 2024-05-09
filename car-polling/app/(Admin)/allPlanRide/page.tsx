@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./allPlanRide.module.css";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 import Image from "next/image";
@@ -8,6 +8,10 @@ import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 import FormattedDate from "@/app/component/Formate";
 import { useRouter } from "next/navigation";
 import { BASE_URL } from "@/app/utils/apiutils";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/redux/store";
+import Pagination, { paginationClasses } from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 interface Rides {
   _id: string;
@@ -42,6 +46,10 @@ export default function AllUserPage() {
 
   const router = useRouter();
 
+  const totalCount = useSelector(
+    (state: RootState) => state.totalDateAdmin.totalData?.totalRides
+  );
+
   useEffect(() => {
     const fetchTotalData = async () => {
       try {
@@ -63,15 +71,19 @@ export default function AllUserPage() {
         setIsPending(false);
       }
     };
-    fetchTotalData();
+    if (totalCount !== undefined) {
+      const totalPages = Math.ceil(totalCount / 5);
+      if (currentPage <= totalPages) {
+        fetchTotalData();
+      }
+    }
   }, [currentPage]);
 
-  const nextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
-  };
-
-  const prevPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setCurrentPage(value);
   };
 
   return (
@@ -127,22 +139,20 @@ export default function AllUserPage() {
                 );
               })}
           </div>
-          <div>
-            <button
-              onClick={prevPage}
-              disabled={currentPage === 1}
-              className={styles.prevNextButtons}
-            >
-              Previous
-            </button>
-            <button
-              onClick={nextPage}
-              disabled={allRides.length < 5}
-              className={styles.prevNextButtons}
-            >
-              Next
-            </button>
-          </div>
+          {totalCount && (
+            <div className={styles.paginationButton}>
+              <Stack spacing={2} className={styles.pagination}>
+                <Pagination
+                  count={Math.ceil(totalCount / 5)}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                  variant="outlined"
+                  shape="rounded"
+                  color="primary"
+                />
+              </Stack>
+            </div>
+          )}
         </div>
       )}
     </div>

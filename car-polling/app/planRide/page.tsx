@@ -6,7 +6,7 @@ import FormattedDate from "@/app/component/Formate";
 import Image from "next/image";
 import moneyImage from "../assert/sort_price.svg";
 import timeImage from "../assert/sort_time.svg";
-import car_bg from "../assert/82e402da-7a70-4895-9331-cde0d1ccac86.svg";
+import car_bg from "../assert/bg_car_publiser.svg";
 import CircularProgress from "@mui/material/CircularProgress";
 import { BASE_URL } from "../utils/apiutils";
 import InputLabel from "@mui/material/InputLabel";

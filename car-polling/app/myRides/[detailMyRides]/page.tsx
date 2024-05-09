@@ -338,7 +338,7 @@ export default function FullDetailRide({
                       color: "white",
                       backgroundColor: "red",
                       border: "none",
-                      marginLeft: "25%",
+                      marginLeft: "42%",
                       marginTop: "10px",
                     }}
                     onClick={handleCancelEvent}
@@ -350,25 +350,6 @@ export default function FullDetailRide({
                     }
                   >
                     cancle the request
-                  </button>
-                  <button
-                    style={{
-                      padding: "5px",
-                      width: "150px",
-                      height: "40px",
-                      borderRadius: "10px",
-                      color: "white",
-                      backgroundColor: "green",
-                      marginLeft: "10%",
-                      border: "none",
-                      marginTop: "10px",
-                    }}
-                    onClick={handlePaymentEvent}
-                    disabled={
-                      userRide.status_Request === "Approve" ? false : true
-                    }
-                  >
-                    payment
                   </button>
                 </div>
 
