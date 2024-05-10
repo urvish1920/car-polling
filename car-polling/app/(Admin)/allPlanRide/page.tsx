@@ -87,8 +87,8 @@ export default function AllUserPage() {
   };
 
   return (
-    <div className={styles.allUser}>
-      <div className={styles.heading_allUser}>All Rides</div>
+    <div className={styles.allRides}>
+      <div className={styles.heading_allRides}>All Rides</div>
       {isPending ? (
         <div className={styles.loading}>
           <CircularProgress color="inherit" />

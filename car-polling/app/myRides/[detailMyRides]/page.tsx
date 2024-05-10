@@ -118,29 +118,29 @@ export default function FullDetailRide({
     setShowModal(true);
   };
 
-  const handlePaymentEvent = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/payment/order`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          price: userRide?.ride.price,
-        }),
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        alert(data.message);
-      } else {
-        window.location.href = data.session_id;
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setIsPending(false);
-    }
-  };
+  // const handlePaymentEvent = async () => {
+  //   try {
+  //     const response = await fetch(`${BASE_URL}/payment/order`, {
+  //       method: "POST",
+  //       credentials: "include",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         price: userRide?.ride.price,
+  //       }),
+  //     });
+  //     const data = await response.json();
+  //     if (!response.ok) {
+  //       alert(data.message);
+  //     } else {
+  //       window.location.href = data.session_id;
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //     setIsPending(false);
+  //   }
+  // };
 
   useEffect(() => {
     const fetchRides = async () => {

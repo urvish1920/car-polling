@@ -1,5 +1,4 @@
-"use client";
-import "../../globals.css";
+"use client"
 import React, { useEffect, useState } from "react";
 import styles from "./signup.module.css";
 import Link from "next/link";
@@ -23,6 +22,7 @@ export default function signup() {
   });
   const [buttonDisabled, setButtonDisable] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [passwordValid, setPasswordValid] = useState<boolean>(false);
 
   const onSignup = async () => {
     setLoading(true);
@@ -60,12 +60,12 @@ export default function signup() {
     } else {
       setButtonDisable(true);
     }
-    const hasWhiteSpace = /\s/.test(user.password);
-    if (hasWhiteSpace) {
-      alert("there are whitespace in password");
-      setButtonDisable(false);
-    }
   }, [user]);
+
+  useEffect(() => {
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/;
+    setPasswordValid(passwordRegex.test(user.password));
+  }, [user.password]);
 
   return (
     <div className={styles.mainconatiner}>
@@ -95,7 +95,9 @@ export default function signup() {
             onChange={(e) => setUser({ ...user, email: e.target.value })}
             placeholder="email"
           />
-          <label className={styles.label_text}>Enter your Password</label>
+          <label className={styles.label_text}>
+            Enter your Password
+          </label>
           <input
             className={styles.inputField}
             id="password"
@@ -104,10 +106,15 @@ export default function signup() {
             onChange={(e) => setUser({ ...user, password: e.target.value })}
             placeholder="password"
           />
+           <span
+              className={passwordValid ? styles.green : styles.red}
+            >
+             6+ chars, 1 letter, 1 number, 1 special
+            </span>
           <button
             className={styles.button_SignUp}
             onClick={onSignup}
-            disabled={buttonDisabled}
+            disabled={buttonDisabled || !passwordValid}
           >
             {loading ? "Processing ..." : "Signup"}
           </button>

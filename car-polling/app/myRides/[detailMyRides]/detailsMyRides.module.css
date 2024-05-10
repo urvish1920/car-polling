@@ -1,6 +1,6 @@
 .heading {
   font-size: 30px;
-  margin-top: 1%;
+  margin-top: 8%;
   text-align: center;
   color: #02081f;
 }
@@ -18,7 +18,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 15%;
+  margin-top: 25%;
 }
 
 .distance {

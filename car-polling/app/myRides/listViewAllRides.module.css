@@ -2,6 +2,7 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
+  margin-top: 4%;
 }
 .not_Found {
   font-size: 30px;
@@ -44,7 +45,7 @@
   display: flex;
   flex-direction: row;
   margin-bottom: 10px;
-  margin-top: 20px;
+  margin-top: 5%;
 }
 .sortText {
   font-size: 20px;
@@ -55,7 +56,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 15%;
+  margin-top: 25%;
 }
 .otcenter {
   display: flex;
@@ -75,10 +76,9 @@
 .col20 {
   padding: 5vh 5vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   font-weight: 600;
   color: #02081f;
-  justify-content: space-between;
 }
 
 .col80 .row:nth-child(1) {
@@ -175,32 +175,31 @@
   font-size: 13px;
   margin-top: 3px;
 }
-
 .distance_arrival {
   font-weight: 500;
   color: #02081f;
   font-size: 13px;
   margin-top: 3px;
 }
-
 .row {
   display: flex;
   flex-direction: row;
   margin-top: 10px;
 }
-
 .img {
   margin-top: 20px;
   margin-left: 20px;
 }
-
 .name {
   margin-top: 30px;
   margin-left: 20px;
   font-weight: 600;
   color: #02081f;
 }
-
 .avater {
   border-radius: 50%;
+}
+.pricedec{
+  font-size: 12px;
+  font-weight: 600;
 }

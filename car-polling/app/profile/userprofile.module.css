@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 15%;
+  margin-top: 25%;
 }
 .profilePage {
   width: 100vw;
@@ -14,7 +14,7 @@
   display: flex;
   height: 80vh;
   width: 80vh;
-  margin-top: 5%;
+  margin-top: 12%;
   border-radius: 3px;
   flex-direction: column;
 }

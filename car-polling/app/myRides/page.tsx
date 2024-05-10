@@ -265,7 +265,8 @@ export default function findRide() {
                   </div>
                 </div>
                 <div className={styles.col20}>
-                  <div className={styles.otprice}>{item.ride.price}&#8377;</div>
+                  <div className={styles.otprice}>&#8377;{item.ride.price}.</div>
+                  <div className={styles.pricedec}>00</div>
                 </div>
               </div>
             </div>

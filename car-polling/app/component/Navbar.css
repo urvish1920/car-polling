@@ -1,19 +1,26 @@
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background-color: white;
   padding: 10px;
+  z-index: 1000; 
 }
 
 .navbar-brand {
   margin-right: 20px;
   margin-left: 15%;
+  flex: 1; 
 }
 
 .navbar-nav {
   display: flex;
   list-style-type: none;
-  margin-left: 15%;
+  margin-right: 25%; 
 }
 
 .nav-item {
@@ -51,7 +58,8 @@
   border-radius: 50%;
   background-color: #fff;
   overflow: hidden;
-  margin-left: 25%;
+  margin-right: 20px;
+  flex: 0 0 auto; 
 }
 
 .profile-circle img {
@@ -59,23 +67,28 @@
   border-radius: 50%;
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .navbar {
-    flex-direction: column;
-    padding: 10px 0;
+    flex-wrap: wrap; 
+  }
+
+  .navbar-brand {
+    flex: 1 100%; 
+    margin-left: 0; 
   }
 
   .navbar-nav {
-    flex-direction: column;
-    align-items: center;
     margin-left: 0;
+    flex-direction: column;
+    align-items: center; 
+    width: 100%; 
+    text-align: center; 
   }
 
   .nav-item {
-    margin: 10px 0;
-  }
-
-  .profile-circle {
-    margin-top: 20px;
+    margin-right: 0; 
+    margin-bottom: 10px; 
   }
 }
+
+

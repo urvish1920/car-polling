@@ -231,19 +231,17 @@ export default function PlanRide() {
                       <div className={styles.box2} />
                     </div>
                     <div className={styles.loccol}>
-                      <div>
-                        <div className={styles.innerupplace}>
-                          {item.pick_up.city}
-                        </div>
+                      <div className={styles.innerupplace}>
+                        {item.pick_up.city}
                         <div className={styles.fullAddress}>
                           {item.pick_up.fullAddress}
                         </div>
                       </div>
                       <div className={styles.innerdownplace}>
                         {item.drop_off.city}
-                      </div>
-                      <div className={styles.fullAddress}>
-                        {item.drop_off.fullAddress}
+                        <div className={styles.fullAddress}>
+                          {item.drop_off.fullAddress}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -255,7 +253,8 @@ export default function PlanRide() {
                   </div>
                 </div>
                 <div className={styles.col20}>
-                  <div className={styles.otprice}>{item.price}&#8377;</div>
+                  <div className={styles.otprice}>&#8377;{item.price}.</div>
+                  <div className={styles.pricedec}>00</div>
                 </div>
               </div>
             </div>

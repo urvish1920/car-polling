@@ -11,6 +11,7 @@ import { Request } from 'express';
 import { UpdateRideDto } from './dto/update-ride.dto';
 import { vehicle } from 'src/vehicle/schemas/vehicle.schemas';
 import { Request_user } from 'src/request/schemas/Request.schemas';
+import * as moment from 'moment-timezone';
 
 @Injectable()
 export class RidesService {
@@ -29,11 +30,13 @@ export class RidesService {
       throw new BadRequestException('Invalid user ID');
     }
     createRideDto.user_id = userId;
+   
     const vehicle = await this.VehicleModel.findById(createRideDto.vehicle_id);
     if (!vehicle) {
       throw new NotFoundException('Vehicle not found');
     }
     createRideDto.leftSites = vehicle.seaters;
+    console.log(createRideDto)
     const res = await this.RideModel.create(createRideDto);
     return await res.save();
   }
@@ -93,7 +96,8 @@ export class RidesService {
 
     const currentTime = new Date();
     currentTime.setHours(0, 0, 0, 0);
-
+    console.log(currentTime)
+  
     const planRide = await this.RideModel.find({
       user_id: userId,
       planride_date: { $gte: currentTime },

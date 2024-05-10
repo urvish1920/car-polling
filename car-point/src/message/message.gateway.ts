@@ -32,7 +32,6 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
       senderId,
       text,
     );
-    console.log(newData);
     this.server.emit('recieve-message', newData);
   }
 }

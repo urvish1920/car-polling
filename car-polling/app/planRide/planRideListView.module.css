@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   flex-direction: row;
-  margin-top: 20px;
+  margin-top: 5%;
   margin-bottom: 10px;
 }
 .sortText {
@@ -17,7 +17,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20%;
+  margin-top: 25%;
 }
 .notFound_main {
   display: flex;
@@ -63,12 +63,14 @@
 .otcenter {
   display: flex;
   justify-content: center;
+  margin-top: 10px;
 }
 .outerContainer {
   width: 50%;
-  height: 180px;
+  height: 200px;
   display: grid;
   grid-template-columns: 80% 20%;
+  grid-template-rows: 70% 20%;
   border-radius: 10px;
   border: 1px solid #ccc;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -77,41 +79,28 @@
 .col20 {
   padding: 5vh 5vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   font-weight: 600;
   color: #02081f;
-  justify-content: space-between;
 }
 
 .col80 .row:nth-child(1) {
   display: flex;
 }
+
 .col80 .row:nth-child(2) {
   display: flex;
 }
-.date {
-  margin-left: 50%;
-  margin-top: 10px;
-  font-weight: 600;
-  color: #02081f;
-}
 
-.statusText {
-  font-weight: 600;
-  color: #02081f;
-  margin-left: 45%;
-  margin-top: 30px;
-  margin-right: 10px;
-}
 .inneruptime {
-  margin-top: 18px;
+  margin-top: 10px;
   margin-left: 15px;
   font-weight: 600;
   color: #02081f;
 }
 
 .innerdowntime {
-  margin-top: 35px;
+  margin-top: 40px;
   margin-left: 15px;
   font-weight: 600;
   color: #02081f;
@@ -130,7 +119,7 @@
   border-style: solid;
   border-color: #02081f;
   border-width: 2px;
-  margin-top: 22px;
+  margin-top: 15px;
   margin-left: 20px;
   margin-right: 10px;
 }
@@ -147,25 +136,14 @@
 }
 
 .line {
-  height: 50px;
+  height: 55px;
   background-color: #02081f;
   width: 3px;
   margin-left: 10px;
 }
-.passengerCircle {
-  height: 10px;
-  width: 10px;
-  background-color: lightgray;
-  border-radius: 15px;
-  border-style: solid;
-  border-color: lightgray;
-  border-width: 1px;
-  margin-left: 4px;
-  margin-top: 5px;
-}
 
 .innerupplace {
-  margin-top: 15px;
+  margin-top: 10px;
   font-weight: 600;
   color: #02081f;
 }
@@ -173,14 +151,31 @@
   font-weight: 600;
   color: #02081f;
 }
+.loccol {
+  display: grid;
+  grid-template-rows: 80% 25%;
+}
+.date {
+  margin-left: 50%;
+  margin-top: 10px;
+  font-weight: 600;
+  color: #02081f;
+}
+.pricedec{
+  font-size: 12px;
+  font-weight: 600;
+}
+.statusText {
+  font-weight: 600;
+  color: #02081f;
+  margin-left: 45%;
+  margin-top: 30px;
+  margin-right: 10px;
+}
 .passengerrow {
   display: flex;
   font-weight: 600;
   color: #02081f;
-}
-.loccol {
-  display: grid;
-  grid-template-rows: 75% 25%;
 }
 .fullAddress {
   font-weight: 400;

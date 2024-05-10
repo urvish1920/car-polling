@@ -6,16 +6,16 @@
   justify-content: flex-start;
   flex-direction: column;
 }
-
 .text_publishNewRide {
   color: #054652;
   text-align: center;
-  margin-top: 50px;
+  margin-top: 8%;
   font-weight: 600;
   font-size: 30px;
 }
 .middle_com {
   display: flex;
+  margin-top: 10px;
 }
 .form_comp {
   height: 350px;
@@ -79,7 +79,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 15%;
+  margin-top: 25%;
 }
 .otcenter {
   display: flex;
@@ -120,6 +120,6 @@
   text-align: center;
   font-size: 40px;
   font-weight: bold;
-  margin-top: 30px;
+  margin-top: 80px;
   -moz-osx-font-smoothing: grayscale;
 }

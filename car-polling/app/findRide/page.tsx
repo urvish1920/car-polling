@@ -271,10 +271,10 @@ export default function findRide() {
                       <div className={styles.innerupplace}>
                         {item.pick_up.city}
                         <div className={styles.distance}>
-                          {/* <DistanceCalculator
+                          <DistanceCalculator
                             origin={from.fullAddress}
                             destination={item.pick_up.fullAddress}
-                          />{" "} */}
+                          />{" "}
                           from your departure
                         </div>
                       </div>
@@ -304,7 +304,8 @@ export default function findRide() {
                   </div>
                 </div>
                 <div className={styles.col20}>
-                  <div className={styles.otprice}>{item.price}&#8377;</div>
+                  <div className={styles.otprice}>&#8377;{item.price}.</div>
+                  <div className={styles.pricedec}>00</div>
                 </div>
               </div>
             </div>

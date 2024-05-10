@@ -3,7 +3,7 @@
   flex-direction: column;
   height: 600px;
   width: 100vh;
-  margin-left: 27%;
+  margin-left: 22%;
   border-radius: 10px;
   align-items: center;
 }
@@ -13,20 +13,20 @@
   color: rgb(142, 137, 137);
   display: flex;
   justify-content: center;
-  margin-top: 15%;
+  margin-top: 25%;
 }
 .loading {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 15%;
+  margin-top: 25%;
 }
 .heading_allUser {
   font-weight: 600;
   color: #02081f;
   font-size: 30px;
   text-align: center;
-  margin-top: 1%;
+  margin-top: 8%;
   margin-bottom: 10px;
 }
 

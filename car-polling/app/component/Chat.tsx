@@ -10,7 +10,6 @@ import {
   MouseEvent,
   useCallback,
 } from "react";
-import SendIcon from "@mui/icons-material/Send";
 import "./ChatPage.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
@@ -75,7 +74,7 @@ const ChatBox = ({
   }, []);
 
   const handlesend = useCallback(
-    (e: MouseEvent<HTMLButtonElement>) => {
+    async(e: MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       if (user) {
         const message = {
