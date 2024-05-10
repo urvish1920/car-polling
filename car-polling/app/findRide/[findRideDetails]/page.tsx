@@ -25,7 +25,7 @@ export default function FullDetailRide({
   const id = params.findRideDetails;
   const dispatch: AppDispatch = useDispatch();
   const ride = useSelector((state: any) => state.findRide.rides);
-  // const data = useSelector((state: RootState) => state.search);
+  const data = useSelector((state: RootState) => state.search);
   const [isPending, setIsPending] = useState(true);
 
   const router = useRouter();
@@ -79,10 +79,10 @@ export default function FullDetailRide({
                       {ride.pick_up.fullAddress}
                       <div className={styles.distance}>
                         {
-                          // <DistanceCalculator
-                          //   origin={data.from.fullAddress}
-                          //   destination={ride.pick_up.fullAddress}
-                          // />
+                          <DistanceCalculator
+                            origin={data.from.fullAddress}
+                            destination={ride.pick_up.fullAddress}
+                          />
                         }{" "}
                         from your departure
                       </div>
@@ -91,10 +91,10 @@ export default function FullDetailRide({
                       {ride.drop_off.fullAddress}
                       <div className={styles.distance_arrival}>
                         {
-                          // <DistanceCalculator
-                          //   origin={data.to.fullAddress}
-                          //   destination={ride.drop_off.fullAddress}
-                          // />
+                          <DistanceCalculator
+                            origin={data.to.fullAddress}
+                            destination={ride.drop_off.fullAddress}
+                          />
                         }{" "}
                         from your departure
                       </div>

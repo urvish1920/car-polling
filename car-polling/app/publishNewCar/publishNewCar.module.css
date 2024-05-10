@@ -73,6 +73,7 @@
   color: rgb(142, 137, 137);
   display: flex;
   justify-content: center;
+  text-align: center;
   margin-top: 30%;
 }
 .loading {

@@ -70,7 +70,7 @@ export default function signup() {
   return (
     <div className={styles.mainconatiner}>
       <div className={styles.text_publishNewRide}>
-        Unlock the Road Together: Sign Up, Share Rides, Save Money!
+        Ditch the solo drive, share the ride & Save Money, save the planet!
       </div>
       <div className={styles.signupInnerContainer}>
         <div className={styles.signupInsideItem}>

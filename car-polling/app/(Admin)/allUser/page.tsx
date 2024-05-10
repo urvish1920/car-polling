@@ -4,7 +4,6 @@ import styles from "./allUser.module.css";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 import Image from "next/image";
 import profile from "@/app/assert/avater.png";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useRouter } from "next/navigation";
 import { BASE_URL } from "@/app/utils/apiutils";
 import { useSelector } from "react-redux";

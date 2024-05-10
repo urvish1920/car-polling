@@ -65,7 +65,7 @@ export default function signIn() {
   return (
     <div className={styles.mainconatiner}>
       <div className={styles.text_publishNewRide}>
-        Unlock the Road Together: Sign In, Share Rides, Save Money!
+        Ditch the solo drive, share the ride & Save Money, save the planet!
       </div>
       <div className={styles.loginInnerContainer}>
         <div className={styles.insideContainLogin}>
@@ -90,6 +90,7 @@ export default function signIn() {
             onChange={(e) => setUser({ ...user, password: e.target.value })}
             placeholder="password"
           />
+          <></>Example: P4@wrd
           <Link href="/emailsend" className={styles.forgetPassword}>
             forget Password?
           </Link>

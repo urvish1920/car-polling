@@ -12,6 +12,7 @@ import contect_icon from "../app/assert/contect.svg";
 import energy_icon from "../app/assert/energy.svg";
 import person from "../app/assert/person.svg";
 import car from "../app/assert/car.png";
+import car_polling from "../app/assert/admin_carpolling.svg";
 import request from "../app/assert/request.svg";
 import ButtonGroup from "@mui/material/ButtonGroup/ButtonGroup";
 import { useRouter } from "next/navigation";
@@ -109,6 +110,27 @@ export default function Home() {
                   {totalCount?.totalData?.totalRequests}
                 </button>
               </ButtonGroup>
+            </div>
+            <div className={Styles.swap_com}>
+              <Image
+                src={car_polling}
+                width={400}
+                height={250}
+                alt="car-polling"
+                className={Styles.bg_carpolling}
+              />
+              <div>
+                <div className={Styles.swap_textHeading}>
+                  {" "}
+                  Wellcome {user.user_name}
+                </div>
+                <div className={Styles.swap_text}>
+                  Welcome to our Carpooling Admin Dashboard! Your role <br /> is
+                  pivotal in promoting eco-friendly travel by managing <br />
+                  ridesharing options and ensuring user safety within our <br />
+                  trusted community.
+                </div>
+              </div>
             </div>
           </div>
         )}
