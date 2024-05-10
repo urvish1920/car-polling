@@ -10,7 +10,6 @@ import {
   MouseEvent,
   useCallback,
 } from "react";
-import SendIcon from "@mui/icons-material/Send";
 import "./ChatPage.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";

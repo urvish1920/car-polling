@@ -177,6 +177,8 @@ export default function findRide() {
 
     return { hours: totalHours, minutes: totalMinutes };
   };
+
+  
   return (
     <div className={styles.planRide}>
       <div className={styles.sortCom}>
@@ -271,20 +273,20 @@ export default function findRide() {
                       <div className={styles.innerupplace}>
                         {item.pick_up.city}
                         <div className={styles.distance}>
-                          {/* <DistanceCalculator
+                          <DistanceCalculator
                             origin={from.fullAddress}
                             destination={item.pick_up.fullAddress}
-                          />{" "} */}
+                          />{" "}
                           from your departure
                         </div>
                       </div>
                       <div className={styles.innerdownplace}>
                         {item.drop_off.city}
                         <div className={styles.distance_arrival}>
-                          {/* <DistanceCalculator
+                          <DistanceCalculator
                             origin={to.fullAddress}
                             destination={item.drop_off.fullAddress}
-                          />{" "} */}
+                          />{" "}
                           from your arrival
                         </div>
                       </div>

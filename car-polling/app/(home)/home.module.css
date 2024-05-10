@@ -71,6 +71,27 @@
 .text_admin {
   margin-right: 10px;
 }
+.swap_com {
+  display: flex;
+}
+.bg_carpolling {
+  margin-left: 23%;
+  margin-top: 20px;
+}
+.swap_textHeading {
+  font-weight: bold;
+  color: #054652;
+  font-size: 30px;
+  margin-top: 18%;
+  margin-left: 20px;
+}
+.swap_text {
+  font-weight: 600;
+  color: gray;
+  font-size: 18px;
+  margin-top: 20px;
+  margin-left: 20px;
+}
 
 .loading {
   display: flex;

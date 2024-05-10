@@ -42,7 +42,6 @@ export default function publishNewCar() {
   const dispatch = useDispatch();
   const step = useSelector((state: RootState) => state.step);
   const publish = useSelector((state: RootState) => state.publish);
-  console.log(publish);
 
   const stepStyle = {
     marginTop: "20px",
@@ -511,7 +510,9 @@ export default function publishNewCar() {
                     <CircularProgress color="inherit" />
                   </div>
                 ) : vehicles.length === 0 ? (
-                  <div className={styles.not_Found}>No vehicle</div>
+                  <div className={styles.not_Found}>
+                    No vehicle add car <br /> from profile
+                  </div>
                 ) : (
                   <div className={styles.otcenter}>
                     {vehicles.map((item, index) => (
